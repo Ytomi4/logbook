@@ -1,0 +1,506 @@
+openapi: 3.0.3
+info:
+  title: 読書ログ API
+  description: Reading Log Application API
+  version: 1.0.0
+
+servers:
+  - url: /api
+    description: Cloudflare Workers API
+
+paths:
+  /books:
+    get:
+      summary: List all books
+      operationId: listBooks
+      parameters:
+        - name: include_deleted
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: List of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookWithLogCount'
+
+    post:
+      summary: Create a new book
+      operationId: createBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookRequest'
+      responses:
+        '201':
+          description: Book created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /books/{bookId}:
+    parameters:
+      - name: bookId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      summary: Get a book by ID
+      operationId: getBook
+      responses:
+        '200':
+          description: Book details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookWithLogs'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      summary: Update a book
+      operationId: updateBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBookRequest'
+      responses:
+        '200':
+          description: Book updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete a book (soft delete)
+      operationId: deleteBook
+      responses:
+        '204':
+          description: Book deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /books/{bookId}/logs:
+    parameters:
+      - name: bookId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      summary: List logs for a book
+      operationId: listBookLogs
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of logs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLogs'
+
+    post:
+      summary: Create a new log for a book
+      operationId: createLog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLogRequest'
+      responses:
+        '201':
+          description: Log created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Log'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /logs:
+    get:
+      summary: List all logs (timeline)
+      operationId: listLogs
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Timeline of logs with book info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineLogs'
+
+  /logs/{logId}:
+    parameters:
+      - name: logId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      summary: Get a log by ID
+      operationId: getLog
+      responses:
+        '200':
+          description: Log details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogWithBook'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      summary: Update a log
+      operationId: updateLog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLogRequest'
+      responses:
+        '200':
+          description: Log updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Log'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete a log
+      operationId: deleteLog
+      responses:
+        '204':
+          description: Log deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /ndl/search:
+    get:
+      summary: Search NDL (National Diet Library)
+      operationId: searchNdl
+      parameters:
+        - name: title
+          in: query
+          schema:
+            type: string
+        - name: author
+          in: query
+          schema:
+            type: string
+        - name: isbn
+          in: query
+          schema:
+            type: string
+        - name: cnt
+          in: query
+          description: Number of results
+          schema:
+            type: integer
+            default: 10
+            maximum: 50
+      responses:
+        '200':
+          description: NDL search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NdlSearchResults'
+        '502':
+          description: NDL API error
+
+components:
+  schemas:
+    Book:
+      type: object
+      required:
+        - id
+        - title
+        - isDeleted
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        author:
+          type: string
+          maxLength: 200
+          nullable: true
+        publisher:
+          type: string
+          maxLength: 200
+          nullable: true
+        isbn:
+          type: string
+          pattern: '^\d{10}|\d{13}$'
+          nullable: true
+        coverUrl:
+          type: string
+          format: uri
+          nullable: true
+        ndlBibId:
+          type: string
+          nullable: true
+        isDeleted:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    BookWithLogCount:
+      allOf:
+        - $ref: '#/components/schemas/Book'
+        - type: object
+          properties:
+            logCount:
+              type: integer
+
+    BookWithLogs:
+      allOf:
+        - $ref: '#/components/schemas/Book'
+        - type: object
+          properties:
+            logs:
+              type: array
+              items:
+                $ref: '#/components/schemas/Log'
+
+    CreateBookRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        author:
+          type: string
+          maxLength: 200
+        publisher:
+          type: string
+          maxLength: 200
+        isbn:
+          type: string
+        coverUrl:
+          type: string
+          format: uri
+        ndlBibId:
+          type: string
+
+    UpdateBookRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        author:
+          type: string
+          maxLength: 200
+        publisher:
+          type: string
+          maxLength: 200
+        isbn:
+          type: string
+        coverUrl:
+          type: string
+          format: uri
+
+    Log:
+      type: object
+      required:
+        - id
+        - bookId
+        - logType
+        - content
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        bookId:
+          type: string
+          format: uuid
+        logType:
+          type: string
+          enum: [memo, quote]
+        content:
+          type: string
+          minLength: 1
+          maxLength: 10000
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    LogWithBook:
+      allOf:
+        - $ref: '#/components/schemas/Log'
+        - type: object
+          properties:
+            book:
+              $ref: '#/components/schemas/Book'
+
+    CreateLogRequest:
+      type: object
+      required:
+        - logType
+        - content
+      properties:
+        logType:
+          type: string
+          enum: [memo, quote]
+        content:
+          type: string
+          minLength: 1
+          maxLength: 10000
+
+    UpdateLogRequest:
+      type: object
+      properties:
+        logType:
+          type: string
+          enum: [memo, quote]
+        content:
+          type: string
+          minLength: 1
+          maxLength: 10000
+
+    PaginatedLogs:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Log'
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+
+    TimelineLogs:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogWithBook'
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+
+    NdlSearchResults:
+      type: object
+      properties:
+        totalResults:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NdlBook'
+
+    NdlBook:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        publisher:
+          type: string
+        isbn:
+          type: string
+        pubDate:
+          type: string
+        ndlBibId:
+          type: string
+
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+        details:
+          type: object
+
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
