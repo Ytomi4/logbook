@@ -41,16 +41,16 @@ Based on plan.md structure:
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Create D1 database and add binding to wrangler.jsonc
-- [ ] T007 Define Drizzle ORM schema for books and logs in db/schema.ts
-- [ ] T008 Generate D1 migrations using drizzle-kit in db/migrations/
-- [ ] T009 Apply migrations to local D1 database
-- [ ] T010 [P] Create TypeScript types from schema in src/types/index.ts
-- [ ] T011 [P] Create Zod validation schemas in src/lib/validation.ts
-- [ ] T012 Create Hono app instance with CORS middleware in functions/api/_middleware.ts
-- [ ] T013 [P] Create API client base with fetch wrapper in src/services/api.ts
-- [ ] T014 [P] Create common UI components (Button, Input, Card, Loading) in src/components/common/
-- [ ] T015 Setup React Router for page routing in src/App.tsx
+- [x] T006 Create D1 database and add binding to wrangler.jsonc
+- [x] T007 Define Drizzle ORM schema for books and logs in db/schema.ts
+- [x] T008 Generate D1 migrations using drizzle-kit in db/migrations/
+- [x] T009 Apply migrations to local D1 database
+- [x] T010 [P] Create TypeScript types from schema in src/types/index.ts
+- [x] T011 [P] Create Zod validation schemas in src/lib/validation.ts
+- [x] T012 Create Hono app instance with CORS middleware in functions/api/_middleware.ts
+- [x] T013 [P] Create API client base with fetch wrapper in src/services/api.ts
+- [x] T014 [P] Create common UI components (Button, Input, Card, Loading) in src/components/common/
+- [x] T015 Setup React Router for page routing in src/App.tsx
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -64,15 +64,15 @@ Based on plan.md structure:
 
 ### Implementation for User Story 1
 
-- [ ] T016 [US1] Implement GET /api/logs endpoint (timeline) in functions/api/logs/index.ts
-- [ ] T017 [US1] Create timeline API client function in src/services/logs.ts
-- [ ] T018 [US1] Create TimelineItem component with vertical axis and marker in src/components/Timeline/TimelineItem.tsx
-- [ ] T019 [US1] Create TimelineGroup component for book grouping in src/components/Timeline/TimelineGroup.tsx
-- [ ] T020 [US1] Create QuoteDisplay component with blockquote styling in src/components/Timeline/QuoteDisplay.tsx
-- [ ] T021 [US1] Create Timeline container component with infinite scroll in src/components/Timeline/Timeline.tsx
-- [ ] T022 [US1] Create useTimeline hook for data fetching and pagination in src/hooks/useTimeline.ts
-- [ ] T023 [US1] Create TimelinePage as main view in src/pages/TimelinePage.tsx
-- [ ] T024 [US1] Add loading and empty states to Timeline component
+- [x] T016 [US1] Implement GET /api/logs endpoint (timeline) in functions/api/logs/index.ts
+- [x] T017 [US1] Create timeline API client function in src/services/logs.ts
+- [x] T018 [US1] Create TimelineItem component with vertical axis and marker in src/components/Timeline/TimelineItem.tsx
+- [x] T019 [US1] Create TimelineGroup component for book grouping in src/components/Timeline/TimelineGroup.tsx
+- [x] T020 [US1] Create QuoteDisplay component with blockquote styling in src/components/Timeline/QuoteDisplay.tsx
+- [x] T021 [US1] Create Timeline container component with infinite scroll in src/components/Timeline/Timeline.tsx
+- [x] T022 [US1] Create useTimeline hook for data fetching and pagination in src/hooks/useTimeline.ts
+- [x] T023 [US1] Create TimelinePage as main view in src/pages/TimelinePage.tsx
+- [x] T024 [US1] Add loading and empty states to Timeline component
 
 **Checkpoint**: User Story 1 complete - タイムライン表示が動作
 
