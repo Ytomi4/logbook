@@ -27,11 +27,11 @@ Based on plan.md structure:
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create Vite + React project with Cloudflare template using `npm create cloudflare@latest`
-- [ ] T002 Install dependencies: react, hono, drizzle-orm, zod in package.json
-- [ ] T003 [P] Configure TypeScript with strict mode in tsconfig.json
-- [ ] T004 [P] Configure ESLint and Prettier in .eslintrc.cjs and .prettierrc
-- [ ] T005 [P] Configure Vitest in vite.config.ts
+- [x] T001 Create Vite + React project with Cloudflare template using `npm create cloudflare@latest`
+- [x] T002 Install dependencies: react, hono, drizzle-orm, zod in package.json
+- [x] T003 [P] Configure TypeScript with strict mode in tsconfig.json
+- [x] T004 [P] Configure ESLint and Prettier in eslint.config.js and .prettierrc
+- [x] T005 [P] Configure Vitest in vite.config.ts
 
 ---
 
