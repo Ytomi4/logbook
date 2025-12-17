@@ -1,0 +1,30 @@
+{
+  "filePath": ".spec-workflow/steering/product.md",
+  "currentVersion": 3,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-12-17T12:31:47.662Z",
+      "trigger": "initial",
+      "approvalId": "approval_1765974707655_ogcpf17hv",
+      "approvalTitle": "Product Overview - Logbook読書記録アプリ"
+    },
+    {
+      "version": 2,
+      "filename": "snapshot-002.json",
+      "timestamp": "2025-12-17T12:38:06.210Z",
+      "trigger": "revision_requested",
+      "approvalId": "approval_1765974707655_ogcpf17hv",
+      "approvalTitle": "Product Overview - Logbook読書記録アプリ"
+    },
+    {
+      "version": 3,
+      "filename": "snapshot-003.json",
+      "timestamp": "2025-12-17T12:39:42.579Z",
+      "trigger": "approved",
+      "approvalId": "approval_1765975132884_w4sn5ay5l",
+      "approvalTitle": "Product Overview - Logbook読書記録アプリ（修正版）"
+    }
+  ]
+}
