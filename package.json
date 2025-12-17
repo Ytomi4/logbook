@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "wrangler pages dev --proxy 5173 --port 8787 --compatibility-date 2024-12-01",
     "build": "tsc -b && vite build",
-    "preview": "vite preview",
+    "preview": "wrangler pages dev ./dist --local --persist",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "vitest"
+    "test": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "wrangler d1 migrations apply booklog-db --local"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +29,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251216.0",
     "@eslint/js": "^9.39.2",
+    "@tailwindcss/vite": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@types/react": "^19.2.7",
@@ -39,6 +43,7 @@
     "globals": "^16.5.0",
     "jsdom": "^27.0.1",
     "prettier": "^3.7.4",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.50.0",
     "vite": "^7.3.0",

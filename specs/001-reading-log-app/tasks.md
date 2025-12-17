@@ -86,17 +86,17 @@ Based on plan.md structure:
 
 ### Implementation for User Story 2
 
-- [ ] T025 [US2] Implement POST /api/books/{bookId}/logs endpoint in functions/api/books/[bookId]/logs.ts
-- [ ] T026 [US2] Implement PUT /api/logs/{logId} endpoint in functions/api/logs/[logId].ts
-- [ ] T027 [US2] Implement DELETE /api/logs/{logId} endpoint in functions/api/logs/[logId].ts
-- [ ] T028 [US2] Create log API client functions (create, update, delete) in src/services/logs.ts
-- [ ] T029 [US2] Create LogTypeSelector component (memo/quote toggle) in src/components/LogForm/LogTypeSelector.tsx
-- [ ] T030 [US2] Create LogForm component with textarea in src/components/LogForm/LogForm.tsx
-- [ ] T031 [US2] Create QuickLogModal for rapid entry in src/components/LogForm/QuickLogModal.tsx
-- [ ] T032 [US2] Create useLogForm hook for form state management in src/hooks/useLogForm.ts
-- [ ] T033 [US2] Add log creation trigger to BookDetail page in src/pages/BookDetailPage.tsx
-- [ ] T034 [US2] Implement log edit functionality in TimelineItem component
-- [ ] T035 [US2] Implement log delete with confirmation dialog
+- [x] T025 [US2] Implement POST /api/books/{bookId}/logs endpoint in functions/api/books/[bookId]/logs.ts
+- [x] T026 [US2] Implement PUT /api/logs/{logId} endpoint in functions/api/logs/[logId].ts
+- [x] T027 [US2] Implement DELETE /api/logs/{logId} endpoint in functions/api/logs/[logId].ts
+- [x] T028 [US2] Create log API client functions (create, update, delete) in src/services/logs.ts
+- [x] T029 [US2] Create LogTypeSelector component (memo/quote toggle) in src/components/LogForm/LogTypeSelector.tsx
+- [x] T030 [US2] Create LogForm component with textarea in src/components/LogForm/LogForm.tsx
+- [x] T031 [US2] Create QuickLogModal for rapid entry in src/components/LogForm/QuickLogModal.tsx
+- [x] T032 [US2] Create useLogForm hook for form state management in src/hooks/useLogForm.ts
+- [x] T033 [US2] Add log creation trigger to BookDetail page in src/pages/BookDetailPage.tsx
+- [x] T034 [US2] Implement log edit functionality in TimelineItem component
+- [x] T035 [US2] Implement log delete with confirmation dialog
 
 **Checkpoint**: User Stories 1 AND 2 complete - タイムライン表示とログ登録が動作
 
@@ -110,21 +110,21 @@ Based on plan.md structure:
 
 ### Implementation for User Story 3
 
-- [ ] T036 [US3] Implement GET /api/ndl/search endpoint (NDL proxy) in functions/api/ndl/search.ts
-- [ ] T037 [US3] Implement POST /api/books endpoint in functions/api/books/index.ts
-- [ ] T038 [US3] Implement GET /api/books endpoint in functions/api/books/index.ts
-- [ ] T039 [US3] Implement GET /api/books/{bookId} endpoint in functions/api/books/[bookId]/index.ts
-- [ ] T040 [US3] Implement PUT /api/books/{bookId} endpoint in functions/api/books/[bookId]/index.ts
-- [ ] T041 [US3] Implement DELETE /api/books/{bookId} endpoint (soft delete) in functions/api/books/[bookId]/index.ts
-- [ ] T042 [US3] Create book and NDL API client functions in src/services/books.ts
-- [ ] T043 [US3] Create NDL API client function in src/services/ndl.ts
-- [ ] T044 [US3] Create BookSearchInput component with debounce in src/components/BookForm/BookSearchInput.tsx
-- [ ] T045 [US3] Create NdlSearchResults component for candidate display in src/components/BookForm/NdlSearchResults.tsx
-- [ ] T046 [US3] Create BookForm component for manual entry in src/components/BookForm/BookForm.tsx
-- [ ] T047 [US3] Create useBookSearch hook for NDL integration in src/hooks/useBookSearch.ts
-- [ ] T048 [US3] Create BookRegistrationPage in src/pages/BookRegistrationPage.tsx
-- [ ] T049 [US3] Create BookListPage showing all books in src/pages/BookListPage.tsx
-- [ ] T050 [US3] Implement book delete with "削除済み" handling
+- [x] T036 [US3] Implement GET /api/ndl/search endpoint (NDL proxy) in functions/api/ndl/search.ts
+- [x] T037 [US3] Implement POST /api/books endpoint in functions/api/books/index.ts
+- [x] T038 [US3] Implement GET /api/books endpoint in functions/api/books/index.ts
+- [x] T039 [US3] Implement GET /api/books/{bookId} endpoint in functions/api/books/[bookId]/index.ts
+- [x] T040 [US3] Implement PUT /api/books/{bookId} endpoint in functions/api/books/[bookId]/index.ts
+- [x] T041 [US3] Implement DELETE /api/books/{bookId} endpoint (soft delete) in functions/api/books/[bookId]/index.ts
+- [x] T042 [US3] Create book and NDL API client functions in src/services/books.ts
+- [x] T043 [US3] Create NDL API client function in src/services/ndl.ts
+- [x] T044 [US3] Create BookSearchInput component with debounce in src/components/BookForm/BookSearchInput.tsx
+- [x] T045 [US3] Create NdlSearchResults component for candidate display in src/components/BookForm/NdlSearchResults.tsx
+- [x] T046 [US3] Create BookForm component for manual entry in src/components/BookForm/BookForm.tsx
+- [x] T047 [US3] Create useBookSearch hook for NDL integration in src/hooks/useBookSearch.ts
+- [x] T048 [US3] Create BookRegistrationPage in src/pages/BookRegistrationPage.tsx
+- [x] T049 [US3] Create BookListPage showing all books in src/pages/BookListPage.tsx
+- [x] T050 [US3] Implement book delete with "削除済み" handling
 
 **Checkpoint**: User Stories 1, 2, AND 3 complete - フル機能が動作
 
@@ -138,11 +138,11 @@ Based on plan.md structure:
 
 ### Implementation for User Story 4
 
-- [ ] T051 [US4] Ensure all API endpoints work without authentication
-- [ ] T052 [US4] Create BookDetailPage for viewing book-specific logs in src/pages/BookDetailPage.tsx
-- [ ] T053 [US4] Add click-through navigation from timeline to book detail
-- [ ] T054 [US4] Add share button to copy timeline URL
-- [ ] T055 [US4] Configure meta tags for OGP (Open Graph Protocol) in index.html
+- [x] T051 [US4] Ensure all API endpoints work without authentication
+- [x] T052 [US4] Create BookDetailPage for viewing book-specific logs in src/pages/BookDetailPage.tsx
+- [x] T053 [US4] Add click-through navigation from timeline to book detail
+- [x] T054 [US4] Add share button to copy timeline URL
+- [x] T055 [US4] Configure meta tags for OGP (Open Graph Protocol) in index.html
 
 **Checkpoint**: All user stories complete
 
@@ -152,12 +152,12 @@ Based on plan.md structure:
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T056 [P] Add responsive design for mobile in src/index.css
-- [ ] T057 [P] Add error boundary component in src/components/common/ErrorBoundary.tsx
-- [ ] T058 [P] Add toast notifications for success/error feedback in src/components/common/Toast.tsx
-- [ ] T059 Implement pagination/infinite scroll for large datasets
-- [ ] T060 Add keyboard shortcuts for quick log entry
-- [ ] T061 Run quickstart.md validation checklist
+- [x] T056 [P] Add responsive design for mobile in src/index.css
+- [x] T057 [P] Add error boundary component in src/components/common/ErrorBoundary.tsx
+- [x] T058 [P] Add toast notifications for success/error feedback in src/components/common/Toast.tsx
+- [x] T059 Implement pagination/infinite scroll for large datasets
+- [x] T060 Add keyboard shortcuts for quick log entry
+- [x] T061 Run quickstart.md validation checklist
 - [ ] T062 Deploy to Cloudflare Pages
 
 ---

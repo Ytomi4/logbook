@@ -4,3 +4,7 @@ export { Textarea } from './Textarea';
 export { Card, CardHeader, CardTitle, CardContent } from './Card';
 export { Loading, LoadingPage } from './Loading';
 export { Layout } from './Layout';
+export { Modal } from './Modal';
+export { ShareButton } from './ShareButton';
+export { ErrorBoundary } from './ErrorBoundary';
+export { ToastProvider, useToast } from './Toast';

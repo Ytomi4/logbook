@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, type RefObject } from 'react';
 import type { LogWithBook } from '../types';
 import { getTimeline } from '../services/logs';
 import { ApiClientError } from '../services/api';
@@ -12,6 +12,7 @@ interface UseTimelineResult {
   hasMore: boolean;
   loadMore: () => void;
   refresh: () => void;
+  sentinelRef: RefObject<HTMLDivElement | null>;
 }
 
 export function useTimeline(): UseTimelineResult {
@@ -20,6 +21,7 @@ export function useTimeline(): UseTimelineResult {
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
   const [offset, setOffset] = useState(0);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const hasMore = logs.length < total;
 
@@ -63,6 +65,32 @@ export function useTimeline(): UseTimelineResult {
     }
   }, [isLoading, hasMore, offset, fetchLogs]);
 
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting && hasMore && !isLoading) {
+          loadMore();
+        }
+      },
+      {
+        root: null,
+        rootMargin: '100px',
+        threshold: 0,
+      }
+    );
+
+    observer.observe(sentinel);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasMore, isLoading, loadMore]);
+
   const refresh = useCallback(() => {
     setOffset(0);
     fetchLogs(0);
@@ -75,5 +103,6 @@ export function useTimeline(): UseTimelineResult {
     hasMore,
     loadMore,
     refresh,
+    sentinelRef,
   };
 }

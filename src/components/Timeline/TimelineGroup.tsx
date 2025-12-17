@@ -31,7 +31,9 @@ export function TimelineGroup({
             </h3>
             {!book.isDeleted && (
               <svg
-                className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors"
+                width="16"
+                height="16"
+                className="text-gray-400 group-hover:text-blue-600 transition-colors flex-shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

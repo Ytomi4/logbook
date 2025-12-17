@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, type RefObject } from 'react';
 import type { LogWithBook, Book } from '../../types';
 import { TimelineGroup } from './TimelineGroup';
 import { TimelineEmpty } from './TimelineEmpty';
@@ -9,6 +9,7 @@ interface TimelineProps {
   isLoading?: boolean;
   hasMore?: boolean;
   onLoadMore?: () => void;
+  sentinelRef?: RefObject<HTMLDivElement | null>;
 }
 
 interface GroupedLogs {
@@ -42,6 +43,7 @@ export function Timeline({
   isLoading = false,
   hasMore = false,
   onLoadMore,
+  sentinelRef,
 }: TimelineProps) {
   const groupedLogs = useMemo(() => groupLogsByBook(logs), [logs]);
 
@@ -66,7 +68,10 @@ export function Timeline({
         </div>
       )}
 
-      {!isLoading && hasMore && onLoadMore && (
+      {/* Sentinel for infinite scroll */}
+      {sentinelRef && <div ref={sentinelRef} className="h-1" />}
+
+      {!isLoading && hasMore && onLoadMore && !sentinelRef && (
         <div className="flex justify-center py-4">
           <button
             onClick={onLoadMore}

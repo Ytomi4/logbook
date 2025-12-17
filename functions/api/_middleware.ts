@@ -30,7 +30,6 @@ app.onError((err, c) => {
   return c.json(
     {
       message: err.message || 'Internal Server Error',
-      details: process.env.NODE_ENV === 'development' ? { stack: err.stack } : undefined,
     },
     500
   );

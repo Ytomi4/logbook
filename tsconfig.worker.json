@@ -4,13 +4,16 @@
     "lib": ["ES2022"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "emitDeclarationOnly": true,
 
     /* Linting */
     "strict": true,
@@ -22,5 +25,5 @@
     /* Types */
     "types": ["@cloudflare/workers-types"]
   },
-  "include": ["functions/**/*", "db/**/*"]
+  "include": ["functions/**/*", "db/**/*", "src/lib/**/*"]
 }

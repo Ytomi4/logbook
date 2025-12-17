@@ -53,8 +53,8 @@ export const paginationSchema = z.object({
 export const listBooksQuerySchema = z.object({
   include_deleted: z
     .string()
-    .transform((val) => val === 'true')
-    .default('false'),
+    .optional()
+    .transform((val) => val === 'true'),
 });
 
 export const ndlSearchSchema = z.object({

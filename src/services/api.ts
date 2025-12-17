@@ -93,3 +93,11 @@ export async function del<T = void>(path: string): Promise<T> {
 
   return handleResponse<T>(response);
 }
+
+// API client object for convenient imports
+export const apiClient = {
+  get,
+  post,
+  put,
+  delete: del,
+};

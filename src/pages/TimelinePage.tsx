@@ -1,9 +1,9 @@
 import { Timeline } from '../components/Timeline';
 import { useTimeline } from '../hooks/useTimeline';
-import { LoadingPage } from '../components/common';
+import { LoadingPage, ShareButton } from '../components/common';
 
 export function TimelinePage() {
-  const { logs, isLoading, error, hasMore, loadMore } = useTimeline();
+  const { logs, isLoading, error, hasMore, loadMore, sentinelRef } = useTimeline();
 
   // Show full page loading only on initial load
   if (isLoading && logs.length === 0) {
@@ -40,6 +40,7 @@ export function TimelinePage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Timeline</h1>
+        <ShareButton title="読書ログ タイムライン" />
       </div>
 
       <Timeline
@@ -47,6 +48,7 @@ export function TimelinePage() {
         isLoading={isLoading}
         hasMore={hasMore}
         onLoadMore={loadMore}
+        sentinelRef={sentinelRef}
       />
     </div>
   );
