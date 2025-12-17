@@ -30,7 +30,7 @@
   Follow-up TODOs: None
 -->
 
-# Booklog Constitution
+# Logbook Constitution
 
 ## Core Principles
 

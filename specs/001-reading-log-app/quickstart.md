@@ -11,8 +11,8 @@
 ### 1. Create Project
 
 ```bash
-npm create cloudflare@latest booklog -- --framework=react
-cd booklog
+npm create cloudflare@latest logbook -- --framework=react
+cd logbook
 ```
 
 ### 2. Install Dependencies
@@ -29,7 +29,7 @@ npm install -D drizzle-kit @cloudflare/workers-types vitest
 
 ```bash
 # Create D1 database
-npx wrangler d1 create booklog-db
+npx wrangler d1 create logbook-db
 
 # Add binding to wrangler.jsonc (created by init)
 ```
@@ -40,7 +40,7 @@ Update `wrangler.jsonc`:
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "booklog-db",
+      "database_name": "logbook-db",
       "database_id": "<your-database-id>"
     }
   ]
@@ -90,7 +90,7 @@ export default defineConfig({
 Generate and apply migrations:
 ```bash
 npx drizzle-kit generate
-npx wrangler d1 migrations apply booklog-db --local
+npx wrangler d1 migrations apply logbook-db --local
 ```
 
 ## Development
@@ -115,7 +115,7 @@ npm run test
 ## Project Structure
 
 ```
-booklog/
+logbook/
 ├── src/
 │   ├── components/     # React components
 │   ├── pages/          # Page components

@@ -50,7 +50,7 @@ app.get('/', async (c) => {
   try {
     const response = await fetch(ndlUrl, {
       headers: {
-        'User-Agent': 'BookLog/1.0',
+        'User-Agent': 'Logbook/1.0',
       },
     });
 

@@ -1,4 +1,4 @@
-# Booklog
+# Logbook
 
 読書ログをタイムライン形式で記録・閲覧するWebアプリケーション。
 
@@ -20,7 +20,7 @@ npm install
 ### 1. D1 データベースの作成
 
 ```bash
-npx wrangler d1 create booklog-db
+npx wrangler d1 create logbook-db
 ```
 
 出力された `database_id` を `wrangler.jsonc` に設定:
@@ -30,7 +30,7 @@ npx wrangler d1 create booklog-db
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "booklog-db",
+      "database_name": "logbook-db",
       "database_id": "<your-database-id>"
     }
   ]
@@ -73,20 +73,20 @@ http://localhost:8787 でアクセス可能。
 npx wrangler login
 
 # Pages プロジェクト作成 & デプロイ
-npx wrangler pages deploy dist --project-name booklog
+npx wrangler pages deploy dist --project-name logbook
 ```
 
 ### 本番 D1 マイグレーション
 
 ```bash
-npx wrangler d1 migrations apply booklog-db --remote
+npx wrangler d1 migrations apply logbook-db --remote
 ```
 
 ### 継続的デプロイ
 
 ```bash
 npm run build
-npx wrangler pages deploy dist --project-name booklog
+npx wrangler pages deploy dist --project-name logbook
 ```
 
 ## Keyboard Shortcuts

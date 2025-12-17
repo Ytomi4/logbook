@@ -1,5 +1,5 @@
 {
-  "name": "booklog",
+  "name": "logbook",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
     "format": "prettier --write .",
     "test": "vitest",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "wrangler d1 migrations apply booklog-db --local"
+    "db:migrate": "wrangler d1 migrations apply logbook-db --local"
   },
   "keywords": [],
   "author": "",
