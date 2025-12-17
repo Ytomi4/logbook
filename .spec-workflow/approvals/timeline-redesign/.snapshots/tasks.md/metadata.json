@@ -1,0 +1,22 @@
+{
+  "filePath": ".spec-workflow/specs/timeline-redesign/tasks.md",
+  "currentVersion": 2,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-12-17T13:57:17.836Z",
+      "trigger": "initial",
+      "approvalId": "approval_1765979837831_r4lhw9war",
+      "approvalTitle": "Timeline Redesign - Tasks Document"
+    },
+    {
+      "version": 2,
+      "filename": "snapshot-002.json",
+      "timestamp": "2025-12-17T13:59:04.437Z",
+      "trigger": "approved",
+      "approvalId": "approval_1765979837831_r4lhw9war",
+      "approvalTitle": "Timeline Redesign - Tasks Document"
+    }
+  ]
+}

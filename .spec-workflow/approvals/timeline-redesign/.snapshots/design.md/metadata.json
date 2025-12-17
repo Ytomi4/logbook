@@ -1,0 +1,22 @@
+{
+  "filePath": ".spec-workflow/specs/timeline-redesign/design.md",
+  "currentVersion": 2,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-12-17T13:53:09.181Z",
+      "trigger": "initial",
+      "approvalId": "approval_1765979589176_2mytwgc5t",
+      "approvalTitle": "Timeline Redesign - Design Document"
+    },
+    {
+      "version": 2,
+      "filename": "snapshot-002.json",
+      "timestamp": "2025-12-17T13:55:03.718Z",
+      "trigger": "approved",
+      "approvalId": "approval_1765979589176_2mytwgc5t",
+      "approvalTitle": "Timeline Redesign - Design Document"
+    }
+  ]
+}
