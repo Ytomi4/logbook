@@ -94,3 +94,31 @@ export interface ApiError {
   message: string;
   details?: Record<string, unknown>;
 }
+
+// User Profile types
+export interface UserProfile {
+  id: string;
+  username: string | null;
+  name: string;
+  email: string;
+  image: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+}
+
+export interface PublicUser {
+  id: string;
+  username: string;
+  name: string;
+  avatarUrl: string | null;
+}
+
+export interface UpdateProfileRequest {
+  username: string;
+}
+
+export interface UsernameCheckResponse {
+  available: boolean;
+  reason?: 'taken' | 'reserved' | 'invalid';
+  message?: string;
+}
