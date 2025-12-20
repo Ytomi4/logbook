@@ -5,12 +5,8 @@ type AuthClient = ReturnType<typeof createAuthClient>;
 let _authClient: AuthClient | null = null;
 
 function getBaseURL(): string {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (typeof globalThis !== 'undefined' && 'location' in globalThis) {
-    const loc = globalThis as typeof globalThis & {
-      location: { origin: string };
-    };
-    return `${loc.location.origin}/api/auth`;
+  if (typeof window !== 'undefined' && window.location) {
+    return `${window.location.origin}/api/auth`;
   }
   return '/api/auth';
 }

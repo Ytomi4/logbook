@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { authClient } from '../lib/auth-client';
 
 interface User {
@@ -12,12 +12,15 @@ interface UseAuthResult {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  error: string | null;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  clearError: () => void;
 }
 
 export function useAuth(): UseAuthResult {
   const { data: session, isPending } = authClient.useSession();
+  const [error, setError] = useState<string | null>(null);
 
   const user: User | null = session?.user
     ? {
@@ -31,20 +34,42 @@ export function useAuth(): UseAuthResult {
   const isAuthenticated = !!session?.user;
 
   const signInWithGoogle = useCallback(async () => {
-    await authClient.signIn.social({
-      provider: 'google',
-    });
+    try {
+      setError(null);
+      await authClient.signIn.social({
+        provider: 'google',
+      });
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'ログインに失敗しました';
+      setError(message);
+      console.error('Sign in error:', err);
+    }
   }, []);
 
   const signOut = useCallback(async () => {
-    await authClient.signOut();
+    try {
+      setError(null);
+      await authClient.signOut();
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'ログアウトに失敗しました';
+      setError(message);
+      console.error('Sign out error:', err);
+    }
+  }, []);
+
+  const clearError = useCallback(() => {
+    setError(null);
   }, []);
 
   return {
     user,
     isAuthenticated,
     isLoading: isPending,
+    error,
     signInWithGoogle,
     signOut,
+    clearError,
   };
 }

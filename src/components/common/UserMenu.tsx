@@ -23,12 +23,20 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
       }
     }
 
+    function handleEscapeKey(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    }
+
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
     };
   }, [isOpen]);
 
@@ -39,6 +47,8 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
         className="flex items-center gap-2 p-1 rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         aria-expanded={isOpen}
         aria-haspopup="true"
+        aria-controls="user-menu-dropdown"
+        aria-label="ユーザーメニュー"
       >
         <UserInfo name={user.name} avatarUrl={user.image ?? undefined} />
         <svg
@@ -57,7 +67,12 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50">
+        <div
+          id="user-menu-dropdown"
+          role="menu"
+          aria-orientation="vertical"
+          className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50"
+        >
           <div className="px-4 py-2 border-b border-gray-100">
             <p className="text-sm font-medium text-gray-900 truncate">
               {user.name}
@@ -65,6 +80,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
             <p className="text-xs text-gray-500 truncate">{user.email}</p>
           </div>
           <button
+            role="menuitem"
             onClick={() => {
               setIsOpen(false);
               onLogout();
