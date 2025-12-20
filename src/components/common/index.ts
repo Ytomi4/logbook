@@ -12,3 +12,5 @@ export { BookCover } from './BookCover';
 export { TabNavigation } from './TabNavigation';
 export { HeaderActionButtons } from './HeaderActionButtons';
 export { UserInfo } from './UserInfo';
+export { LoginButton } from './LoginButton';
+export { UserMenu } from './UserMenu';

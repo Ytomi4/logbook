@@ -1,0 +1,16 @@
+# Better Auth Configuration
+# Copy this file to .dev.vars and fill in your values
+
+# Secret key for signing sessions (generate with: openssl rand -base64 32)
+BETTER_AUTH_SECRET=your-secret-key-here
+
+# Base URL for the auth server
+# Local development: http://localhost:8787
+# Production: https://your-domain.com
+BETTER_AUTH_URL=http://localhost:8787
+
+# Google OAuth credentials
+# Create at: https://console.cloud.google.com/apis/credentials
+# Add authorized redirect URI: {BETTER_AUTH_URL}/api/auth/callback/google
+GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-google-client-secret
