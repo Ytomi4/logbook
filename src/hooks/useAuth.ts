@@ -6,6 +6,7 @@ interface User {
   name: string;
   email: string;
   image: string | null;
+  username: string | null;
 }
 
 interface UseAuthResult {
@@ -28,6 +29,7 @@ export function useAuth(): UseAuthResult {
         name: session.user.name,
         email: session.user.email,
         image: session.user.image ?? null,
+        username: (session.user as { username?: string }).username ?? null,
       }
     : null;
 
