@@ -73,7 +73,7 @@ TypeScript 5.x: Follow standard conventions
 
 2. **Stories の命名規則**
    - ファイル名: `ComponentName.stories.tsx`
-   - title: `カテゴリ/ComponentName`（例: `common/Button`, `Timeline/TimelineItem`）
+   - title: `カテゴリ/ComponentName`（例: `Common/Button`, `Timeline/TimelineItem`）
 
 3. **モックデータの共通化**
    - `src/stories/mocks/data.ts` に共通モックデータを定義

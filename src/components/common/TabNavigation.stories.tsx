@@ -4,7 +4,7 @@ import { TabNavigation } from './TabNavigation';
 import type { TabType } from '../../hooks/useTabNavigation';
 
 const meta = {
-  title: 'common/TabNavigation',
+  title: 'Common/TabNavigation',
   component: TabNavigation,
   tags: ['autodocs'],
   argTypes: {

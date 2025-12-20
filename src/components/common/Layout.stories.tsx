@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Layout } from './Layout';
 
 const meta = {
-  title: 'common/Layout',
+  title: 'Common/Layout',
   component: Layout,
   tags: ['autodocs'],
   decorators: [
