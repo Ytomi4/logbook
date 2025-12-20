@@ -63,6 +63,8 @@ http://localhost:8787 でアクセス可能。
 | `npm run test` | テスト実行 |
 | `npm run db:generate` | Drizzle マイグレーション生成 |
 | `npm run db:migrate` | ローカル D1 にマイグレーション適用 |
+| `npm run storybook` | Storybook 開発サーバー起動 (port 6006) |
+| `npm run build-storybook` | Storybook 静的ビルド |
 
 ## Branches
 
