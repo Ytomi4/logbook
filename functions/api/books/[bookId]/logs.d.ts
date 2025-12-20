@@ -1,10 +1,3 @@
-import { Hono } from 'hono';
-import type { D1Database } from '@cloudflare/workers-types';
-interface Env {
-    DB: D1Database;
-}
-declare const app: Hono<{
-    Bindings: Env;
-}, import("hono/types").BlankSchema, "/">;
+declare const app: any;
 export default app;
 //# sourceMappingURL=logs.d.ts.map

@@ -1,51 +1,13 @@
 import { z } from 'zod';
-export declare const createBookSchema: z.ZodObject<{
-    title: z.ZodString;
-    author: z.ZodOptional<z.ZodString>;
-    publisher: z.ZodOptional<z.ZodString>;
-    isbn: z.ZodOptional<z.ZodString>;
-    coverUrl: z.ZodOptional<z.ZodString>;
-    ndlBibId: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
-export declare const updateBookSchema: z.ZodObject<{
-    title: z.ZodOptional<z.ZodString>;
-    author: z.ZodOptional<z.ZodString>;
-    publisher: z.ZodOptional<z.ZodString>;
-    isbn: z.ZodOptional<z.ZodString>;
-    coverUrl: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
-export declare const logTypeSchema: z.ZodEnum<{
-    memo: "memo";
-    quote: "quote";
-}>;
-export declare const createLogSchema: z.ZodObject<{
-    logType: z.ZodEnum<{
-        memo: "memo";
-        quote: "quote";
-    }>;
-    content: z.ZodString;
-}, z.core.$strip>;
-export declare const updateLogSchema: z.ZodObject<{
-    logType: z.ZodOptional<z.ZodEnum<{
-        memo: "memo";
-        quote: "quote";
-    }>>;
-    content: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
-export declare const paginationSchema: z.ZodObject<{
-    limit: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
-    offset: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
-}, z.core.$strip>;
-export declare const listBooksQuerySchema: z.ZodObject<{
-    include_deleted: z.ZodPipe<z.ZodOptional<z.ZodString>, z.ZodTransform<boolean, string | undefined>>;
-}, z.core.$strip>;
-export declare const ndlSearchSchema: z.ZodObject<{
-    title: z.ZodOptional<z.ZodString>;
-    author: z.ZodOptional<z.ZodString>;
-    isbn: z.ZodOptional<z.ZodString>;
-    cnt: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
-}, z.core.$strip>;
-export declare const uuidSchema: z.ZodString;
+export declare const createBookSchema: any;
+export declare const updateBookSchema: any;
+export declare const logTypeSchema: any;
+export declare const createLogSchema: any;
+export declare const updateLogSchema: any;
+export declare const paginationSchema: any;
+export declare const listBooksQuerySchema: any;
+export declare const ndlSearchSchema: any;
+export declare const uuidSchema: any;
 export type CreateBookInput = z.infer<typeof createBookSchema>;
 export type UpdateBookInput = z.infer<typeof updateBookSchema>;
 export type CreateLogInput = z.infer<typeof createLogSchema>;

@@ -10,6 +10,6 @@ interface PagesContext {
     passThroughOnException: () => void;
     next: () => Promise<Response>;
 }
-export declare const onRequest: (context: PagesContext) => Response | Promise<Response>;
+export declare const onRequest: (context: PagesContext) => any;
 export {};
 //# sourceMappingURL=%5B%5Bpath%5D%5D.d.ts.map
