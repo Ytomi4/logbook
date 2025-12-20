@@ -35,7 +35,7 @@ TypeScript 5.x: Follow standard conventions
 
 1. **機能開発時は必ずfeatureブランチを作成する**
    - `develop`から分岐: `git checkout -b feature/<feature-name> develop`
-   - 命名規則: `feature/`, `fix/`, `refactor/`, `docs/`, `chore/`
+   - 命名規則: `feature/`, `fix/`, `hotfix/`, `refactor/`, `docs/`, `chore/`
 
 2. **コミットは区切りごとに作成する**
    - Conventional Commits形式を使用（例: `feat:`, `fix:`, `docs:`）
