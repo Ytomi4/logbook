@@ -64,7 +64,31 @@ http://localhost:8787 でアクセス可能。
 | `npm run db:generate` | Drizzle マイグレーション生成 |
 | `npm run db:migrate` | ローカル D1 にマイグレーション適用 |
 
-## Deploy to Cloudflare
+## Branches
+
+| ブランチ | 用途 | デプロイ先 |
+|---------|------|-----------|
+| `main` | 本番環境用 | https://logbook-hmk.pages.dev |
+| `develop` | 開発統合用 | https://develop.logbook-hmk.pages.dev |
+
+詳細なブランチルールは [CONTRIBUTING.md](./CONTRIBUTING.md) を参照。
+
+## CI/CD
+
+GitHub Actionsによる自動デプロイが設定されています。
+
+| トリガー | 実行内容 |
+|---------|---------|
+| `main` へ push | テスト → リント → ビルド → 本番デプロイ |
+| `develop` へ push | テスト → リント → ビルド → プレビューデプロイ |
+
+**注意**: D1マイグレーションは自動実行されません。スキーマ変更時は手動で実行してください。
+
+```bash
+npx wrangler d1 migrations apply logbook-db --remote
+```
+
+## Deploy to Cloudflare (Manual)
 
 ### 初回デプロイ
 
@@ -76,13 +100,7 @@ npx wrangler login
 npx wrangler pages deploy dist --project-name logbook
 ```
 
-### 本番 D1 マイグレーション
-
-```bash
-npx wrangler d1 migrations apply logbook-db --remote
-```
-
-### 継続的デプロイ
+### 手動デプロイ
 
 ```bash
 npm run build
