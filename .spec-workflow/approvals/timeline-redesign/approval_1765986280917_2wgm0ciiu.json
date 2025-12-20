@@ -1,0 +1,29 @@
+{
+  "id": "approval_1765986280917_2wgm0ciiu",
+  "title": "Timeline Redesign - Design (UserInfo コンポーネント追加)",
+  "filePath": ".spec-workflow/specs/timeline-redesign/design.md",
+  "type": "document",
+  "status": "needs-revision",
+  "createdAt": "2025-12-17T15:44:40.917Z",
+  "category": "spec",
+  "categoryName": "timeline-redesign",
+  "response": "Feedback Summary (1 comments):\n\nSpecific Text Comments:\n1. \"ヘッダーに表示するユーザー情報（アイコン + ユーザー名）\": ユーザー情報は、このタイムラインが誰の読んだ本の記録かを示す予定のものです。ヘッダーではなく、ヘッダー下タイムラインの上に表示してください。\n",
+  "annotations": "{\n  \"decision\": \"needs-revision\",\n  \"comments\": [\n    {\n      \"type\": \"selection\",\n      \"comment\": \"ユーザー情報は、このタイムラインが誰の読んだ本の記録かを示す予定のものです。ヘッダーではなく、ヘッダー下タイムラインの上に表示してください。\",\n      \"timestamp\": \"2025-12-20T06:05:55.328Z\",\n      \"selectedText\": \"ヘッダーに表示するユーザー情報（アイコン + ユーザー名）\",\n      \"highlightColor\": {\n        \"bg\": \"rgba(255, 235, 59, 0.3)\",\n        \"border\": \"#FFEB3B\",\n        \"name\": \"#ffeb3b\"\n      },\n      \"id\": \"comment_1766210755328_xfec6rdwt\",\n      \"startOffset\": 3267,\n      \"endOffset\": 3296\n    }\n  ],\n  \"summary\": \"Feedback Summary (1 comments):\\n\\nSpecific Text Comments:\\n1. \\\"ヘッダーに表示するユーザー情報（アイコン + ユーザー名）\\\": ユーザー情報は、このタイムラインが誰の読んだ本の記録かを示す予定のものです。ヘッダーではなく、ヘッダー下タイムラインの上に表示してください。\\n\",\n  \"timestamp\": \"2025-12-20T06:05:58.640Z\"\n}",
+  "respondedAt": "2025-12-20T06:05:58.654Z",
+  "comments": [
+    {
+      "type": "selection",
+      "comment": "ユーザー情報は、このタイムラインが誰の読んだ本の記録かを示す予定のものです。ヘッダーではなく、ヘッダー下タイムラインの上に表示してください。",
+      "timestamp": "2025-12-20T06:05:55.328Z",
+      "selectedText": "ヘッダーに表示するユーザー情報（アイコン + ユーザー名）",
+      "highlightColor": {
+        "bg": "rgba(255, 235, 59, 0.3)",
+        "border": "#FFEB3B",
+        "name": "#ffeb3b"
+      },
+      "id": "comment_1766210755328_xfec6rdwt",
+      "startOffset": 3267,
+      "endOffset": 3296
+    }
+  ]
+}

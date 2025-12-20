@@ -1,7 +1,6 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout, ErrorBoundary, ToastProvider } from './components/common';
-import { TimelinePage } from './pages/TimelinePage';
-import { BookListPage } from './pages/BookListPage';
+import { HomePage } from './pages/HomePage';
 import { BookDetailPage } from './pages/BookDetailPage';
 import { BookRegistrationPage } from './pages/BookRegistrationPage';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
@@ -12,8 +11,8 @@ function AppRoutes() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<TimelinePage />} />
-        <Route path="/books" element={<BookListPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/books" element={<Navigate to="/" replace />} />
         <Route path="/books/new" element={<BookRegistrationPage />} />
         <Route path="/books/:id" element={<BookDetailPage />} />
       </Routes>

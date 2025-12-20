@@ -8,3 +8,7 @@ export { Modal } from './Modal';
 export { ShareButton } from './ShareButton';
 export { ErrorBoundary } from './ErrorBoundary';
 export { ToastProvider, useToast } from './Toast';
+export { BookCover } from './BookCover';
+export { TabNavigation } from './TabNavigation';
+export { HeaderActionButtons } from './HeaderActionButtons';
+export { UserInfo } from './UserInfo';

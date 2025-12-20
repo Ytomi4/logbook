@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import type { BookWithLogs, Log, UpdateLogRequest } from '../types';
+import type { BookWithLogs, Log } from '../types';
 import { getBook } from '../services/books';
-import { updateLog, deleteLog } from '../services/logs';
+import { deleteLog } from '../services/logs';
 import { LogForm } from '../components/LogForm';
 import { TimelineItem } from '../components/Timeline/TimelineItem';
-import { Loading, Card, CardHeader, CardTitle, CardContent, ShareButton } from '../components/common';
+import { Loading, Card, CardHeader, CardTitle, CardContent, ShareButton, BookCover } from '../components/common';
 import { useLogForm } from '../hooks/useLogForm';
 import { ApiClientError } from '../services/api';
 
@@ -15,7 +15,6 @@ export function BookDetailPage() {
   const [logs, setLogs] = useState<Log[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [editingLogId, setEditingLogId] = useState<string | null>(null);
   const [deletingLogId, setDeletingLogId] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
@@ -48,16 +47,6 @@ export function BookDetailPage() {
     onSuccess: fetchData,
   });
 
-  const handleEdit = async (logId: string, data: UpdateLogRequest) => {
-    setEditingLogId(logId);
-    try {
-      await updateLog(logId, data);
-      await fetchData();
-    } finally {
-      setEditingLogId(null);
-    }
-  };
-
   const handleDelete = async (logId: string) => {
     setDeletingLogId(logId);
     try {
@@ -81,10 +70,10 @@ export function BookDetailPage() {
       <div className="text-center py-12">
         <p className="text-red-600 mb-4">{error}</p>
         <Link
-          to="/books"
+          to="/"
           className="text-blue-600 hover:text-blue-700"
         >
-          本一覧に戻る
+          ホームに戻る
         </Link>
       </div>
     );
@@ -95,10 +84,10 @@ export function BookDetailPage() {
       <div className="text-center py-12">
         <p className="text-gray-600 mb-4">本が見つかりませんでした</p>
         <Link
-          to="/books"
+          to="/"
           className="text-blue-600 hover:text-blue-700"
         >
-          本一覧に戻る
+          ホームに戻る
         </Link>
       </div>
     );
@@ -108,8 +97,8 @@ export function BookDetailPage() {
     <div className="space-y-6">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-gray-500">
-        <Link to="/books" className="hover:text-gray-700">
-          本一覧
+        <Link to="/" className="hover:text-gray-700">
+          ホーム
         </Link>
         <span>/</span>
         <span className="text-gray-900 line-clamp-1">{book.title}</span>
@@ -119,12 +108,19 @@ export function BookDetailPage() {
       <Card>
         <CardContent className="py-4">
           <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-gray-900 mb-2">{book.title}</h1>
-              <div className="text-sm text-gray-600 space-y-1">
-                {book.author && <p>著者: {book.author}</p>}
-                {book.publisher && <p>出版社: {book.publisher}</p>}
-                {book.isbn && <p>ISBN: {book.isbn}</p>}
+            <div className="flex gap-4">
+              <BookCover
+                coverUrl={book.coverUrl}
+                title={book.title}
+                size="lg"
+              />
+              <div>
+                <h1 className="text-xl font-bold text-gray-900 mb-2">{book.title}</h1>
+                <div className="text-sm text-gray-600 space-y-1">
+                  {book.author && <p>著者: {book.author}</p>}
+                  {book.publisher && <p>出版社: {book.publisher}</p>}
+                  {book.isbn && <p>ISBN: {book.isbn}</p>}
+                </div>
               </div>
             </div>
             <ShareButton title={`${book.title} - 読書ログ`} />
@@ -162,9 +158,7 @@ export function BookDetailPage() {
                 key={log.id}
                 log={log}
                 isLast={index === logs.length - 1}
-                onEdit={handleEdit}
                 onDelete={handleDelete}
-                isEditing={editingLogId === log.id}
                 isDeleting={deletingLogId === log.id}
               />
             ))}

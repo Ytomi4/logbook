@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Book, LogWithBook } from '../../types';
 import { TimelineItem } from './TimelineItem';
+import { BookCover } from '../common';
 
 interface TimelineGroupProps {
   book: Book;
@@ -14,55 +15,47 @@ export function TimelineGroup({
   isLastGroup = false,
 }: TimelineGroupProps) {
   return (
-    <div className="mb-6">
-      {/* Book header */}
-      <div className="flex items-start gap-3 mb-4 pl-8">
-        <div className="flex-1">
-          <Link
-            to={`/books/${book.id}`}
-            className="group flex items-center gap-2"
-          >
-            <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-              {book.isDeleted ? (
-                <span className="text-gray-400">削除済み</span>
-              ) : (
-                book.title
-              )}
-            </h3>
-            {!book.isDeleted && (
-              <svg
-                width="16"
-                height="16"
-                className="text-gray-400 group-hover:text-blue-600 transition-colors flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+    <div className="relative mb-8">
+      {/* Book header - no dots or lines */}
+      <div className="flex items-center gap-3 mb-6">
+        <Link
+          to={`/books/${book.id}`}
+          className="flex items-center gap-3 group"
+        >
+          <BookCover
+            coverUrl={book.coverUrl}
+            title={book.title}
+            size="md"
+          />
+          <div className="min-w-0">
+            {book.isDeleted ? (
+              <span className="text-lg font-bold text-gray-400">削除済み</span>
+            ) : (
+              <>
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+                  {book.title}
+                </h3>
+                {book.author && (
+                  <p className="text-sm text-gray-500 truncate">{book.author}</p>
+                )}
+              </>
             )}
-          </Link>
-          {book.author && !book.isDeleted && (
-            <p className="text-sm text-gray-500">{book.author}</p>
-          )}
-        </div>
+          </div>
+        </Link>
       </div>
 
-      {/* Logs */}
-      <div>
-        {logs.map((log, index) => (
-          <TimelineItem
-            key={log.id}
-            log={log}
-            isLast={isLastGroup && index === logs.length - 1}
-          />
-        ))}
-      </div>
+      {/* Logs - vertical line is rendered inside each TimelineItem */}
+      {logs.length > 0 && (
+        <div className="relative pl-8">
+          {logs.map((log, index) => (
+            <TimelineItem
+              key={log.id}
+              log={log}
+              isLast={isLastGroup && index === logs.length - 1}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

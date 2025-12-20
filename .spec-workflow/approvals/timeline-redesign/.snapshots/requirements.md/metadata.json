@@ -1,0 +1,38 @@
+{
+  "filePath": ".spec-workflow/specs/timeline-redesign/requirements.md",
+  "currentVersion": 4,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-12-17T13:26:38.145Z",
+      "trigger": "initial",
+      "approvalId": "approval_1765977998136_vgwru7f3w",
+      "approvalTitle": "Timeline Redesign - Requirements Document"
+    },
+    {
+      "version": 2,
+      "filename": "snapshot-002.json",
+      "timestamp": "2025-12-17T13:51:38.683Z",
+      "trigger": "approved",
+      "approvalId": "approval_1765977998136_vgwru7f3w",
+      "approvalTitle": "Timeline Redesign - Requirements Document"
+    },
+    {
+      "version": 3,
+      "filename": "snapshot-003.json",
+      "timestamp": "2025-12-17T15:29:57.124Z",
+      "trigger": "revision_requested",
+      "approvalId": "approval_1765985202157_1ek6lqiib",
+      "approvalTitle": "Timeline Redesign - Requirements (Updated with Figma node-id: 14:467)"
+    },
+    {
+      "version": 4,
+      "filename": "snapshot-004.json",
+      "timestamp": "2025-12-17T15:32:53.728Z",
+      "trigger": "approved",
+      "approvalId": "approval_1765985540315_k3drlzexx",
+      "approvalTitle": "Timeline Redesign - Requirements v2 (ユーザー情報表示追加)"
+    }
+  ]
+}

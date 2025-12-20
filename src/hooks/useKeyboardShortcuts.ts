@@ -18,14 +18,14 @@ export function useKeyboardShortcuts() {
       {
         key: 'h',
         alt: true,
-        description: 'タイムラインに移動',
+        description: 'ホームに移動（タイムライン）',
         action: () => navigate('/'),
       },
       {
         key: 'b',
         alt: true,
-        description: '本一覧に移動',
-        action: () => navigate('/books'),
+        description: 'ホームに移動（本一覧タブは手動で切替）',
+        action: () => navigate('/'),
       },
       {
         key: 'n',
@@ -35,7 +35,7 @@ export function useKeyboardShortcuts() {
       },
       {
         key: '/',
-        description: '検索にフォーカス (本一覧ページ)',
+        description: '検索にフォーカス',
         action: () => {
           const searchInput = document.querySelector<HTMLInputElement>(
             'input[type="search"], input[placeholder*="検索"]'
@@ -98,8 +98,8 @@ export function useKeyboardShortcuts() {
 // Hook for displaying keyboard shortcuts help
 export function useShortcutsHelp() {
   const shortcuts = [
-    { keys: ['Alt', 'H'], description: 'タイムラインに移動' },
-    { keys: ['Alt', 'B'], description: '本一覧に移動' },
+    { keys: ['Alt', 'H'], description: 'ホームに移動' },
+    { keys: ['Alt', 'B'], description: 'ホームに移動' },
     { keys: ['Alt', 'N'], description: '本を新規登録' },
     { keys: ['/'], description: '検索にフォーカス' },
     { keys: ['Esc'], description: 'モーダルを閉じる' },

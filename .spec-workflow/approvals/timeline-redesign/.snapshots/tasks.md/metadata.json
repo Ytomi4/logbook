@@ -1,0 +1,46 @@
+{
+  "filePath": ".spec-workflow/specs/timeline-redesign/tasks.md",
+  "currentVersion": 5,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-12-17T13:57:17.836Z",
+      "trigger": "initial",
+      "approvalId": "approval_1765979837831_r4lhw9war",
+      "approvalTitle": "Timeline Redesign - Tasks Document"
+    },
+    {
+      "version": 2,
+      "filename": "snapshot-002.json",
+      "timestamp": "2025-12-17T13:59:04.437Z",
+      "trigger": "approved",
+      "approvalId": "approval_1765979837831_r4lhw9war",
+      "approvalTitle": "Timeline Redesign - Tasks Document"
+    },
+    {
+      "version": 3,
+      "filename": "snapshot-003.json",
+      "timestamp": "2025-12-20T06:14:56.396Z",
+      "trigger": "approved",
+      "approvalId": "approval_1766211245591_9nrfbos2g",
+      "approvalTitle": "Timeline Redesign - Tasks (UserInfo 関連タスク追加)"
+    },
+    {
+      "version": 4,
+      "filename": "snapshot-004.json",
+      "timestamp": "2025-12-20T06:29:19.840Z",
+      "trigger": "approved",
+      "approvalId": "approval_1766212062968_qm1jhes1c",
+      "approvalTitle": "Timeline Redesign - Tasks (縦ライン修正タスク追加)"
+    },
+    {
+      "version": 5,
+      "filename": "snapshot-005.json",
+      "timestamp": "2025-12-20T06:46:38.702Z",
+      "trigger": "approved",
+      "approvalId": "approval_1766213109726_09tmsg87t",
+      "approvalTitle": "Timeline Redesign - Tasks (QuoteDisplay グレースタイル変更タスク追加)"
+    }
+  ]
+}

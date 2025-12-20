@@ -4,7 +4,7 @@ interface QuoteDisplayProps {
 
 export function QuoteDisplay({ content }: QuoteDisplayProps) {
   return (
-    <blockquote className="border-l-4 border-amber-400 pl-4 py-1 italic text-gray-700 bg-amber-50/50 rounded-r">
+    <blockquote className="border-l-4 border-gray-200 pl-5 italic text-gray-500">
       <p className="whitespace-pre-wrap">{content}</p>
     </blockquote>
   );
