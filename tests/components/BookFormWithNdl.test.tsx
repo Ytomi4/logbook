@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BookFormWithNdl } from '../../src/components/BookForm/BookForm';
 import type { NdlBook } from '../../src/types';
 import { getNdlThumbnailUrl, NDL_THUMBNAIL_BASE } from '../../src/lib/ndl';

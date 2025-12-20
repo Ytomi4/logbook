@@ -1,10 +1,22 @@
+import { useEffect } from 'react';
 import { Timeline } from './Timeline';
 import { useTimeline } from '../../hooks/useTimeline';
 import { Loading, Button } from '../common';
 
-export function TimelineView() {
+interface TimelineViewProps {
+  refreshKey?: number;
+}
+
+export function TimelineView({ refreshKey = 0 }: TimelineViewProps) {
   const { logs, isLoading, error, hasMore, loadMore, refresh, sentinelRef } =
     useTimeline();
+
+  // Refresh timeline when refreshKey changes
+  useEffect(() => {
+    if (refreshKey > 0) {
+      refresh();
+    }
+  }, [refreshKey, refresh]);
 
   // Show loading only on initial load
   if (isLoading && logs.length === 0) {
