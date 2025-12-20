@@ -31,6 +31,8 @@ Storybook 10.x を React + Vite + TypeScript 環境に導入し、UI コンポ�
 - **common/Modal.tsx**: 開閉状態を Args で制御する Stories
 - **common/Card.tsx**: CardHeader, CardTitle, CardContent の組み合わせを Stories 化
 - **common/Toast.tsx**: ToastProvider のラッパーを使用した通知表示 Stories
+- **common/TabNavigation.tsx**: タイムライン/本一覧の切り替えタブ、activeTab の状態変化を Stories 化
+- **common/Layout.tsx**: ヘッダー + コンテンツエリアのレイアウト、BrowserRouter デコレーターが必要
 
 ### Integration Points
 
@@ -223,6 +225,10 @@ logbook/
 │   │   │   ├── Input.stories.tsx      # ← 追加
 │   │   │   ├── Modal.tsx
 │   │   │   ├── Modal.stories.tsx      # ← 追加
+│   │   │   ├── TabNavigation.tsx
+│   │   │   ├── TabNavigation.stories.tsx  # ← 追加
+│   │   │   ├── Layout.tsx
+│   │   │   ├── Layout.stories.tsx     # ← 追加
 │   │   │   └── ...
 │   │   ├── BookForm/
 │   │   │   ├── BookForm.tsx

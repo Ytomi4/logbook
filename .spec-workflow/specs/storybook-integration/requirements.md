@@ -31,7 +31,7 @@ product.md の「シンプルさ優先」「高速な操作」の原則に沿い
 
 #### Acceptance Criteria
 
-1. WHEN Storybook を開く THEN Button, Input, Textarea, Card, Modal, Toast, Loading コンポーネント SHALL 各々の Story として表示される
+1. WHEN Storybook を開く THEN Button, Input, Textarea, Card, Modal, Toast, Loading, TabNavigation, Layout コンポーネント SHALL 各々の Story として表示される
 2. IF コンポーネントに Props バリエーションがある（例: Button の variant, size）THEN 各バリエーション SHALL 個別の Story として確認できる
 3. WHEN コンポーネントの Story を選択 THEN Controls パネル SHALL Props を動的に変更してプレビューできる
 4. WHEN コンポーネントの Story を選択 THEN Docs ページ SHALL Props の型情報と説明を自動生成して表示する
