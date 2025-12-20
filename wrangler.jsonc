@@ -11,5 +11,18 @@
       "database_id": "018d41a3-9791-4d5d-9c8b-830d191b8b8d",
       "migrations_dir": "./db/migrations"
     }
-  ]
+  ],
+  // Environment variables (non-secret)
+  "vars": {
+    // Default: Production URL
+    "BETTER_AUTH_URL": "https://logbook-hmk.pages.dev"
+  },
+  // Preview environment override
+  "env": {
+    "preview": {
+      "vars": {
+        "BETTER_AUTH_URL": "https://develop.logbook-hmk.pages.dev"
+      }
+    }
+  }
 }
