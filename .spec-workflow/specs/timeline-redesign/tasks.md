@@ -48,6 +48,15 @@
   - _Requirements: 5.1, 5.2, 5.3, 5.4_
   - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Create HeaderActionButtons at src/components/common/HeaderActionButtons.tsx. Props: onAddLog callback. Two buttons: 1) 'ログを追加' - black bg (bg-gray-900), white text, plus icon, calls onAddLog. 2) '本を追加' - white bg, gray border, book-plus icon, Link to /books/new. Both h-[36px] rounded-[8px]. Use inline SVG icons. | Restrictions: Use existing Button component if suitable or create custom buttons with Tailwind | Success: Both buttons render correctly, ログを追加 triggers callback, 本を追加 navigates to /books/new. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
 
+- [x] 5.1. UserInfo コンポーネントの作成
+  - File: `src/components/common/UserInfo.tsx`
+  - ヘッダー下・タイムラインの上に表示するユーザー情報（アイコン + ユーザー名）
+  - 「このタイムラインが誰の読んだ本の記録か」を示す
+  - Purpose: ユーザー識別情報の表示
+  - _Leverage: Tailwind CSS_
+  - _Requirements: design.md UserInfo セクション_
+  - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React/TypeScript Developer | Task: Create UserInfo component at src/components/common/UserInfo.tsx. Props: name (optional, default 'ゲスト'), avatarUrl (optional). Display: 32x32px circular avatar (gray bg with initial if no avatarUrl) + username (14px, gray-500). Layout: flex items-center gap-2. If avatarUrl provided, show image; otherwise show first character of name as initial. | Restrictions: Pure UI component, no external dependencies, use only Tailwind CSS | Success: Component renders avatar + username correctly, handles missing props gracefully. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
+
 ## Phase 2: タイムラインコンポーネントのリファクタリング
 
 - [x] 6. TimelineItem コンポーネントの簡素化
@@ -69,6 +78,15 @@
   - _Leverage: BookCover コンポーネント（Task 1）, 既存の TimelineGroup.tsx_
   - _Requirements: 2.1, 2.2, 2.5, 3.1, 3.2, 3.4_
   - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Refactor TimelineGroup at src/components/Timeline/TimelineGroup.tsx. Changes: 1) Add BookCover (size='md') next to book title. 2) Book header dot: 16px black circle (bg-gray-900) with 8px white inner circle. 3) Vertical line: 2px wide, bg-gray-200 (or rgba(0,0,0,0.1)), positioned at left-[7px]. 4) Layout: dot + gap-4 + BookCover + (title + author stack). 5) Keep Link to book detail on both cover and title. | Restrictions: Import BookCover from ../common, maintain existing TimelineItem integration | Success: Book groups show cover image, dot and line styles match Figma. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
+
+- [x] 7.1. TimelineGroup からグループレベルの縦ラインを削除
+  - File: `src/components/Timeline/TimelineGroup.tsx`
+  - グループ全体をカバーする縦ライン（`left-[7px]`）を削除
+  - 縦ラインは TimelineItem 内でのみ表示（二重表示を防ぐ）
+  - Purpose: 縦ラインの二重表示を解消
+  - _Leverage: 既存の TimelineGroup.tsx_
+  - _Requirements: design.md TimelineGroup セクション_
+  - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Update TimelineGroup.tsx to remove the group-level vertical line. Remove the div with class "absolute left-[7px] top-2 bottom-0 w-0.5 bg-black/10". The vertical line should only be rendered inside each TimelineItem, not at the group level. This prevents double vertical lines from appearing. | Restrictions: Only remove the vertical line div, keep all other functionality | Success: Only one vertical line appears per log item (from TimelineItem), no duplicate lines. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
 
 - [x] 8. TimelineView コンポーネントの作成
   - File: `src/components/Timeline/TimelineView.tsx`
@@ -112,13 +130,13 @@
 - [x] 12. HomePage コンポーネントの作成
   - File: `src/pages/HomePage.tsx`
   - タブナビゲーション統合ページ
-  - ヘッダー（タイトル、説明、アクションボタン）
+  - ヘッダー下・タイムラインの上に UserInfo を表示（「誰の読書記録か」を示す）
   - タブ切り替えによるビュー表示
   - QuickLogModal の統合
   - Purpose: タイムラインと本一覧の統合メインページ
-  - _Leverage: TabNavigation, HeaderActionButtons, TimelineView, BookListView, QuickLogModal, useTabNavigation_
+  - _Leverage: TabNavigation, HeaderActionButtons, TimelineView, BookListView, QuickLogModal, useTabNavigation, UserInfo_
   - _Requirements: 1.1-1.5, 5.1-5.4_
-  - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Create HomePage at src/pages/HomePage.tsx. Structure: 1) Header with app title '読書ログ' + subtitle '読書の記録を時系列で振り返りましょう' + HeaderActionButtons. 2) TabNavigation below header. 3) Conditional render: TimelineView when activeTab='timeline', BookListView when activeTab='books'. 4) QuickLogModal integration (state: isQuickLogOpen, pass to HeaderActionButtons onAddLog). Use useTabNavigation hook. Match Figma layout with centered content (max-w-3xl mx-auto or similar). | Restrictions: Do not include ShareButton (remove from this page) | Success: Full page with working tab navigation, quick log modal, proper layout. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
+  - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Update HomePage at src/pages/HomePage.tsx. Structure: 1) UserInfo component at the top (below header, above tabs) to show whose reading log this is. 2) HeaderActionButtons on the right. 3) TabNavigation below. 4) Conditional render: TimelineView when activeTab='timeline', BookListView when activeTab='books'. 5) QuickLogModal integration. | Restrictions: UserInfo should be placed between header and TabNavigation, not in the header itself | Success: Full page with UserInfo visible at top, working tab navigation, quick log modal. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
 
 - [x] 13. App.tsx ルーティングの更新
   - File: `src/App.tsx`
@@ -142,11 +160,20 @@
 
 - [x] 15. common/index.ts バレルエクスポートの更新
   - File: `src/components/common/index.ts`
-  - BookCover, TabNavigation, HeaderActionButtons の追加
+  - BookCover, TabNavigation, HeaderActionButtons, UserInfo の追加
   - Purpose: 新コンポーネントのエクスポート
   - _Leverage: 既存の index.ts_
   - _Requirements: N/A (infrastructure)_
-  - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: TypeScript Developer | Task: Update src/components/common/index.ts to export new components: BookCover, TabNavigation, HeaderActionButtons. Follow existing export pattern. | Restrictions: Only add exports, do not remove existing ones | Success: New components can be imported from '../components/common'. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
+  - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: TypeScript Developer | Task: Update src/components/common/index.ts to export new components: BookCover, TabNavigation, HeaderActionButtons, UserInfo. Follow existing export pattern. | Restrictions: Only add exports, do not remove existing ones | Success: New components can be imported from '../components/common'. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
+
+- [x] 15.1. Layout.tsx からユーザー情報を削除
+  - File: `src/components/common/Layout.tsx`
+  - ヘッダー右側のユーザー情報（アバター + ユーザー名）を削除
+  - UserInfo は HomePage でヘッダー下に表示するため、Layout からは削除
+  - Purpose: design.md の修正に合わせてヘッダーをシンプル化
+  - _Leverage: 既存の Layout.tsx_
+  - _Requirements: design.md Layout セクション_
+  - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Update Layout.tsx to remove user info from header. Remove the div containing avatar icon and "Guest" text from the header right side. The header should only show the Logbook logo/title on the left. UserInfo will be displayed in HomePage instead. | Restrictions: Only remove user info section, keep rest of Layout unchanged | Success: Header shows only logo, no user info. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
 
 - [x] 16. Timeline/index.ts バレルエクスポートの更新
   - File: `src/components/Timeline/index.ts`

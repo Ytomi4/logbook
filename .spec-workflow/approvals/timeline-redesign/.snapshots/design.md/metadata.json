@@ -1,6 +1,6 @@
 {
   "filePath": ".spec-workflow/specs/timeline-redesign/design.md",
-  "currentVersion": 2,
+  "currentVersion": 5,
   "snapshots": [
     {
       "version": 1,
@@ -17,6 +17,30 @@
       "trigger": "approved",
       "approvalId": "approval_1765979589176_2mytwgc5t",
       "approvalTitle": "Timeline Redesign - Design Document"
+    },
+    {
+      "version": 3,
+      "filename": "snapshot-003.json",
+      "timestamp": "2025-12-20T06:05:58.650Z",
+      "trigger": "revision_requested",
+      "approvalId": "approval_1765986280917_2wgm0ciiu",
+      "approvalTitle": "Timeline Redesign - Design (UserInfo コンポーネント追加)"
+    },
+    {
+      "version": 4,
+      "filename": "snapshot-004.json",
+      "timestamp": "2025-12-20T06:10:24.685Z",
+      "trigger": "approved",
+      "approvalId": "approval_1766210973583_kz8adrim9",
+      "approvalTitle": "Timeline Redesign - Design (UserInfo 配置修正)"
+    },
+    {
+      "version": 5,
+      "filename": "snapshot-005.json",
+      "timestamp": "2025-12-20T06:29:21.288Z",
+      "trigger": "approved",
+      "approvalId": "approval_1766212054353_kw5rwp0ni",
+      "approvalTitle": "Timeline Redesign - Design (縦ライン二重表示の修正)"
     }
   ]
 }

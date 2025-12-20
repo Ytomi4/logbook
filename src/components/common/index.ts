@@ -11,3 +11,4 @@ export { ToastProvider, useToast } from './Toast';
 export { BookCover } from './BookCover';
 export { TabNavigation } from './TabNavigation';
 export { HeaderActionButtons } from './HeaderActionButtons';
+export { UserInfo } from './UserInfo';

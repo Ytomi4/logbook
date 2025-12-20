@@ -16,20 +16,8 @@ export function TimelineGroup({
 }: TimelineGroupProps) {
   return (
     <div className="relative mb-8">
-      {/* Vertical line for the group */}
-      <div
-        className="absolute left-[7px] top-16 bottom-0 w-0.5 bg-black/10"
-        style={{ display: isLastGroup && logs.length === 0 ? 'none' : 'block' }}
-      />
-
-      {/* Book header */}
-      <div className="flex items-center gap-4 mb-6">
-        {/* Book marker dot - black with white inner circle */}
-        <div className="w-4 h-4 rounded-full bg-gray-900 flex items-center justify-center flex-shrink-0">
-          <div className="w-2 h-2 rounded-full bg-white" />
-        </div>
-
-        {/* Book cover and info */}
+      {/* Book header - no dots or lines */}
+      <div className="flex items-center gap-3 mb-6">
         <Link
           to={`/books/${book.id}`}
           className="flex items-center gap-3 group"
@@ -56,16 +44,18 @@ export function TimelineGroup({
         </Link>
       </div>
 
-      {/* Logs */}
-      <div className="pl-8">
-        {logs.map((log, index) => (
-          <TimelineItem
-            key={log.id}
-            log={log}
-            isLast={isLastGroup && index === logs.length - 1}
-          />
-        ))}
-      </div>
+      {/* Logs - vertical line is rendered inside each TimelineItem */}
+      {logs.length > 0 && (
+        <div className="relative pl-8">
+          {logs.map((log, index) => (
+            <TimelineItem
+              key={log.id}
+              log={log}
+              isLast={isLastGroup && index === logs.length - 1}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
