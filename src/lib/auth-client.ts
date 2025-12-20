@@ -5,8 +5,13 @@ type AuthClient = ReturnType<typeof createAuthClient>;
 let _authClient: AuthClient | null = null;
 
 function getBaseURL(): string {
-  if (typeof window !== 'undefined' && window.location) {
-    return `${window.location.origin}/api/auth`;
+  // Use type assertion for browser environment check
+  // This works in both DOM and Worker contexts
+  const g = globalThis as typeof globalThis & {
+    location?: { origin: string };
+  };
+  if (g.location?.origin) {
+    return `${g.location.origin}/api/auth`;
   }
   return '/api/auth';
 }

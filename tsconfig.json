@@ -27,7 +27,7 @@
     }
   },
   "include": ["src"],
-  "exclude": ["src/**/*.stories.tsx", "src/**/*.stories.ts"],
+  "exclude": ["src/**/*.stories.tsx", "src/**/*.stories.ts", "src/lib/**/*"],
   "references": [
     { "path": "./tsconfig.node.json" },
     { "path": "./tsconfig.worker.json" }
