@@ -22,7 +22,14 @@
     "preview": {
       "vars": {
         "BETTER_AUTH_URL": "https://develop.logbook-hmk.pages.dev"
-      }
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "logbook-db",
+          "database_id": "018d41a3-9791-4d5d-9c8b-830d191b8b8d"
+        }
+      ]
     }
   }
 }
