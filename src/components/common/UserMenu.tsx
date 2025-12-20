@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { UserInfo } from './UserInfo';
 
 interface User {
@@ -79,6 +80,14 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
             </p>
             <p className="text-xs text-gray-500 truncate">{user.email}</p>
           </div>
+          <Link
+            to="/settings"
+            role="menuitem"
+            onClick={() => setIsOpen(false)}
+            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+          >
+            アカウント設定
+          </Link>
           <button
             role="menuitem"
             onClick={() => {

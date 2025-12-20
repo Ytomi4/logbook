@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { LoginButton } from './LoginButton';
+import { Button } from './Button';
 import { UserMenu } from './UserMenu';
 
 interface LayoutProps {
@@ -9,8 +9,7 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-  const { user, isAuthenticated, isLoading, signInWithGoogle, signOut } =
-    useAuth();
+  const { user, isAuthenticated, isLoading, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -41,7 +40,9 @@ export function Layout({ children }: LayoutProps) {
             ) : isAuthenticated && user ? (
               <UserMenu user={user} onLogout={signOut} />
             ) : (
-              <LoginButton onClick={signInWithGoogle} />
+              <Link to="/enter">
+                <Button>はじめる</Button>
+              </Link>
             )}
           </div>
         </div>
