@@ -7,43 +7,57 @@ logbook/
 ├── src/                          # フロントエンド（React）
 │   ├── components/               # UI コンポーネント
 │   │   ├── common/               # 汎用コンポーネント
+│   │   │   ├── BookCover.tsx     # 本の表紙表示
 │   │   │   ├── Button.tsx
 │   │   │   ├── Card.tsx
 │   │   │   ├── ErrorBoundary.tsx
+│   │   │   ├── HeaderActionButtons.tsx  # ヘッダーアクションボタン
 │   │   │   ├── Input.tsx
 │   │   │   ├── Layout.tsx
 │   │   │   ├── Loading.tsx
 │   │   │   ├── Modal.tsx
+│   │   │   ├── ShareButton.tsx   # 共有ボタン
+│   │   │   ├── TabNavigation.tsx # タブナビゲーション
 │   │   │   ├── Textarea.tsx
 │   │   │   ├── Toast.tsx
+│   │   │   ├── UserInfo.tsx      # ユーザー情報表示
 │   │   │   └── index.ts          # バレルエクスポート
 │   │   ├── BookForm/             # 本登録フォーム
 │   │   │   ├── BookForm.tsx
 │   │   │   ├── BookSearchInput.tsx
 │   │   │   ├── NdlSearchResults.tsx
 │   │   │   └── index.ts
+│   │   ├── BookList/             # 本一覧表示
+│   │   │   ├── BookGrid.tsx      # グリッド表示
+│   │   │   ├── BookListView.tsx  # リスト表示
+│   │   │   └── index.ts
 │   │   ├── LogForm/              # ログ入力フォーム
 │   │   │   ├── LogForm.tsx
 │   │   │   ├── LogTypeSelector.tsx
+│   │   │   ├── QuickAddLogModal.tsx  # クイック追加モーダル
 │   │   │   ├── QuickLogModal.tsx
 │   │   │   └── index.ts
 │   │   └── Timeline/             # タイムライン表示
+│   │       ├── QuoteDisplay.tsx
 │   │       ├── Timeline.tsx
 │   │       ├── TimelineEmpty.tsx
 │   │       ├── TimelineGroup.tsx
 │   │       ├── TimelineItem.tsx
-│   │       ├── QuoteDisplay.tsx
+│   │       ├── TimelineView.tsx  # タイムラインビュー
 │   │       └── index.ts
 │   ├── pages/                    # ページコンポーネント
-│   │   ├── TimelinePage.tsx      # / - タイムライン
+│   │   ├── HomePage.tsx          # / - ホーム（タブ切り替え）
+│   │   ├── TimelinePage.tsx      # タイムライン表示
 │   │   ├── BookListPage.tsx      # /books - 本一覧
 │   │   ├── BookDetailPage.tsx    # /books/:id - 本詳細
 │   │   └── BookRegistrationPage.tsx  # /books/new - 本登録
 │   ├── hooks/                    # カスタムフック
+│   │   ├── useBookList.ts        # 本一覧ロジック
 │   │   ├── useBookSearch.ts      # 本検索ロジック
+│   │   ├── useKeyboardShortcuts.ts  # キーボードショートカット
 │   │   ├── useLogForm.ts         # ログフォームロジック
-│   │   ├── useTimeline.ts        # タイムラインデータ取得
-│   │   └── useKeyboardShortcuts.ts  # キーボードショートカット
+│   │   ├── useTabNavigation.ts   # タブナビゲーションロジック
+│   │   └── useTimeline.ts        # タイムラインデータ取得
 │   ├── services/                 # API クライアント
 │   │   ├── api.ts                # 共通 API 設定
 │   │   ├── books.ts              # 本 API
@@ -74,10 +88,14 @@ logbook/
 │       ├── db.ts                 # Drizzle DB 設定
 │       └── utils.ts              # ユーティリティ
 │
-├── drizzle/                      # データベース
+├── db/                           # データベース
 │   └── migrations/               # マイグレーションファイル
 │
 ├── tests/                        # テストファイル
+│   ├── setup.ts                  # テストセットアップ
+│   └── hooks/                    # フックのテスト
+│       ├── useBookList.test.ts
+│       └── useTabNavigation.test.ts
 │
 ├── dist/                         # ビルド出力（gitignore）
 │

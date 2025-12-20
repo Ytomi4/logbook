@@ -5,7 +5,7 @@ import { getBook } from '../services/books';
 import { deleteLog } from '../services/logs';
 import { LogForm } from '../components/LogForm';
 import { TimelineItem } from '../components/Timeline/TimelineItem';
-import { Loading, Card, CardHeader, CardTitle, CardContent, ShareButton } from '../components/common';
+import { Loading, Card, CardHeader, CardTitle, CardContent, ShareButton, BookCover } from '../components/common';
 import { useLogForm } from '../hooks/useLogForm';
 import { ApiClientError } from '../services/api';
 
@@ -108,12 +108,19 @@ export function BookDetailPage() {
       <Card>
         <CardContent className="py-4">
           <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-gray-900 mb-2">{book.title}</h1>
-              <div className="text-sm text-gray-600 space-y-1">
-                {book.author && <p>著者: {book.author}</p>}
-                {book.publisher && <p>出版社: {book.publisher}</p>}
-                {book.isbn && <p>ISBN: {book.isbn}</p>}
+            <div className="flex gap-4">
+              <BookCover
+                coverUrl={book.coverUrl}
+                title={book.title}
+                size="lg"
+              />
+              <div>
+                <h1 className="text-xl font-bold text-gray-900 mb-2">{book.title}</h1>
+                <div className="text-sm text-gray-600 space-y-1">
+                  {book.author && <p>著者: {book.author}</p>}
+                  {book.publisher && <p>出版社: {book.publisher}</p>}
+                  {book.isbn && <p>ISBN: {book.isbn}</p>}
+                </div>
               </div>
             </div>
             <ShareButton title={`${book.title} - 読書ログ`} />

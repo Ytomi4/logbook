@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { CreateBookRequest, NdlBook } from '../../types';
 import { Button, Input } from '../common';
+import { getNdlThumbnailUrl } from '../../lib/ndl';
 
 interface BookFormProps {
   initialData?: Partial<CreateBookRequest>;
@@ -21,6 +22,7 @@ export function BookForm({
   const [author, setAuthor] = useState(initialData?.author || '');
   const [publisher, setPublisher] = useState(initialData?.publisher || '');
   const [isbn, setIsbn] = useState(initialData?.isbn || '');
+  const [coverUrl] = useState(initialData?.coverUrl || '');
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,6 +40,7 @@ export function BookForm({
         author: author.trim() || undefined,
         publisher: publisher.trim() || undefined,
         isbn: isbn.trim() || undefined,
+        coverUrl: coverUrl || undefined,
         ndlBibId: initialData?.ndlBibId,
       });
     } catch (err) {
@@ -140,6 +143,7 @@ export function BookFormWithNdl({ ndlBook, ...props }: BookFormWithNdlProps) {
         author: ndlBook.author || undefined,
         publisher: ndlBook.publisher || undefined,
         isbn: ndlBook.isbn || undefined,
+        coverUrl: getNdlThumbnailUrl(ndlBook.isbn) || undefined,
         ndlBibId: ndlBook.ndlBibId,
       }
     : undefined;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { BookWithLogCount } from '../../types';
-import { Card, CardContent, Button } from '../common';
+import { Card, CardContent, Button, BookCover } from '../common';
 
 interface BookGridProps {
   books: BookWithLogCount[];
@@ -33,23 +33,30 @@ export function BookGrid({ books, onDelete }: BookGridProps) {
           <CardContent className="p-4">
             <Link
               to={`/books/${book.id}`}
-              className="block hover:opacity-80 transition-opacity"
+              className="flex gap-3 hover:opacity-80 transition-opacity"
             >
-              <h2 className="font-semibold text-gray-900 line-clamp-2 mb-1">
-                {book.title}
-              </h2>
-              {book.author && (
-                <p className="text-sm text-gray-600 line-clamp-1">
-                  {book.author}
-                </p>
-              )}
-              {book.publisher && (
-                <p className="text-xs text-gray-400 line-clamp-1">
-                  {book.publisher}
-                </p>
-              )}
-              <div className="mt-2 text-xs text-gray-500">
-                ログ: {book.logCount}件
+              <BookCover
+                coverUrl={book.coverUrl}
+                title={book.title}
+                size="md"
+              />
+              <div className="flex-1 min-w-0">
+                <h2 className="font-semibold text-gray-900 line-clamp-2 mb-1">
+                  {book.title}
+                </h2>
+                {book.author && (
+                  <p className="text-sm text-gray-600 line-clamp-1">
+                    {book.author}
+                  </p>
+                )}
+                {book.publisher && (
+                  <p className="text-xs text-gray-400 line-clamp-1">
+                    {book.publisher}
+                  </p>
+                )}
+                <div className="mt-2 text-xs text-gray-500">
+                  ログ: {book.logCount}件
+                </div>
               </div>
             </Link>
 
