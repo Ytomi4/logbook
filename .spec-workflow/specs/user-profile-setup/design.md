@@ -1,5 +1,24 @@
 # Design Document: User Profile Setup
 
+## Implementation Notes
+
+**Last Updated**: 2025-12-21
+
+### 実装時の変更点
+
+1. **アバター配信エンドポイントの追加**
+   - `/avatars/:filename` - R2から画像を取得して配信
+   - 当初の設計では R2 パブリックアクセスを想定していたが、プロキシ方式に変更
+
+2. **画像リサイズは未実装**
+   - 設計では 256x256 にリサイズする予定だったが、現在は元サイズのまま保存
+   - 今後の改善課題として残す
+
+3. **開発環境のポート変更**
+   - `dev:api` のポートを 8787 → 8788 に変更
+
+---
+
 ## Overview
 
 ユーザーがサービス専用のユーザー名とアイコン画像を設定できる機能。Google 認証後のオンボーディングフローとして、ユーザー名設定を必須化し、アイコンは後からアカウント設定画面で変更可能とする。
@@ -164,6 +183,12 @@ graph TD
 - **Auth**: Required
 - **Body**: `multipart/form-data` (image file)
 - **Response**: `{ avatarUrl: string }`
+
+#### GET /avatars/:filename
+- **Purpose**: アバター画像配信（R2からプロキシ）
+- **Auth**: Not required
+- **Response**: 画像バイナリ（Content-Type: image/*）
+- **Cache**: 1年間（immutable）
 
 #### GET /api/users/:username
 - **Purpose**: ユーザー情報取得（公開用）
