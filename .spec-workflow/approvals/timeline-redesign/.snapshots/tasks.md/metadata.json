@@ -1,6 +1,6 @@
 {
   "filePath": ".spec-workflow/specs/timeline-redesign/tasks.md",
-  "currentVersion": 4,
+  "currentVersion": 5,
   "snapshots": [
     {
       "version": 1,
@@ -33,6 +33,14 @@
       "trigger": "approved",
       "approvalId": "approval_1766212062968_qm1jhes1c",
       "approvalTitle": "Timeline Redesign - Tasks (縦ライン修正タスク追加)"
+    },
+    {
+      "version": 5,
+      "filename": "snapshot-005.json",
+      "timestamp": "2025-12-20T06:46:38.702Z",
+      "trigger": "approved",
+      "approvalId": "approval_1766213109726_09tmsg87t",
+      "approvalTitle": "Timeline Redesign - Tasks (QuoteDisplay グレースタイル変更タスク追加)"
     }
   ]
 }

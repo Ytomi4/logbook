@@ -69,6 +69,17 @@
   - _Requirements: 2.3, 2.4_
   - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer specializing in refactoring | Task: Refactor TimelineItem at src/components/Timeline/TimelineItem.tsx. Changes: 1) Remove card wrapper (border, shadow, padding), content is plain text. 2) Dot style: 16px circle, gray-500 fill for memo, border-only (no fill) for quote. 3) Remove edit functionality (isEditMode, handleEdit, onEdit prop). 4) Keep delete button (trash icon) on right side, visible on hover. 5) Show timestamp below content in gray-500. 6) Simplify props: log, isLast, onDelete, isDeleting. | Restrictions: Keep QuoteDisplay usage for quotes, maintain existing delete confirmation UX | Success: Cleaner UI matching Figma, no edit mode, delete still works. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
 
+- [x] 6.1. QuoteDisplay のスタイルをグレー系に変更
+  - File: `src/components/Timeline/QuoteDisplay.tsx`
+  - 背景色を削除（透明に）
+  - 左ボーダー色を amber-400 → gray-200 に変更
+  - テキスト色を gray-700 → gray-500 に変更
+  - 角丸（rounded-r）を削除
+  - Purpose: 引用表示をミニマル・モダンなスタイルに統一
+  - _Leverage: 既存の QuoteDisplay.tsx_
+  - _Requirements: design.md QuoteDisplay セクション_
+  - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Update QuoteDisplay.tsx styling. Change from amber/yellow theme to gray theme. Before: "border-l-4 border-amber-400 pl-4 py-1 italic text-gray-700 bg-amber-50/50 rounded-r". After: "border-l-4 border-gray-200 pl-5 italic text-gray-500". Remove background color and rounded corners for a cleaner, minimal look. | Restrictions: Only change styling, keep component structure | Success: Quote displays with gray left border, no background, gray text. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
+
 - [x] 7. TimelineGroup コンポーネントの改修（書影追加）
   - File: `src/components/Timeline/TimelineGroup.tsx`
   - 書影サムネイル追加（BookCover 使用）
@@ -194,7 +205,7 @@
 
 ## Phase 6: テスト
 
-- [ ] 18. コンポーネントテストの作成 (オプショナル)
+- [x] 18. コンポーネントテストの作成 (オプショナル)
   - Files: `tests/components/BookCover.test.tsx`, `tests/components/TabNavigation.test.tsx`
   - 新規コンポーネントのユニットテスト
   - Purpose: コンポーネントの信頼性確保
@@ -202,7 +213,7 @@
   - _Requirements: All (testing)_
   - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Engineer specializing in React testing | Task: Create unit tests for new components. 1) BookCover.test.tsx: test with/without coverUrl, different sizes, image error fallback. 2) TabNavigation.test.tsx: test tab rendering, click handlers, active state styling. Use @testing-library/react and vitest. Follow existing test patterns in the codebase. | Restrictions: Mock external dependencies, test in isolation | Success: Tests pass, good coverage of component behavior. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
 
-- [ ] 19. フックテストの作成 (オプショナル)
+- [x] 19. フックテストの作成 (オプショナル)
   - Files: `tests/hooks/useTabNavigation.test.ts`, `tests/hooks/useBookList.test.ts`
   - 新規フックのユニットテスト
   - Purpose: フックの信頼性確保
@@ -210,10 +221,11 @@
   - _Requirements: All (testing)_
   - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Engineer | Task: Create unit tests for new hooks. 1) useTabNavigation.test.ts: test default tab, tab switching. 2) useBookList.test.ts: test initial fetch, loading state, error handling, deleteBook, refetch. Mock API calls. Use renderHook from @testing-library/react. | Restrictions: Mock all API calls, test hook logic in isolation | Success: Tests pass, hooks work correctly in all scenarios. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
 
-- [ ] 20. E2E テスト (オプショナル)
+- [x] 20. E2E テスト (オプショナル) - スキップ
   - File: `tests/e2e/tabNavigation.test.ts` (if E2E setup exists)
   - タブ切り替えのユーザーフロー
   - Purpose: ユーザー体験の検証
+  - **Note:** E2Eフレームワーク（Playwright/Cypress）が未セットアップのためスキップ。将来的に導入時に実装予定。
   - _Leverage: 既存の E2E テストセットアップ（あれば）_
   - _Requirements: 1.1-1.5_
   - _Prompt: Implement the task for spec timeline-redesign, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Automation Engineer | Task: If E2E testing is set up (Playwright/Cypress), create tab navigation tests. Test: 1) Default tab is timeline. 2) Click 'books' tab shows book list. 3) Click 'timeline' tab returns to timeline. 4) Quick log modal opens from header button. If no E2E setup, skip this task and note it as future work. | Restrictions: Only implement if E2E framework is already configured | Success: E2E tests pass or task documented as skipped. After implementation, mark task as in-progress in tasks.md before starting, use log-implementation tool to record implementation details, then mark task as complete [x] in tasks.md._
