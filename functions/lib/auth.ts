@@ -1,5 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { customSession } from 'better-auth/plugins';
 import { drizzle } from 'drizzle-orm/d1';
 import type { D1Database } from '@cloudflare/workers-types';
 import * as schema from '../../db/schema';
@@ -52,6 +53,22 @@ export function createAuth(env: AuthEnv) {
         },
       },
     },
+    plugins: [
+      customSession(async ({ user, session }) => {
+        const extendedUser = user as typeof user & {
+          username?: string | null;
+          avatarUrl?: string | null;
+        };
+        return {
+          user: {
+            ...user,
+            username: extendedUser.username ?? null,
+            avatarUrl: extendedUser.avatarUrl ?? null,
+          },
+          session,
+        };
+      }),
+    ],
   });
 }
 
