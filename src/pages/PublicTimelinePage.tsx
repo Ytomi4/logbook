@@ -87,7 +87,7 @@ export function PublicTimelinePage() {
               {user.avatarUrl ? (
                 <img
                   src={user.avatarUrl}
-                  alt={user.name}
+                  alt={`@${user.username}`}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -103,8 +103,7 @@ export function PublicTimelinePage() {
               )}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">{user.name}</h1>
-              <p className="text-gray-500">@{user.username}</p>
+              <h1 className="text-xl font-bold text-gray-900">@{user.username}</h1>
             </div>
           </div>
         )}
@@ -152,7 +151,7 @@ export function PublicTimelinePage() {
               まだログがありません
             </h3>
             <p className="text-gray-500">
-              {user?.name}さんはまだ読書ログを投稿していません。
+              @{user?.username}さんはまだ読書ログを投稿していません。
             </p>
           </div>
         )}

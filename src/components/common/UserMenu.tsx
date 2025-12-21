@@ -6,6 +6,8 @@ interface User {
   name: string;
   email: string;
   image: string | null;
+  username: string | null;
+  avatarUrl: string | null;
 }
 
 interface UserMenuProps {
@@ -51,7 +53,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
         aria-controls="user-menu-dropdown"
         aria-label="ユーザーメニュー"
       >
-        <UserInfo name={user.name} avatarUrl={user.image ?? undefined} />
+        <UserInfo name={user.username ?? 'ゲスト'} avatarUrl={user.avatarUrl ?? undefined} />
         <svg
           className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
@@ -76,9 +78,8 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
         >
           <div className="px-4 py-2 border-b border-gray-100">
             <p className="text-sm font-medium text-gray-900 truncate">
-              {user.name}
+              @{user.username ?? 'ゲスト'}
             </p>
-            <p className="text-xs text-gray-500 truncate">{user.email}</p>
           </div>
           <Link
             to="/settings"

@@ -33,7 +33,7 @@ export const onRequest = async (context: PagesContext) => {
 
   try {
     const result = await context.env.DB.prepare(
-      `SELECT id, username, name, avatar_url as avatarUrl
+      `SELECT id, username, avatar_url as avatarUrl
        FROM users WHERE username = ?`
     )
       .bind(username)
@@ -50,7 +50,6 @@ export const onRequest = async (context: PagesContext) => {
       JSON.stringify({
         id: result.id,
         username: result.username,
-        name: result.name,
         avatarUrl: result.avatarUrl,
       }),
       {

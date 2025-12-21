@@ -109,7 +109,6 @@ export interface UserProfile {
 export interface PublicUser {
   id: string;
   username: string;
-  name: string;
   avatarUrl: string | null;
 }
 

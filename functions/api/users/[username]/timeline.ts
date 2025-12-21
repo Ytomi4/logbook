@@ -54,7 +54,7 @@ export const onRequest = async (context: PagesContext) => {
   try {
     // Get user info
     const user = await context.env.DB.prepare(
-      `SELECT id, username, name, avatar_url as avatarUrl
+      `SELECT id, username, avatar_url as avatarUrl
        FROM users WHERE username = ?`
     )
       .bind(username)
@@ -77,7 +77,6 @@ export const onRequest = async (context: PagesContext) => {
         user: {
           id: user.id,
           username: user.username,
-          name: user.name,
           avatarUrl: user.avatarUrl,
         },
         data: [],

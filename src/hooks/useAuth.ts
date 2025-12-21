@@ -7,6 +7,7 @@ interface User {
   email: string;
   image: string | null;
   username: string | null;
+  avatarUrl: string | null;
 }
 
 interface UseAuthResult {
@@ -30,6 +31,7 @@ export function useAuth(): UseAuthResult {
         email: session.user.email,
         image: session.user.image ?? null,
         username: (session.user as { username?: string }).username ?? null,
+        avatarUrl: (session.user as { avatarUrl?: string }).avatarUrl ?? null,
       }
     : null;
 
@@ -40,6 +42,7 @@ export function useAuth(): UseAuthResult {
       setError(null);
       await authClient.signIn.social({
         provider: 'google',
+        callbackURL: '/setup',
       });
     } catch (err) {
       const message =
