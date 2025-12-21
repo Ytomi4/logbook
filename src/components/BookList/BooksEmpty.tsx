@@ -7,9 +7,10 @@ interface BooksEmptyProps {
 
 export function BooksEmpty({ isOwner = true, username }: BooksEmptyProps) {
   const getMessage = () => {
-    return isOwner
-      ? 'まだ本がありません'
-      : `@${username}さんはまだ本を登録していません`;
+    if (isOwner) return 'まだ本がありません';
+    return username
+      ? `@${username}さんはまだ本を登録していません`
+      : 'このユーザーはまだ本を登録していません';
   };
 
   return (

@@ -13,20 +13,20 @@ export function TimelineEmpty({
 }: TimelineEmptyProps) {
   const getMessage = () => {
     if (variant === 'books') {
-      return isOwner
-        ? 'まだ本がありません'
-        : `@${username}さんはまだ本を登録していません`;
+      if (isOwner) return 'まだ本がありません';
+      return username
+        ? `@${username}さんはまだ本を登録していません`
+        : 'このユーザーはまだ本を登録していません';
     }
-    return isOwner
-      ? 'まだ読書ログがありません'
-      : `@${username}さんはまだ読書ログを投稿していません`;
+    if (isOwner) return 'まだ読書ログがありません';
+    return username
+      ? `@${username}さんはまだ読書ログを投稿していません`
+      : 'このユーザーはまだ読書ログを投稿していません';
   };
 
   const getSubMessage = () => {
     if (!isOwner) return null;
-    return variant === 'books'
-      ? '本を登録して、読書の記録を始めましょう。'
-      : '本を登録して、読書の記録を始めましょう。';
+    return '本を登録して、読書の記録を始めましょう。';
   };
 
   const subMessage = getSubMessage();
