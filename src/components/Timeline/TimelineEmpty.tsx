@@ -1,6 +1,36 @@
 import { Link } from 'react-router-dom';
 
-export function TimelineEmpty() {
+interface TimelineEmptyProps {
+  variant?: 'timeline' | 'books';
+  isOwner?: boolean;
+  username?: string;
+}
+
+export function TimelineEmpty({
+  variant = 'timeline',
+  isOwner = true,
+  username,
+}: TimelineEmptyProps) {
+  const getMessage = () => {
+    if (variant === 'books') {
+      return isOwner
+        ? 'まだ本がありません'
+        : `@${username}さんはまだ本を登録していません`;
+    }
+    return isOwner
+      ? 'まだ読書ログがありません'
+      : `@${username}さんはまだ読書ログを投稿していません`;
+  };
+
+  const getSubMessage = () => {
+    if (!isOwner) return null;
+    return variant === 'books'
+      ? '本を登録して、読書の記録を始めましょう。'
+      : '本を登録して、読書の記録を始めましょう。';
+  };
+
+  const subMessage = getSubMessage();
+
   return (
     <div className="text-center py-12">
       <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
@@ -18,18 +48,16 @@ export function TimelineEmpty() {
           />
         </svg>
       </div>
-      <h3 className="text-lg font-medium text-gray-900 mb-2">
-        まだ読書ログがありません
-      </h3>
-      <p className="text-gray-500 mb-6">
-        本を登録して、読書の記録を始めましょう。
-      </p>
-      <Link
-        to="/books/new"
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      >
-        本を登録する
-      </Link>
+      <h3 className="text-lg font-medium text-gray-900 mb-2">{getMessage()}</h3>
+      {subMessage && <p className="text-gray-500 mb-6">{subMessage}</p>}
+      {isOwner && (
+        <Link
+          to="/books/new"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          本を登録する
+        </Link>
+      )}
     </div>
   );
 }
