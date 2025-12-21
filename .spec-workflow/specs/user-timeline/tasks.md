@@ -2,7 +2,7 @@
 
 ## Phase 1: Database & Types
 
-- [ ] 1. Add user_id columns to books and logs tables
+- [x] 1. Add user_id columns to books and logs tables
   - File: `db/migrations/XXXX_add_user_id_to_books_and_logs.sql`, `db/schema.ts`
   - Add `user_id` column to `books` table (NOT NULL, FK to users)
   - Add `user_id` column to `logs` table (NOT NULL, FK to users)
@@ -13,7 +13,7 @@
   - _Requirements: REQ-2_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Database Engineer with Drizzle ORM and D1 expertise | Task: Create migration to add user_id columns to books and logs tables, referencing users table. Update db/schema.ts with new column definitions and relations. Follow existing migration patterns. | Restrictions: Do not modify existing columns, ensure backward compatibility, use proper foreign key constraints. Must handle existing data (if any) appropriately. | _Leverage: db/schema.ts, db/migrations/ | _Requirements: REQ-2 | Success: Migration applies cleanly, schema.ts reflects new columns, indexes are created. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
 
-- [ ] 2. Update TypeScript types for registration log
+- [x] 2. Update TypeScript types for registration log
   - File: `src/types/index.ts`
   - Add `'registration'` to `LogType` union type
   - Update `Log` and `Book` interfaces to include `userId` field
@@ -25,7 +25,7 @@
 
 ## Phase 2: Backend Services
 
-- [ ] 3. Create registration log service
+- [x] 3. Create registration log service
   - File: `functions/lib/registrationLog.ts`
   - Implement `createRegistrationLog(db, bookId, userId)` function
   - Set `log_type: 'registration'`, `content: '📖'`
@@ -35,7 +35,7 @@
   - _Requirements: REQ-4_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer with Hono/Cloudflare Workers expertise | Task: Create functions/lib/registrationLog.ts with createRegistrationLog function. Use Drizzle ORM to insert registration log with emoji content and matching timestamp. | Restrictions: Keep function pure and testable, handle errors gracefully, do not commit transaction (caller handles). | _Leverage: functions/lib/db.ts, db/schema.ts | _Requirements: REQ-4 | Success: Function creates registration log correctly, returns created log, integrates with Drizzle. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
 
-- [ ] 4. Modify Books API to add user association and registration log
+- [x] 4. Modify Books API to add user association and registration log
   - File: `functions/api/books/index.ts`
   - POST: Get user_id from Better Auth session
   - POST: Set user_id on new book
@@ -46,7 +46,7 @@
   - _Requirements: REQ-2, REQ-4_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer with Hono and Better Auth expertise | Task: Modify POST /api/books to extract user_id from session, set on book, and create registration log. Modify GET to filter by user_id. Use existing auth patterns. | Restrictions: Registration log failure should not fail book creation (log error only), maintain existing response format. | _Leverage: functions/api/books/index.ts, functions/lib/registrationLog.ts, existing auth middleware | _Requirements: REQ-2, REQ-4 | Success: Books are associated with users, registration log created on book creation, GET returns only user's books. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
 
-- [ ] 5. Modify Logs API to add user association and ownership check
+- [x] 5. Modify Logs API to add user association and ownership check
   - Files: `functions/api/logs/index.ts`, `functions/api/logs/[logId].ts`, `functions/api/books/[bookId]/logs.ts`
   - GET /api/logs: Filter by authenticated user's user_id
   - POST /api/books/:bookId/logs: Set user_id on new log
@@ -57,7 +57,7 @@
   - _Requirements: REQ-2, REQ-3_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer with security focus | Task: Add user_id filtering to GET, ownership to POST, and ownership checks (403) to PUT/DELETE in logs APIs. Extract user from session. | Restrictions: Must return 403 Forbidden for unauthorized access (not 404), maintain existing response formats. | _Leverage: functions/api/logs/index.ts, functions/api/logs/[logId].ts, functions/api/books/[bookId]/logs.ts | _Requirements: REQ-2, REQ-3 | Success: Logs are user-scoped, ownership checks prevent unauthorized modifications. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
 
-- [ ] 6. Implement Public Timeline API with user filtering
+- [x] 6. Implement Public Timeline API with user filtering
   - File: `functions/api/users/[username]/timeline.ts`
   - Replace TODO/empty response with actual implementation
   - Query logs by user_id (resolve username → user_id first)
@@ -70,7 +70,7 @@
 
 ## Phase 3: Frontend Logic
 
-- [ ] 7. Create timeline display logic utilities
+- [x] 7. Create timeline display logic utilities
   - File: `src/lib/timeline.ts`
   - Implement `shouldShowRegistrationLog(logs: Log[]): boolean`
   - Implement `isRegistrationLogOnly(logs: Log[]): boolean`
@@ -80,7 +80,7 @@
   - _Requirements: REQ-5_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Create src/lib/timeline.ts with utility functions for registration log display logic. shouldShowRegistrationLog returns true if non-registration logs exist. isRegistrationLogOnly returns true if only registration log exists. | Restrictions: Keep functions pure, handle edge cases (empty array, null logs). | _Leverage: src/types/index.ts | _Requirements: REQ-5 | Success: Functions correctly identify display scenarios, handle all edge cases. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
 
-- [ ] 8. Create log edit hook
+- [x] 8. Create log edit hook
   - File: `src/hooks/useLogEdit.ts`
   - Implement editing state management (isEditing, editedContent, editedLogType)
   - Implement startEdit, cancelEdit, saveEdit actions
@@ -91,7 +91,7 @@
   - _Requirements: REQ-3_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Create useLogEdit hook with editing state management and API integration. Follow existing hook patterns. Provide startEdit, cancelEdit, saveEdit functions with loading/error states. | Restrictions: Do not duplicate API logic, use existing logs service, handle optimistic updates if appropriate. | _Leverage: src/services/logs.ts, src/hooks/useTimeline.ts | _Requirements: REQ-3 | Success: Hook manages edit state correctly, saves to API, handles errors gracefully. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
 
-- [ ] 9. Add log update function to logs service
+- [x] 9. Add log update function to logs service
   - File: `src/services/logs.ts`
   - Add `updateLog(logId, data): Promise<Log>` function
   - Handle API errors appropriately
@@ -102,7 +102,7 @@
 
 ## Phase 4: UI Components
 
-- [ ] 10. Enhance TimelineItem with edit button and edit mode
+- [x] 10. Enhance TimelineItem with edit button and edit mode
   - File: `src/components/Timeline/TimelineItem.tsx`
   - Add `currentUserId` and `logUserId` props
   - Show edit button only when currentUserId === logUserId
@@ -113,7 +113,7 @@
   - _Requirements: REQ-3_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Add edit functionality to TimelineItem. Show edit button only for log owner (currentUserId === logUserId). Use useLogEdit hook for state. Display edit form inline or in modal. | Restrictions: Do not show edit button for non-owners (UI-level security), maintain existing visual design. | _Leverage: src/components/Timeline/TimelineItem.tsx, src/hooks/useLogEdit.ts, src/components/common/ | _Requirements: REQ-3 | Success: Edit button appears only for owners, edit mode works correctly, saves changes. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
 
-- [ ] 11. Enhance TimelineGroup for registration-only display
+- [x] 11. Enhance TimelineGroup for registration-only display
   - File: `src/components/Timeline/TimelineGroup.tsx`
   - Use `isRegistrationLogOnly()` to detect registration-only state
   - When registration-only: show book cover and info, hide log timeline
@@ -123,7 +123,7 @@
   - _Requirements: REQ-5_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Modify TimelineGroup to handle registration-only books. Use isRegistrationLogOnly() from src/lib/timeline.ts. Show only book cover when registration-only, show all logs otherwise. | Restrictions: Maintain existing layout for normal logs, ensure visual distinction for registration-only books. | _Leverage: src/components/Timeline/TimelineGroup.tsx, src/lib/timeline.ts | _Requirements: REQ-5 | Success: Registration-only books show cover only, books with logs show all including registration log. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
 
-- [ ] 12. Pass user context to Timeline components
+- [x] 12. Pass user context to Timeline components
   - Files: `src/components/Timeline/Timeline.tsx`, `src/components/Timeline/TimelineView.tsx`, `src/pages/TimelinePage.tsx`, `src/pages/PublicTimelinePage.tsx`
   - Pass currentUserId from useAuth to Timeline components
   - Pass logUserId from each log to TimelineItem
@@ -134,7 +134,7 @@
 
 ## Phase 5: Testing
 
-- [ ] 13. Add unit tests for timeline display logic
+- [x] 13. Add unit tests for timeline display logic
   - File: `tests/lib/timeline.test.ts`
   - Test `shouldShowRegistrationLog()` with various log combinations
   - Test `isRegistrationLogOnly()` with edge cases
@@ -144,7 +144,7 @@
   - _Requirements: REQ-5_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Engineer | Task: Write comprehensive unit tests for src/lib/timeline.ts functions. Test all scenarios: empty array, only registration log, only memo logs, mixed logs. | Restrictions: Use Vitest, follow existing test patterns. | _Leverage: src/lib/timeline.ts, tests/ | _Requirements: REQ-5 | Success: All display logic scenarios are tested, edge cases covered. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
 
-- [ ] 14. Add integration tests for user-scoped APIs
+- [x] 14. Add integration tests for user-scoped APIs
   - File: `tests/api/user-timeline.test.ts`
   - Test book creation with registration log auto-creation
   - Test log ownership checks (403 scenarios)
@@ -156,7 +156,7 @@
 
 ## Phase 6: Storybook & Documentation
 
-- [ ] 15. Add Storybook stories for updated components
+- [x] 15. Add Storybook stories for updated components
   - Files: `src/components/Timeline/TimelineItem.stories.tsx`, `src/components/Timeline/TimelineGroup.stories.tsx`
   - Add story for TimelineItem with edit button (owner view)
   - Add story for TimelineItem without edit button (visitor view)

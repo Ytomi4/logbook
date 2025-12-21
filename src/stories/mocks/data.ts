@@ -50,6 +50,7 @@ export const mockBooksWithLogCount: BookWithLogCount[] = mockBooks.map((book, in
 export const mockMemoLog: Log = {
   id: 'log-1',
   bookId: 'book-1',
+  userId: 'user-1',
   logType: 'memo',
   content: 'This is a sample memo about the book. It contains my thoughts and notes.',
   createdAt: '2024-01-15T10:30:00Z',
@@ -60,10 +61,22 @@ export const mockMemoLog: Log = {
 export const mockQuoteLog: Log = {
   id: 'log-2',
   bookId: 'book-1',
+  userId: 'user-1',
   logType: 'quote',
   content: 'The only way to do great work is to love what you do.',
   createdAt: '2024-01-16T14:20:00Z',
   updatedAt: '2024-01-16T14:20:00Z',
+};
+
+// Single log (registration type)
+export const mockRegistrationLog: Log = {
+  id: 'log-registration',
+  bookId: 'book-1',
+  userId: 'user-1',
+  logType: 'registration',
+  content: '📖',
+  createdAt: '2024-01-01T00:00:00Z',
+  updatedAt: '2024-01-01T00:00:00Z',
 };
 
 // Multiple logs
@@ -89,6 +102,12 @@ export const mockLogWithBook: LogWithBook = {
 // Quote log with book
 export const mockQuoteLogWithBook: LogWithBook = {
   ...mockQuoteLog,
+  book: mockBook,
+};
+
+// Registration log with book
+export const mockRegistrationLogWithBook: LogWithBook = {
+  ...mockRegistrationLog,
   book: mockBook,
 };
 
