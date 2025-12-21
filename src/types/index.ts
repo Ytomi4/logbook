@@ -1,6 +1,7 @@
 // Book types
 export interface Book {
   id: string;
+  userId?: string;
   title: string;
   author: string | null;
   publisher: string | null;
@@ -38,15 +39,21 @@ export interface UpdateBookRequest {
 }
 
 // Log types
-export type LogType = 'memo' | 'quote';
+export type LogType = 'memo' | 'quote' | 'registration';
 
 export interface Log {
   id: string;
   bookId: string;
+  userId?: string;
   logType: LogType;
   content: string;
   createdAt: string;
   updatedAt: string;
+}
+
+// Type guard for registration log
+export function isRegistrationLog(log: Log): boolean {
+  return log.logType === 'registration';
 }
 
 export interface LogWithBook extends Log {
