@@ -87,7 +87,6 @@ export const onRequest = async (context: PagesContext) => {
         l.content,
         l.created_at as createdAt,
         l.updated_at as updatedAt,
-        b.id as bookId,
         b.user_id as bookUserId,
         b.title as bookTitle,
         b.author as bookAuthor,

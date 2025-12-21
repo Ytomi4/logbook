@@ -152,7 +152,7 @@ export function usePublicUserData(username: string): UsePublicUserDataResult {
     setIsNotFound(false);
     setError(null);
     fetchInitialData();
-  }, [username]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fetchInitialData]);
 
   return {
     user,

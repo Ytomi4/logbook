@@ -23,7 +23,7 @@ export function TimelineItem({
 }: TimelineItemProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const isOwner = currentUserId && log.userId === currentUserId;
+  const isOwner = !!(currentUserId && log.userId && currentUserId === log.userId);
 
   const {
     isEditing,

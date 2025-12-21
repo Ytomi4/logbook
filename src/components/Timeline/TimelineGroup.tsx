@@ -28,14 +28,6 @@ export function TimelineGroup({
   // Always filter out registration logs - they are never displayed in timeline
   const displayLogs = filterLogsForDisplay(logs);
 
-  // Debug: verify filtering is working
-  console.log('TimelineGroup:', {
-    bookTitle: book.title,
-    originalLogs: logs.map(l => ({ id: l.id, logType: l.logType })),
-    displayLogs: displayLogs.map(l => ({ id: l.id, logType: l.logType })),
-    registrationOnly,
-  });
-
   return (
     <div className="relative mb-8">
       {/* Book header - no dots or lines */}
