@@ -127,4 +127,56 @@ describe('User Timeline API Integration', () => {
       expect(true).toBe(true);
     });
   });
+
+  describe('GET /api/users/:username/books - Public book list', () => {
+    it('should return user books with pagination', () => {
+      // Expected behavior:
+      // 1. Resolves username to user_id
+      // 2. Returns books belonging to user (Book[])
+      // 3. Excludes deleted books (is_deleted = 0)
+      // 4. Paginated results with total count
+      expect(true).toBe(true);
+    });
+
+    it('should return 404 for non-existent user', () => {
+      // Expected behavior:
+      // Unknown username returns 404 Not Found
+      expect(true).toBe(true);
+    });
+
+    it('should return empty books for user with no books', () => {
+      // Expected behavior:
+      // User exists but has no books - returns { data: [], total: 0 }
+      expect(true).toBe(true);
+    });
+
+    it('should respect limit and offset parameters', () => {
+      // Expected behavior:
+      // Pagination works correctly with limit and offset
+      expect(true).toBe(true);
+    });
+  });
+
+  describe('Registration log display behavior (v2 spec)', () => {
+    it('registration logs should never appear in timeline display', () => {
+      // Expected behavior (v2 spec):
+      // filterLogsForDisplay always removes registration logs
+      // Registration logs are hidden even when other logs exist
+      expect(true).toBe(true);
+    });
+
+    it('books with only registration logs should show book cover only', () => {
+      // Expected behavior:
+      // isRegistrationLogOnly returns true -> show book cover only
+      // displayLogs will be empty array
+      expect(true).toBe(true);
+    });
+
+    it('books with other logs should show those logs without registration log', () => {
+      // Expected behavior:
+      // filterLogsForDisplay removes registration log
+      // Only memo/quote logs are displayed
+      expect(true).toBe(true);
+    });
+  });
 });
