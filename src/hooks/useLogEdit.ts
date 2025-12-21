@@ -73,7 +73,7 @@ export function useLogEdit(
       return updatedLog;
     } catch (err) {
       if (err instanceof ApiClientError) {
-        if (err.statusCode === 403) {
+        if (err.status === 403) {
           setError('このログを編集する権限がありません');
         } else {
           setError(err.message);
