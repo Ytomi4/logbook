@@ -2,28 +2,31 @@
 
 Auto-generated from all feature plans. Last updated: 2025-12-17
 
-## Active Technologies
+## Tech Stack
 
-- TypeScript 5.x + React 18, Vite, Cloudflare Workers, Hono (API framework) (001-reading-log-app)
-
-## Project Structure
-
-```text
-src/
-tests/
-```
+- TypeScript 5.9 + React 19 + Vite 7
+- Cloudflare Workers + Pages + D1 + R2
+- Hono 4 (API) + Drizzle ORM + better-auth
+- Storybook 10
 
 ## Commands
 
-npm test && npm run lint
+```bash
+npm run dev:api     # 開発サーバー（Vite + Wrangler）
+npm run dev         # フロントエンドのみ
+npm run storybook   # Storybook起動
+npm test            # テスト実行
+npm run lint        # Lint実行
+npm run build       # ビルド
+npm run db:migrate  # DBマイグレーション（ローカル）
+```
 
-## Code Style
+## Documentation
 
-TypeScript 5.x: Follow standard conventions
-
-## Recent Changes
-
-- 001-reading-log-app: Added TypeScript 5.x + React 18, Vite, Cloudflare Workers, Hono (API framework)
+詳細は `.spec-workflow/steering/` を参照:
+- `product.md` - プロダクト概要・機能
+- `tech.md` - 技術スタック詳細
+- `structure.md` - ディレクトリ構造・命名規則
 
 <!-- MANUAL ADDITIONS START -->
 
