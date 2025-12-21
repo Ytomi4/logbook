@@ -91,8 +91,8 @@ describe('authClient', () => {
 
   describe('lazy initialization', () => {
     it('does not call createAuthClient at import time', async () => {
-      const { createAuthClient } = await import('better-auth/react');
       vi.resetModules();
+      const { createAuthClient } = await import('better-auth/react');
 
       // Clear the mock call count
       vi.mocked(createAuthClient).mockClear();
@@ -101,8 +101,7 @@ describe('authClient', () => {
       await import('../../src/lib/auth-client');
 
       // createAuthClient should not have been called yet at import time
-      // Note: Due to how vi.mock works, this might be called during module setup
-      // The important test is that accessing properties works correctly
+      expect(createAuthClient).not.toHaveBeenCalled();
     });
 
     it('initializes client on first property access', async () => {
