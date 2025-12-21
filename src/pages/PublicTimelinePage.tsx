@@ -1,13 +1,41 @@
+import { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { usePublicTimeline } from '../hooks/usePublicTimeline';
+import { usePublicUserData } from '../hooks/usePublicUserData';
+import { useTabNavigation } from '../hooks/useTabNavigation';
 import { Layout } from '../components/common/Layout';
+import { TabNavigation, Loading, Button, UserInfo, HeaderActionButtons } from '../components/common';
 import { Timeline } from '../components/Timeline/Timeline';
-import { Loading, Button } from '../components/common';
+import { PublicBookGrid } from '../components/BookList/PublicBookGrid';
+import { QuickAddLogModal } from '../components/LogForm/QuickAddLogModal';
+import { useAuth } from '../hooks/useAuth';
 
 export function PublicTimelinePage() {
   const { username } = useParams<{ username: string }>();
-  const { user, logs, isLoading, error, isNotFound, loadMore, hasMore } =
-    usePublicTimeline(username || '');
+  const { user: currentUser } = useAuth();
+  const { activeTab, setActiveTab } = useTabNavigation();
+  const [isQuickLogOpen, setIsQuickLogOpen] = useState(false);
+
+  const {
+    user,
+    logs,
+    books,
+    isLoading,
+    isLoadingMore,
+    error,
+    isNotFound,
+    loadMoreLogs,
+    loadMoreBooks,
+    hasMoreLogs,
+    hasMoreBooks,
+    refreshTimeline,
+  } = usePublicUserData(username || '');
+
+  // Check if the current user is viewing their own timeline
+  const isOwner = currentUser?.id === user?.id;
+
+  const handleLogAdded = useCallback(() => {
+    refreshTimeline();
+  }, [refreshTimeline]);
 
   if (isLoading && !user) {
     return (
@@ -80,80 +108,120 @@ export function PublicTimelinePage() {
   return (
     <Layout>
       <div className="space-y-6">
-        {/* User header */}
-        {user && (
-          <div className="flex items-center space-x-4 pb-6 border-b border-gray-200">
-            <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-              {user.avatarUrl ? (
-                <img
-                  src={user.avatarUrl}
-                  alt={`@${user.username}`}
-                  className="w-full h-full object-cover"
+        {/* Header with UserInfo and Action Buttons */}
+        <div className="flex items-center justify-between">
+          <UserInfo
+            name={user ? `@${user.username}` : 'ゲスト'}
+            avatarUrl={user?.avatarUrl ?? undefined}
+          />
+          {isOwner && (
+            <HeaderActionButtons onAddLog={() => setIsQuickLogOpen(true)} />
+          )}
+        </div>
+
+        {/* Tab Navigation */}
+        <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+
+        {/* Content */}
+        <div>
+          {activeTab === 'timeline' ? (
+            logs.length > 0 ? (
+              <div>
+                <Timeline
+                  logs={logs}
+                  isLoading={isLoadingMore}
+                  hasMore={hasMoreLogs}
+                  onLoadMore={loadMoreLogs}
+                  currentUserId={currentUser?.id}
                 />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
+                {isLoadingMore && (
+                  <div className="py-4">
+                    <Loading size="sm" />
+                  </div>
+                )}
+                {hasMoreLogs && !isLoadingMore && (
+                  <div className="text-center py-4">
+                    <Button onClick={loadMoreLogs} variant="secondary">
+                      もっと読み込む
+                    </Button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
                   <svg
                     className="w-8 h-8 text-gray-400"
-                    fill="currentColor"
+                    fill="none"
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                    />
                   </svg>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  まだログがありません
+                </h3>
+                <p className="text-gray-500">
+                  @{user?.username}さんはまだ読書ログを投稿していません。
+                </p>
+              </div>
+            )
+          ) : books.length > 0 ? (
+            <div>
+              <PublicBookGrid books={books} />
+              {isLoadingMore && (
+                <div className="py-4">
+                  <Loading size="sm" />
+                </div>
+              )}
+              {hasMoreBooks && !isLoadingMore && (
+                <div className="text-center py-4">
+                  <Button onClick={loadMoreBooks} variant="secondary">
+                    もっと読み込む
+                  </Button>
                 </div>
               )}
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">@{user.username}</h1>
+          ) : (
+            <div className="text-center py-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                <svg
+                  className="w-8 h-8 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                まだ本がありません
+              </h3>
+              <p className="text-gray-500">
+                @{user?.username}さんはまだ本を登録していません。
+              </p>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* Timeline */}
-        {logs.length > 0 ? (
-          <div>
-            <Timeline
-              logs={logs}
-              isLoading={isLoading}
-              hasMore={hasMore}
-              onLoadMore={loadMore}
-            />
-            {isLoading && (
-              <div className="py-4">
-                <Loading size="sm" />
-              </div>
-            )}
-            {hasMore && !isLoading && (
-              <div className="text-center py-4">
-                <Button onClick={loadMore} variant="secondary">
-                  もっと読み込む
-                </Button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-              <svg
-                className="w-8 h-8 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                />
-              </svg>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              まだログがありません
-            </h3>
-            <p className="text-gray-500">
-              @{user?.username}さんはまだ読書ログを投稿していません。
-            </p>
-          </div>
+        {/* Quick Add Log Modal - only for owner */}
+        {isOwner && (
+          <QuickAddLogModal
+            isOpen={isQuickLogOpen}
+            onClose={() => setIsQuickLogOpen(false)}
+            onSuccess={handleLogAdded}
+          />
         )}
       </div>
     </Layout>

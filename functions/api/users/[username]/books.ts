@@ -14,7 +14,7 @@ interface PagesContext {
   next: () => Promise<Response>;
 }
 
-// GET /api/users/:username/timeline - Get public user timeline
+// GET /api/users/:username/books - Get public user's book list
 export const onRequest = async (context: PagesContext) => {
   if (context.request.method !== 'GET') {
     return new Response(JSON.stringify({ message: 'Method not allowed' }), {
@@ -69,65 +69,49 @@ export const onRequest = async (context: PagesContext) => {
 
     const userId = user.id as string;
 
-    // Get total count of user's logs
+    // Get total count of user's books (excluding deleted)
     const countResult = await context.env.DB.prepare(
-      `SELECT COUNT(*) as count FROM logs WHERE user_id = ?`
+      `SELECT COUNT(*) as count FROM books WHERE user_id = ? AND is_deleted = 0`
     )
       .bind(userId)
       .first();
     const total = (countResult?.count as number) ?? 0;
 
-    // Get user's logs with book info, ordered by created_at DESC
-    const logsResult = await context.env.DB.prepare(
+    // Get user's books, ordered by created_at DESC
+    const booksResult = await context.env.DB.prepare(
       `SELECT
-        l.id,
-        l.book_id as bookId,
-        l.user_id as userId,
-        l.log_type as logType,
-        l.content,
-        l.created_at as createdAt,
-        l.updated_at as updatedAt,
-        b.user_id as bookUserId,
-        b.title as bookTitle,
-        b.author as bookAuthor,
-        b.publisher as bookPublisher,
-        b.isbn as bookIsbn,
-        b.cover_url as bookCoverUrl,
-        b.ndl_bib_id as bookNdlBibId,
-        b.is_deleted as bookIsDeleted,
-        b.created_at as bookCreatedAt,
-        b.updated_at as bookUpdatedAt
-      FROM logs l
-      INNER JOIN books b ON l.book_id = b.id
-      WHERE l.user_id = ?
-      ORDER BY l.created_at DESC
+        id,
+        user_id as userId,
+        title,
+        author,
+        publisher,
+        isbn,
+        cover_url as coverUrl,
+        ndl_bib_id as ndlBibId,
+        is_deleted as isDeleted,
+        created_at as createdAt,
+        updated_at as updatedAt
+      FROM books
+      WHERE user_id = ? AND is_deleted = 0
+      ORDER BY created_at DESC
       LIMIT ? OFFSET ?`
     )
       .bind(userId, limit, offset)
       .all();
 
-    // Transform results to LogWithBook format
-    const data = logsResult.results.map((row: Record<string, unknown>) => ({
+    // Transform results to Book format
+    const data = booksResult.results.map((row: Record<string, unknown>) => ({
       id: row.id,
-      bookId: row.bookId,
       userId: row.userId,
-      logType: row.logType,
-      content: row.content,
+      title: row.title,
+      author: row.author,
+      publisher: row.publisher,
+      isbn: row.isbn,
+      coverUrl: row.coverUrl,
+      ndlBibId: row.ndlBibId,
+      isDeleted: Boolean(row.isDeleted),
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
-      book: {
-        id: row.bookId,
-        userId: row.bookUserId,
-        title: row.bookTitle,
-        author: row.bookAuthor,
-        publisher: row.bookPublisher,
-        isbn: row.bookIsbn,
-        coverUrl: row.bookCoverUrl,
-        ndlBibId: row.bookNdlBibId,
-        isDeleted: Boolean(row.bookIsDeleted),
-        createdAt: row.bookCreatedAt,
-        updatedAt: row.bookUpdatedAt,
-      },
     }));
 
     return new Response(
@@ -149,7 +133,7 @@ export const onRequest = async (context: PagesContext) => {
     );
   } catch (error) {
     console.error('Database error:', error);
-    return new Response(JSON.stringify({ message: 'Failed to fetch timeline' }), {
+    return new Response(JSON.stringify({ message: 'Failed to fetch books' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

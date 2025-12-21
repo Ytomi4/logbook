@@ -1,15 +1,27 @@
 import { Hono } from 'hono';
-import type { D1Database } from '@cloudflare/workers-types';
 import { createBookSchema, listBooksQuerySchema } from '../../../src/lib/validation';
+import { createAuth, type AuthEnv } from '../../lib/auth';
+import { getDb } from '../../lib/db';
+import { createRegistrationLog } from '../../lib/registrationLog';
 
-interface Env {
-  DB: D1Database;
-}
+type Env = AuthEnv;
 
 const app = new Hono<{ Bindings: Env }>();
 
-// GET /api/books - List all books
+// Helper to get session
+async function getSession(c: { env: Env; req: { raw: Request } }) {
+  const auth = createAuth(c.env);
+  return auth.api.getSession({ headers: c.req.raw.headers });
+}
+
+// GET /api/books - List books for authenticated user
 app.get('/', async (c) => {
+  // Get authenticated user
+  const session = await getSession(c);
+  if (!session) {
+    return c.json({ message: 'Unauthorized' }, 401);
+  }
+
   const query = c.req.query();
   const parseResult = listBooksQuerySchema.safeParse(query);
 
@@ -26,6 +38,7 @@ app.get('/', async (c) => {
     let sql = `
       SELECT
         b.id,
+        b.user_id as userId,
         b.title,
         b.author,
         b.publisher,
@@ -38,18 +51,20 @@ app.get('/', async (c) => {
         COUNT(l.id) as logCount
       FROM books b
       LEFT JOIN logs l ON b.id = l.book_id
+      WHERE b.user_id = ?
     `;
 
     if (!include_deleted) {
-      sql += ' WHERE b.is_deleted = 0';
+      sql += ' AND b.is_deleted = 0';
     }
 
     sql += ' GROUP BY b.id ORDER BY b.updated_at DESC';
 
-    const result = await c.env.DB.prepare(sql).all();
+    const result = await c.env.DB.prepare(sql).bind(session.user.id).all();
 
     const books = result.results.map((row: Record<string, unknown>) => ({
       id: row.id,
+      userId: row.userId,
       title: row.title,
       author: row.author,
       publisher: row.publisher,
@@ -71,6 +86,12 @@ app.get('/', async (c) => {
 
 // POST /api/books - Create a new book
 app.post('/', async (c) => {
+  // Get authenticated user
+  const session = await getSession(c);
+  if (!session) {
+    return c.json({ message: 'Unauthorized' }, 401);
+  }
+
   let body: unknown;
   try {
     body = await c.req.json();
@@ -90,17 +111,29 @@ app.post('/', async (c) => {
   const { title, author, publisher, isbn, coverUrl, ndlBibId } = parseResult.data;
   const id = crypto.randomUUID();
   const now = new Date().toISOString();
+  const userId = session.user.id;
 
   try {
+    // Create book with user_id
     await c.env.DB.prepare(
-      `INSERT INTO books (id, title, author, publisher, isbn, cover_url, ndl_bib_id, is_deleted, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)`
+      `INSERT INTO books (id, user_id, title, author, publisher, isbn, cover_url, ndl_bib_id, is_deleted, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)`
     )
-      .bind(id, title, author || null, publisher || null, isbn || null, coverUrl || null, ndlBibId || null, now, now)
+      .bind(id, userId, title, author || null, publisher || null, isbn || null, coverUrl || null, ndlBibId || null, now, now)
       .run();
+
+    // Create registration log (non-blocking, log errors only)
+    try {
+      const db = getDb(c.env.DB);
+      await createRegistrationLog(db, id, userId, now);
+    } catch (logError) {
+      console.error('Failed to create registration log:', logError);
+      // Don't fail book creation if registration log fails
+    }
 
     const book = {
       id,
+      userId,
       title,
       author: author || null,
       publisher: publisher || null,

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { TimelineItem } from './TimelineItem';
-import { mockMemoLog, mockQuoteLog } from '../../stories/mocks/data';
+import { mockMemoLog, mockQuoteLog, mockRegistrationLog } from '../../stories/mocks/data';
 
 const meta = {
   title: 'Timeline/TimelineItem',
@@ -9,6 +9,7 @@ const meta = {
   argTypes: {
     isLast: { control: 'boolean' },
     isDeleting: { control: 'boolean' },
+    currentUserId: { control: 'text' },
   },
 } satisfies Meta<typeof TimelineItem>;
 
@@ -29,6 +30,13 @@ export const QuoteType: Story = {
   },
 };
 
+export const RegistrationType: Story = {
+  args: {
+    log: mockRegistrationLog,
+    isLast: false,
+  },
+};
+
 export const LastItem: Story = {
   args: {
     log: mockMemoLog,
@@ -36,10 +44,51 @@ export const LastItem: Story = {
   },
 };
 
+// Owner view - shows edit and delete buttons
+export const OwnerView: Story = {
+  args: {
+    log: mockMemoLog,
+    isLast: false,
+    currentUserId: 'user-1', // Same as log.userId
+    onDelete: async (logId) => {
+      console.log('Delete log:', logId);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    },
+    onUpdate: (updatedLog) => {
+      console.log('Updated log:', updatedLog);
+    },
+  },
+};
+
+// Visitor view - no edit/delete buttons
+export const VisitorView: Story = {
+  args: {
+    log: mockMemoLog,
+    isLast: false,
+    currentUserId: 'user-other', // Different from log.userId
+    onDelete: async (logId) => {
+      console.log('Delete log:', logId);
+    },
+  },
+};
+
+// Owner view for registration log - no edit/delete (registration logs cannot be edited)
+export const OwnerViewRegistration: Story = {
+  args: {
+    log: mockRegistrationLog,
+    isLast: false,
+    currentUserId: 'user-1',
+    onDelete: async (logId) => {
+      console.log('Delete log:', logId);
+    },
+  },
+};
+
 export const WithDeleteButton: Story = {
   args: {
     log: mockMemoLog,
     isLast: false,
+    currentUserId: 'user-1',
     onDelete: async (logId) => {
       console.log('Delete log:', logId);
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -51,6 +100,7 @@ export const Deleting: Story = {
   args: {
     log: mockMemoLog,
     isLast: false,
+    currentUserId: 'user-1',
     onDelete: async () => {},
     isDeleting: true,
   },
@@ -59,8 +109,8 @@ export const Deleting: Story = {
 export const MultipleItems: Story = {
   render: () => (
     <div>
-      <TimelineItem log={mockMemoLog} />
-      <TimelineItem log={mockQuoteLog} />
+      <TimelineItem log={mockMemoLog} currentUserId="user-1" />
+      <TimelineItem log={mockQuoteLog} currentUserId="user-1" />
       <TimelineItem
         log={{
           ...mockMemoLog,
@@ -68,6 +118,7 @@ export const MultipleItems: Story = {
           content: 'Another memo entry with different content.',
         }}
         isLast={true}
+        currentUserId="user-1"
       />
     </div>
   ),

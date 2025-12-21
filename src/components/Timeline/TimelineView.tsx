@@ -2,12 +2,14 @@ import { useEffect } from 'react';
 import { Timeline } from './Timeline';
 import { useTimeline } from '../../hooks/useTimeline';
 import { Loading, Button } from '../common';
+import { useAuth } from '../../hooks/useAuth';
 
 interface TimelineViewProps {
   refreshKey?: number;
 }
 
 export function TimelineView({ refreshKey = 0 }: TimelineViewProps) {
+  const { user } = useAuth();
   const { logs, isLoading, error, hasMore, loadMore, refresh, sentinelRef } =
     useTimeline();
 
@@ -61,6 +63,7 @@ export function TimelineView({ refreshKey = 0 }: TimelineViewProps) {
       hasMore={hasMore}
       onLoadMore={loadMore}
       sentinelRef={sentinelRef}
+      currentUserId={user?.id}
     />
   );
 }

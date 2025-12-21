@@ -10,6 +10,7 @@ export const books = sqliteTable(
   'books',
   {
     id: text('id').primaryKey(),
+    userId: text('user_id').references(() => users.id),
     title: text('title').notNull(),
     author: text('author'),
     publisher: text('publisher'),
@@ -23,6 +24,7 @@ export const books = sqliteTable(
   (table) => [
     index('idx_books_created_at').on(table.createdAt),
     index('idx_books_is_deleted').on(table.isDeleted),
+    index('idx_books_user_id').on(table.userId),
   ]
 );
 
@@ -33,7 +35,10 @@ export const logs = sqliteTable(
     bookId: text('book_id')
       .notNull()
       .references(() => books.id),
-    logType: text('log_type', { enum: ['memo', 'quote'] }).notNull(),
+    userId: text('user_id').references(() => users.id),
+    logType: text('log_type', {
+      enum: ['memo', 'quote', 'registration'],
+    }).notNull(),
     content: text('content').notNull(),
     createdAt: text('created_at').notNull(),
     updatedAt: text('updated_at').notNull(),
@@ -42,6 +47,7 @@ export const logs = sqliteTable(
     index('idx_logs_book_id').on(table.bookId),
     index('idx_logs_created_at').on(table.createdAt),
     index('idx_logs_book_created').on(table.bookId, table.createdAt),
+    index('idx_logs_user_id').on(table.userId),
   ]
 );
 

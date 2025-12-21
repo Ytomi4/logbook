@@ -1,5 +1,5 @@
 import { useMemo, type RefObject } from 'react';
-import type { LogWithBook, Book } from '../../types';
+import type { LogWithBook, Book, Log } from '../../types';
 import { TimelineGroup } from './TimelineGroup';
 import { TimelineEmpty } from './TimelineEmpty';
 import { Loading } from '../common';
@@ -10,6 +10,10 @@ interface TimelineProps {
   hasMore?: boolean;
   onLoadMore?: () => void;
   sentinelRef?: RefObject<HTMLDivElement | null>;
+  currentUserId?: string;
+  onLogUpdate?: (updatedLog: Log) => void;
+  onLogDelete?: (logId: string) => Promise<void>;
+  isDeletingLogId?: string;
 }
 
 interface GroupedLogs {
@@ -44,6 +48,10 @@ export function Timeline({
   hasMore = false,
   onLoadMore,
   sentinelRef,
+  currentUserId,
+  onLogUpdate,
+  onLogDelete,
+  isDeletingLogId,
 }: TimelineProps) {
   const groupedLogs = useMemo(() => groupLogsByBook(logs), [logs]);
 
@@ -59,6 +67,10 @@ export function Timeline({
           book={group.book}
           logs={group.logs}
           isLastGroup={index === groupedLogs.length - 1 && !hasMore}
+          currentUserId={currentUserId}
+          onLogUpdate={onLogUpdate}
+          onLogDelete={onLogDelete}
+          isDeletingLogId={isDeletingLogId}
         />
       ))}
 

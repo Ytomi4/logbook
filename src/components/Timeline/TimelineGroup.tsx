@@ -1,19 +1,33 @@
 import { Link } from 'react-router-dom';
-import type { Book, LogWithBook } from '../../types';
+import type { Book, Log, LogWithBook } from '../../types';
 import { TimelineItem } from './TimelineItem';
 import { BookCover } from '../common';
+import { isRegistrationLogOnly, filterLogsForDisplay } from '../../lib/timeline';
 
 interface TimelineGroupProps {
   book: Book;
   logs: LogWithBook[];
   isLastGroup?: boolean;
+  currentUserId?: string;
+  onLogUpdate?: (updatedLog: Log) => void;
+  onLogDelete?: (logId: string) => Promise<void>;
+  isDeletingLogId?: string;
 }
 
 export function TimelineGroup({
   book,
   logs,
   isLastGroup = false,
+  currentUserId,
+  onLogUpdate,
+  onLogDelete,
+  isDeletingLogId,
 }: TimelineGroupProps) {
+  // Check if this is a registration-only book (show book cover only)
+  const registrationOnly = isRegistrationLogOnly(logs);
+  // Always filter out registration logs - they are never displayed in timeline
+  const displayLogs = filterLogsForDisplay(logs);
+
   return (
     <div className="relative mb-8">
       {/* Book header - no dots or lines */}
@@ -38,6 +52,12 @@ export function TimelineGroup({
                 {book.author && (
                   <p className="text-sm text-gray-500 truncate">{book.author}</p>
                 )}
+                {/* Show registration date when registration-only */}
+                {registrationOnly && logs[0] && (
+                  <p className="text-xs text-gray-400 mt-1">
+                    {new Date(logs[0].createdAt).toLocaleDateString('ja-JP')} に登録
+                  </p>
+                )}
               </>
             )}
           </div>
@@ -45,13 +65,17 @@ export function TimelineGroup({
       </div>
 
       {/* Logs - vertical line is rendered inside each TimelineItem */}
-      {logs.length > 0 && (
+      {displayLogs.length > 0 && (
         <div className="relative pl-8">
-          {logs.map((log, index) => (
+          {displayLogs.map((log, index) => (
             <TimelineItem
               key={log.id}
               log={log}
-              isLast={isLastGroup && index === logs.length - 1}
+              isLast={isLastGroup && index === displayLogs.length - 1}
+              currentUserId={currentUserId}
+              onUpdate={onLogUpdate}
+              onDelete={onLogDelete}
+              isDeleting={isDeletingLogId === log.id}
             />
           ))}
         </div>

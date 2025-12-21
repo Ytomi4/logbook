@@ -1,16 +1,20 @@
 import { Hono } from 'hono';
 import { eq } from 'drizzle-orm';
-import type { D1Database } from '@cloudflare/workers-types';
 import { getDb } from '../../lib/db';
 import { logs, books } from '../../../db/schema';
 import { updateLogSchema } from '../../../src/lib/validation';
 import { now } from '../../lib/utils';
+import { createAuth, type AuthEnv } from '../../lib/auth';
 
-interface Env {
-  DB: D1Database;
-}
+type Env = AuthEnv;
 
 const app = new Hono<{ Bindings: Env }>();
+
+// Helper to get session
+async function getSession(c: { env: Env; req: { raw: Request } }) {
+  const auth = createAuth(c.env);
+  return auth.api.getSession({ headers: c.req.raw.headers });
+}
 
 // GET /api/logs/:logId - Get a single log with book info
 app.get('/', async (c) => {
@@ -26,12 +30,14 @@ app.get('/', async (c) => {
     .select({
       id: logs.id,
       bookId: logs.bookId,
+      userId: logs.userId,
       logType: logs.logType,
       content: logs.content,
       createdAt: logs.createdAt,
       updatedAt: logs.updatedAt,
       book: {
         id: books.id,
+        userId: books.userId,
         title: books.title,
         author: books.author,
         publisher: books.publisher,
@@ -55,6 +61,7 @@ app.get('/', async (c) => {
   return c.json({
     id: result.id,
     bookId: result.bookId,
+    userId: result.userId,
     logType: result.logType,
     content: result.content,
     createdAt: result.createdAt,
@@ -68,6 +75,12 @@ app.get('/', async (c) => {
 
 // PUT /api/logs/:logId - Update a log
 app.put('/', async (c) => {
+  // Get authenticated user
+  const session = await getSession(c);
+  if (!session) {
+    return c.json({ message: 'Unauthorized' }, 401);
+  }
+
   const logId = c.req.param('logId');
   const db = getDb(c.env.DB);
 
@@ -85,6 +98,11 @@ app.put('/', async (c) => {
 
   if (!existingLog) {
     return c.json({ message: 'Log not found' }, 404);
+  }
+
+  // Check ownership - return 403 if not owner
+  if (existingLog.userId !== session.user.id) {
+    return c.json({ message: 'Forbidden' }, 403);
   }
 
   // Parse and validate request body
@@ -126,6 +144,12 @@ app.put('/', async (c) => {
 
 // DELETE /api/logs/:logId - Delete a log
 app.delete('/', async (c) => {
+  // Get authenticated user
+  const session = await getSession(c);
+  if (!session) {
+    return c.json({ message: 'Unauthorized' }, 401);
+  }
+
   const logId = c.req.param('logId');
   const db = getDb(c.env.DB);
 
@@ -143,6 +167,11 @@ app.delete('/', async (c) => {
 
   if (!existingLog) {
     return c.json({ message: 'Log not found' }, 404);
+  }
+
+  // Check ownership - return 403 if not owner
+  if (existingLog.userId !== session.user.id) {
+    return c.json({ message: 'Forbidden' }, 403);
   }
 
   // Delete log (hard delete)
