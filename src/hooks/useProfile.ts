@@ -39,7 +39,7 @@ export function useProfile(): UseProfileResult {
       return true;
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : 'ユーザー名の更新に失敗しました';
+        err instanceof Error ? err.message : 'ハンドルネームの更新に失敗しました';
       setError(message);
       return false;
     }

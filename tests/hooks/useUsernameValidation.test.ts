@@ -86,7 +86,7 @@ describe('useUsernameValidation', () => {
 
       expect(result.current.isValid).toBe(false);
       expect(result.current.isChecking).toBe(false);
-      expect(result.current.error).toBe('このユーザー名は使用できません');
+      expect(result.current.error).toBe('このハンドルネームは使用できません');
     });
   });
 
@@ -145,7 +145,7 @@ describe('useUsernameValidation', () => {
 
       expect(result.current.isValid).toBe(false);
       expect(result.current.isChecking).toBe(false);
-      expect(result.current.error).toBe('このユーザー名は既に使用されています');
+      expect(result.current.error).toBe('このハンドルネームは既に使用されています');
     });
 
     it('handles reserved username from server', async () => {
@@ -166,7 +166,7 @@ describe('useUsernameValidation', () => {
 
       expect(result.current.isValid).toBe(false);
       expect(result.current.isChecking).toBe(false);
-      expect(result.current.error).toBe('このユーザー名は使用できません');
+      expect(result.current.error).toBe('このハンドルネームは使用できません');
     });
 
     it('handles invalid format from server', async () => {
@@ -208,7 +208,7 @@ describe('useUsernameValidation', () => {
 
       expect(result.current.isValid).toBe(false);
       expect(result.current.isChecking).toBe(false);
-      expect(result.current.error).toBe('ユーザー名の確認に失敗しました');
+      expect(result.current.error).toBe('ハンドルネームの確認に失敗しました');
     });
   });
 

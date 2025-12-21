@@ -13,7 +13,7 @@ describe('UsernameInput', () => {
         />
       );
 
-      expect(screen.getByText('ユーザー名')).toBeInTheDocument();
+      expect(screen.getByText('ハンドルネーム')).toBeInTheDocument();
     });
 
     it('renders input field', () => {
@@ -127,7 +127,7 @@ describe('UsernameInput', () => {
         />
       );
 
-      const label = screen.getByText('ユーザー名');
+      const label = screen.getByText('ハンドルネーム');
       expect(label.tagName).toBe('LABEL');
     });
 

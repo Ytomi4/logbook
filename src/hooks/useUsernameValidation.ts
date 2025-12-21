@@ -48,7 +48,7 @@ export function useUsernameValidation(): UseUsernameValidationResult {
     // Check reserved usernames
     if (isReservedUsername(username)) {
       setIsValid(false);
-      setError('このユーザー名は使用できません');
+      setError('このハンドルネームは使用できません');
       setIsChecking(false);
       return;
     }
@@ -70,16 +70,16 @@ export function useUsernameValidation(): UseUsernameValidationResult {
           setIsValid(false);
           switch (result.reason) {
             case 'taken':
-              setError('このユーザー名は既に使用されています');
+              setError('このハンドルネームは既に使用されています');
               break;
             case 'reserved':
-              setError('このユーザー名は使用できません');
+              setError('このハンドルネームは使用できません');
               break;
             case 'invalid':
-              setError(result.message || 'ユーザー名の形式が正しくありません');
+              setError(result.message || 'ハンドルネームの形式が正しくありません');
               break;
             default:
-              setError('ユーザー名を確認できませんでした');
+              setError('ハンドルネームを確認できませんでした');
           }
         }
       } catch (err) {
@@ -88,7 +88,7 @@ export function useUsernameValidation(): UseUsernameValidationResult {
           return;
         }
         setIsValid(false);
-        setError('ユーザー名の確認に失敗しました');
+        setError('ハンドルネームの確認に失敗しました');
       } finally {
         setIsChecking(false);
       }

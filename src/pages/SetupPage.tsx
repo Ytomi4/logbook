@@ -44,11 +44,11 @@ export function SetupPage() {
       if (success) {
         navigate(`/${username}`, { replace: true });
       } else {
-        setError('ユーザー名の設定に失敗しました');
+        setError('ハンドルネームの設定に失敗しました');
       }
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : 'ユーザー名の設定に失敗しました';
+        err instanceof Error ? err.message : 'ハンドルネームの設定に失敗しました';
       setError(message);
     } finally {
       setIsSubmitting(false);

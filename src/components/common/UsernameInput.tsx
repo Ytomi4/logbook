@@ -15,7 +15,7 @@ export function UsernameInput({
   onChange,
   onValidationChange,
   disabled = false,
-  label = 'ユーザー名',
+  label = 'ハンドルネーム',
 }: UsernameInputProps) {
   const { isValid, isChecking, error, checkUsernameValue } = useUsernameValidation();
   const [touched, setTouched] = useState(false);

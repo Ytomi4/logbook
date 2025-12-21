@@ -58,12 +58,12 @@ export function SettingsPage() {
     try {
       const success = await updateUsername(username);
       if (success) {
-        setToast({ message: 'ユーザー名を更新しました', type: 'success' });
+        setToast({ message: 'ハンドルネームを更新しました', type: 'success' });
       } else {
-        setToast({ message: 'ユーザー名の更新に失敗しました', type: 'error' });
+        setToast({ message: 'ハンドルネームの更新に失敗しました', type: 'error' });
       }
     } catch {
-      setToast({ message: 'ユーザー名の更新に失敗しました', type: 'error' });
+      setToast({ message: 'ハンドルネームの更新に失敗しました', type: 'error' });
     } finally {
       setIsSubmitting(false);
     }
@@ -100,7 +100,7 @@ export function SettingsPage() {
         {/* Username Section */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-medium text-gray-900 mb-4">
-            ユーザー名
+            ハンドルネーム
           </h2>
           <form onSubmit={handleUsernameSubmit} className="space-y-4">
             <UsernameInput
@@ -108,12 +108,13 @@ export function SettingsPage() {
               onChange={setUsername}
               onValidationChange={handleValidationChange}
               disabled={isSubmitting}
+              label=""
             />
             <Button
               type="submit"
               disabled={!isUsernameValid || isSubmitting || username === profile?.username}
             >
-              {isSubmitting ? '更新中...' : 'ユーザー名を更新'}
+              {isSubmitting ? '更新中...' : 'ハンドルネームを更新'}
             </Button>
           </form>
         </div>
