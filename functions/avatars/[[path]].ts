@@ -33,7 +33,14 @@ export const onRequest = async (context: PagesContext) => {
 
     const headers = new Headers();
     headers.set('Content-Type', object.httpMetadata?.contentType || 'image/jpeg');
-    headers.set('Cache-Control', 'public, max-age=31536000'); // 1 year cache
+    // Use ETag for cache validation - allows CDN caching while supporting avatar updates
+    headers.set('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+    headers.set('ETag', `"${object.etag}"`);
+    // Check If-None-Match for conditional requests
+    const ifNoneMatch = context.request.headers.get('If-None-Match');
+    if (ifNoneMatch === `"${object.etag}"`) {
+      return new Response(null, { status: 304, headers });
+    }
 
     return new Response(object.body, { headers });
   } catch (error) {

@@ -29,6 +29,7 @@ export async function uploadAvatar(file: File): Promise<AvatarUploadResponse> {
   const response = await fetch('/api/avatar', {
     method: 'POST',
     body: formData,
+    credentials: 'include',
   });
 
   if (!response.ok) {

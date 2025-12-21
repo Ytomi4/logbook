@@ -36,10 +36,14 @@ export function SettingsPage() {
 
   const handleAvatarUpload = useCallback(
     async (file: File) => {
-      const success = await updateAvatar(file);
-      if (success) {
-        setToast({ message: 'アバターを更新しました', type: 'success' });
-      } else {
+      try {
+        const success = await updateAvatar(file);
+        if (success) {
+          setToast({ message: 'アバターを更新しました', type: 'success' });
+        } else {
+          setToast({ message: 'アバターの更新に失敗しました', type: 'error' });
+        }
+      } catch {
         setToast({ message: 'アバターの更新に失敗しました', type: 'error' });
       }
     },
