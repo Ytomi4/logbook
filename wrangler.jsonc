@@ -12,6 +12,12 @@
       "migrations_dir": "./db/migrations"
     }
   ],
+  "r2_buckets": [
+    {
+      "binding": "AVATAR_BUCKET",
+      "bucket_name": "logbook-avatars"
+    }
+  ],
   // Environment variables (non-secret)
   "vars": {
     // Default: Production URL
@@ -28,6 +34,12 @@
           "binding": "DB",
           "database_name": "logbook-db",
           "database_id": "018d41a3-9791-4d5d-9c8b-830d191b8b8d"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "AVATAR_BUCKET",
+          "bucket_name": "logbook-avatars"
         }
       ]
     }

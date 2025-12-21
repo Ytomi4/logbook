@@ -59,10 +59,15 @@ export const users = sqliteTable(
     email: text('email').notNull(),
     emailVerified: integer('email_verified', { mode: 'boolean' }).notNull(),
     image: text('image'),
+    username: text('username'),
+    avatarUrl: text('avatar_url'),
     createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
   },
-  (table) => [uniqueIndex('users_email_idx').on(table.email)]
+  (table) => [
+    uniqueIndex('users_email_idx').on(table.email),
+    uniqueIndex('idx_users_username').on(table.username),
+  ]
 );
 
 export const sessions = sqliteTable(
