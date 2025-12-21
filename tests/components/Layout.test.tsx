@@ -3,10 +3,13 @@ import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { Layout } from '../../src/components/common/Layout';
 import { useAuth } from '../../src/hooks/useAuth';
+import { useProfile } from '../../src/hooks/useProfile';
 
 vi.mock('../../src/hooks/useAuth');
+vi.mock('../../src/hooks/useProfile');
 
 const mockUseAuth = useAuth as Mock;
+const mockUseProfile = useProfile as Mock;
 
 const mockAuthenticatedUser = {
   name: '山田太郎',
@@ -27,6 +30,14 @@ function renderLayout(children = <div>Test Content</div>) {
 describe('Layout', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockUseProfile.mockReturnValue({
+      profile: null,
+      isLoading: false,
+      error: null,
+      updateUsername: vi.fn(),
+      updateAvatar: vi.fn(),
+      refresh: vi.fn(),
+    });
   });
 
   describe('logo navigation', () => {
