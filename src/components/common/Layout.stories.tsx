@@ -2,6 +2,16 @@ import { BrowserRouter } from 'react-router-dom';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Layout } from './Layout';
 
+/**
+ * Layout コンポーネントのストーリー
+ *
+ * ヘッダーの認証状態別表示:
+ * - ロード中: スケルトン表示（円形のアニメーション）
+ * - 未ログイン: 「はじめる」ボタン
+ * - ログイン済み: UserMenu コンポーネント
+ *
+ * 認証状態別の詳細な確認は UserMenu.stories.tsx を参照してください。
+ */
 const meta = {
   title: 'Common/Layout',
   component: Layout,
