@@ -7,7 +7,8 @@ logbook/
 ├── src/                          # フロントエンド（React）
 │   ├── components/               # UI コンポーネント
 │   │   ├── common/               # 汎用コンポーネント
-│   │   │   ├── BookCover.tsx     # 本の表紙表示
+│   │   │   ├── AvatarUploader.tsx   # アバター画像アップロード
+│   │   │   ├── BookCover.tsx        # 本の表紙表示
 │   │   │   ├── Button.tsx
 │   │   │   ├── Card.tsx
 │   │   │   ├── ErrorBoundary.tsx
@@ -15,27 +16,34 @@ logbook/
 │   │   │   ├── Input.tsx
 │   │   │   ├── Layout.tsx
 │   │   │   ├── Loading.tsx
+│   │   │   ├── LoginButton.tsx      # ログインボタン
 │   │   │   ├── Modal.tsx
-│   │   │   ├── ShareButton.tsx   # 共有ボタン
-│   │   │   ├── TabNavigation.tsx # タブナビゲーション
+│   │   │   ├── ShareButton.tsx      # 共有ボタン
+│   │   │   ├── TabNavigation.tsx    # タブナビゲーション
 │   │   │   ├── Textarea.tsx
 │   │   │   ├── Toast.tsx
-│   │   │   ├── UserInfo.tsx      # ユーザー情報表示
-│   │   │   └── index.ts          # バレルエクスポート
+│   │   │   ├── UserInfo.tsx         # ユーザー情報表示
+│   │   │   ├── UserMenu.tsx         # ユーザーメニュー
+│   │   │   ├── UsernameInput.tsx    # ユーザー名入力
+│   │   │   ├── *.stories.tsx        # Storybook ストーリー
+│   │   │   └── index.ts             # バレルエクスポート
 │   │   ├── BookForm/             # 本登録フォーム
 │   │   │   ├── BookForm.tsx
 │   │   │   ├── BookSearchInput.tsx
 │   │   │   ├── NdlSearchResults.tsx
 │   │   │   └── index.ts
 │   │   ├── BookList/             # 本一覧表示
-│   │   │   ├── BookGrid.tsx      # グリッド表示
-│   │   │   ├── BookListView.tsx  # リスト表示
+│   │   │   ├── BookGrid.tsx         # グリッド表示
+│   │   │   ├── BookListView.tsx     # リスト表示
+│   │   │   ├── PublicBookGrid.tsx   # 公開本一覧
+│   │   │   ├── *.stories.tsx
 │   │   │   └── index.ts
 │   │   ├── LogForm/              # ログ入力フォーム
 │   │   │   ├── LogForm.tsx
 │   │   │   ├── LogTypeSelector.tsx
-│   │   │   ├── QuickAddLogModal.tsx  # クイック追加モーダル
+│   │   │   ├── QuickAddLogModal.tsx
 │   │   │   ├── QuickLogModal.tsx
+│   │   │   ├── *.stories.tsx
 │   │   │   └── index.ts
 │   │   └── Timeline/             # タイムライン表示
 │   │       ├── QuoteDisplay.tsx
@@ -43,65 +51,117 @@ logbook/
 │   │       ├── TimelineEmpty.tsx
 │   │       ├── TimelineGroup.tsx
 │   │       ├── TimelineItem.tsx
-│   │       ├── TimelineView.tsx  # タイムラインビュー
+│   │       ├── TimelineView.tsx
+│   │       ├── *.stories.tsx
 │   │       └── index.ts
 │   ├── pages/                    # ページコンポーネント
-│   │   ├── HomePage.tsx          # / - ホーム（タブ切り替え）
-│   │   ├── TimelinePage.tsx      # タイムライン表示
-│   │   ├── BookListPage.tsx      # /books - 本一覧
-│   │   ├── BookDetailPage.tsx    # /books/:id - 本詳細
-│   │   └── BookRegistrationPage.tsx  # /books/new - 本登録
+│   │   ├── HomePage.tsx             # / - ホーム（タブ切り替え）
+│   │   ├── TimelinePage.tsx         # タイムライン表示
+│   │   ├── BookListPage.tsx         # /books - 本一覧
+│   │   ├── BookDetailPage.tsx       # /books/:id - 本詳細
+│   │   ├── BookRegistrationPage.tsx # /books/new - 本登録
+│   │   ├── EnterPage.tsx            # /enter - ログイン/登録
+│   │   ├── SetupPage.tsx            # /setup - 初期設定
+│   │   ├── SettingsPage.tsx         # /settings - 設定
+│   │   └── PublicTimelinePage.tsx   # /u/:username - 公開タイムライン
 │   ├── hooks/                    # カスタムフック
-│   │   ├── useBookList.ts        # 本一覧ロジック
-│   │   ├── useBookSearch.ts      # 本検索ロジック
+│   │   ├── useAuth.ts               # 認証状態管理
+│   │   ├── useBookList.ts           # 本一覧ロジック
+│   │   ├── useBookSearch.ts         # 本検索ロジック
 │   │   ├── useKeyboardShortcuts.ts  # キーボードショートカット
-│   │   ├── useLogForm.ts         # ログフォームロジック
-│   │   ├── useTabNavigation.ts   # タブナビゲーションロジック
-│   │   └── useTimeline.ts        # タイムラインデータ取得
+│   │   ├── useLogEdit.ts            # ログ編集ロジック
+│   │   ├── useLogForm.ts            # ログフォームロジック
+│   │   ├── useProfile.ts            # プロファイル管理
+│   │   ├── usePublicTimeline.ts     # 公開タイムライン取得
+│   │   ├── usePublicUserData.ts     # 公開ユーザーデータ取得
+│   │   ├── useTabNavigation.ts      # タブナビゲーションロジック
+│   │   ├── useTimeline.ts           # タイムラインデータ取得
+│   │   └── useUsernameValidation.ts # ユーザー名バリデーション
 │   ├── services/                 # API クライアント
-│   │   ├── api.ts                # 共通 API 設定
-│   │   ├── books.ts              # 本 API
-│   │   ├── logs.ts               # ログ API
-│   │   └── ndl.ts                # NDL 検索 API
+│   │   ├── api.ts                   # 共通 API 設定
+│   │   ├── books.ts                 # 本 API
+│   │   ├── logs.ts                  # ログ API
+│   │   ├── ndl.ts                   # NDL 検索 API
+│   │   ├── profile.ts               # プロファイル API
+│   │   └── publicTimeline.ts        # 公開タイムライン API
 │   ├── types/                    # 型定義
-│   │   └── index.ts              # 共通型定義
+│   │   └── index.ts                 # 共通型定義
 │   ├── lib/                      # ユーティリティ
-│   │   └── validation.ts         # バリデーション
+│   │   ├── auth-client.ts           # 認証クライアント（better-auth）
+│   │   ├── ndl.ts                   # NDL API ユーティリティ
+│   │   ├── reserved-usernames.ts    # 予約ユーザー名リスト
+│   │   ├── timeline.ts              # タイムライン処理ロジック
+│   │   └── validation.ts            # バリデーション
+│   ├── stories/                  # Storybook 共通設定
+│   │   └── mocks/                   # モックデータ
 │   ├── App.tsx                   # ルートコンポーネント
 │   └── main.tsx                  # エントリーポイント
 │
 ├── functions/                    # バックエンド（Cloudflare Pages Functions）
 │   ├── api/                      # API エンドポイント
-│   │   ├── _middleware.ts        # 共通ミドルウェア
-│   │   ├── [[path]].ts           # キャッチオールルート（Hono）
-│   │   ├── books/                # 本 API
-│   │   │   ├── index.ts          # GET/POST /api/books
+│   │   ├── _middleware.ts           # 共通ミドルウェア
+│   │   ├── [[path]].ts              # キャッチオールルート（Hono）
+│   │   ├── auth/                    # 認証 API
+│   │   │   └── [[catchall]].ts      # better-auth ハンドラ
+│   │   ├── avatar/                  # アバター API
+│   │   │   └── index.ts             # POST /api/avatar
+│   │   ├── books/                   # 本 API
+│   │   │   ├── index.ts             # GET/POST /api/books
 │   │   │   └── [bookId]/
-│   │   │       ├── index.ts      # GET/PUT/DELETE /api/books/:id
-│   │   │       └── logs.ts       # GET/POST /api/books/:id/logs
-│   │   ├── logs/                 # ログ API
-│   │   │   ├── index.ts          # GET /api/logs（タイムライン）
-│   │   │   └── [logId].ts        # PUT/DELETE /api/logs/:id
-│   │   └── ndl/                  # NDL 連携
-│   │       └── search.ts         # GET /api/ndl/search
+│   │   │       ├── index.ts         # GET/PUT/DELETE /api/books/:id
+│   │   │       └── logs.ts          # GET/POST /api/books/:id/logs
+│   │   ├── logs/                    # ログ API
+│   │   │   ├── index.ts             # GET /api/logs（タイムライン）
+│   │   │   └── [logId].ts           # PUT/DELETE /api/logs/:id
+│   │   ├── ndl/                     # NDL 連携
+│   │   │   └── search.ts            # GET /api/ndl/search
+│   │   ├── profile/                 # プロファイル API
+│   │   │   └── index.ts             # GET/PUT /api/profile
+│   │   ├── username/                # ユーザー名 API
+│   │   │   └── check.ts             # POST /api/username/check
+│   │   └── users/                   # 公開ユーザー API
+│   │       └── [username]/
+│   │           ├── index.ts         # GET /api/users/:username
+│   │           ├── books.ts         # GET /api/users/:username/books
+│   │           └── timeline.ts      # GET /api/users/:username/timeline
+│   ├── avatars/                  # アバター画像配信
+│   │   └── [[path]].ts              # GET /avatars/*
 │   └── lib/                      # バックエンド共有ライブラリ
-│       ├── db.ts                 # Drizzle DB 設定
-│       └── utils.ts              # ユーティリティ
+│       ├── auth.ts                  # better-auth サーバー設定
+│       ├── db.ts                    # Drizzle DB 設定
+│       ├── registrationLog.ts       # 登録ログ
+│       └── utils.ts                 # ユーティリティ
 │
 ├── db/                           # データベース
 │   └── migrations/               # マイグレーションファイル
+│       ├── 0000_*.sql               # 初期スキーマ
+│       ├── 0001_*.sql               # ...
+│       ├── 0002_add_user_profile_columns.sql
+│       └── 0003_add_user_id_to_books_and_logs.sql
 │
 ├── tests/                        # テストファイル
-│   ├── setup.ts                  # テストセットアップ
-│   └── hooks/                    # フックのテスト
-│       ├── useBookList.test.ts
-│       └── useTabNavigation.test.ts
+│   ├── setup.ts                     # テストセットアップ
+│   ├── hooks/                       # フックのテスト
+│   │   ├── useBookList.test.ts
+│   │   ├── useTabNavigation.test.ts
+│   │   └── useUsernameValidation.test.ts
+│   ├── lib/                         # ライブラリのテスト
+│   │   ├── ndl.test.ts
+│   │   ├── reserved-usernames.test.ts
+│   │   ├── timeline.test.ts
+│   │   └── validation.test.ts
+│   └── integration/                 # 統合テスト
+│       └── user-timeline.test.ts
 │
-├── dist/                         # ビルド出力（gitignore）
+├── .storybook/                   # Storybook 設定
+│   ├── main.ts
+│   └── preview.ts
 │
 ├── .spec-workflow/               # Spec Workflow 設定
-│   ├── steering/                 # Steering Documents
-│   └── templates/                # テンプレート
+│   ├── steering/                    # Steering Documents
+│   └── templates/                   # テンプレート
+│
+├── dist/                         # ビルド出力（gitignore）
 │
 ├── package.json
 ├── tsconfig.json
@@ -114,6 +174,7 @@ logbook/
 
 ### Files
 - **Components**: `PascalCase.tsx`（例: `BookForm.tsx`, `TimelineItem.tsx`）
+- **Stories**: `PascalCase.stories.tsx`（例: `Button.stories.tsx`）
 - **Hooks**: `camelCase.ts`、`use` プレフィックス（例: `useTimeline.ts`）
 - **Services**: `camelCase.ts`（例: `books.ts`, `api.ts`）
 - **Types**: `camelCase.ts`（例: `index.ts`）

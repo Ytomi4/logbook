@@ -67,6 +67,21 @@ export const ndlSearchSchema = z.object({
 // UUID validation
 export const uuidSchema = z.string().uuid('Invalid UUID format');
 
+// Username validation schema
+export const usernameSchema = z
+  .string()
+  .min(3, 'ハンドルネームは3文字以上で入力してください')
+  .max(20, 'ハンドルネームは20文字以内で入力してください')
+  .regex(
+    /^[a-zA-Z0-9_]+$/,
+    'ハンドルネームは英数字とアンダースコアのみ使用できます'
+  );
+
+// Profile update schema
+export const updateProfileSchema = z.object({
+  username: usernameSchema,
+});
+
 // Type exports
 export type CreateBookInput = z.infer<typeof createBookSchema>;
 export type UpdateBookInput = z.infer<typeof updateBookSchema>;
@@ -74,3 +89,4 @@ export type CreateLogInput = z.infer<typeof createLogSchema>;
 export type UpdateLogInput = z.infer<typeof updateLogSchema>;
 export type PaginationInput = z.infer<typeof paginationSchema>;
 export type NdlSearchInput = z.infer<typeof ndlSearchSchema>;
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;

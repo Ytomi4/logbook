@@ -2,6 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
   "name": "logbook",
   "compatibility_date": "2024-12-01",
+  "compatibility_flags": ["nodejs_compat"],
   "pages_build_output_dir": "./dist",
   "d1_databases": [
     {
@@ -10,5 +11,37 @@
       "database_id": "018d41a3-9791-4d5d-9c8b-830d191b8b8d",
       "migrations_dir": "./db/migrations"
     }
-  ]
+  ],
+  "r2_buckets": [
+    {
+      "binding": "AVATAR_BUCKET",
+      "bucket_name": "logbook-avatars"
+    }
+  ],
+  // Environment variables (non-secret)
+  "vars": {
+    // Default: Production URL
+    "BETTER_AUTH_URL": "https://logbook-hmk.pages.dev"
+  },
+  // Preview environment override
+  "env": {
+    "preview": {
+      "vars": {
+        "BETTER_AUTH_URL": "https://develop.logbook-hmk.pages.dev"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "logbook-db",
+          "database_id": "018d41a3-9791-4d5d-9c8b-830d191b8b8d"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "AVATAR_BUCKET",
+          "bucket_name": "logbook-avatars"
+        }
+      ]
+    }
+  }
 }

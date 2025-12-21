@@ -1,16 +1,20 @@
 import { Hono } from 'hono';
 import { eq, desc, sql, and } from 'drizzle-orm';
-import type { D1Database } from '@cloudflare/workers-types';
 import { getDb } from '../../../lib/db';
 import { books, logs } from '../../../../db/schema';
 import { createLogSchema, paginationSchema } from '../../../../src/lib/validation';
 import { generateId, now } from '../../../lib/utils';
+import { createAuth, type AuthEnv } from '../../../lib/auth';
 
-interface Env {
-  DB: D1Database;
-}
+type Env = AuthEnv;
 
 const app = new Hono<{ Bindings: Env }>();
+
+// Helper to get session
+async function getSession(c: { env: Env; req: { raw: Request } }) {
+  const auth = createAuth(c.env);
+  return auth.api.getSession({ headers: c.req.raw.headers });
+}
 
 // GET /api/books/:bookId/logs - List logs for a book
 app.get('/', async (c) => {
@@ -74,6 +78,12 @@ app.get('/', async (c) => {
 
 // POST /api/books/:bookId/logs - Create a new log
 app.post('/', async (c) => {
+  // Get authenticated user
+  const session = await getSession(c);
+  if (!session) {
+    return c.json({ message: 'Unauthorized' }, 401);
+  }
+
   const bookId = c.req.param('bookId');
   const db = getDb(c.env.DB);
 
@@ -104,10 +114,11 @@ app.post('/', async (c) => {
   const { logType, content } = parsed.data;
   const timestamp = now();
 
-  // Create log
+  // Create log with user_id
   const newLog = {
     id: generateId(),
     bookId,
+    userId: session.user.id,
     logType,
     content,
     createdAt: timestamp,

@@ -1,16 +1,26 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+import { useProfile } from '../../hooks/useProfile';
+import { Button } from './Button';
+import { UserMenu } from './UserMenu';
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
+  const { user, isAuthenticated, isLoading, signOut } = useAuth();
+  const { profile } = useProfile();
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <Link to="/" className="flex items-center gap-2 text-xl font-bold text-gray-900">
+        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Link
+            to={isAuthenticated && user?.username ? `/${user.username}` : '/'}
+            className="flex items-center gap-2 text-xl font-bold text-gray-900"
+          >
             <svg
               className="w-6 h-6"
               fill="none"
@@ -26,6 +36,25 @@ export function Layout({ children }: LayoutProps) {
             </svg>
             Logbook
           </Link>
+          <div className="flex items-center">
+            {isLoading ? (
+              <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+            ) : isAuthenticated && user ? (
+              <UserMenu
+                user={{
+                  ...user,
+                  // Use profile.avatarUrl (from /api/profile) as it's always up-to-date
+                  // Session's avatarUrl may be stale due to better-auth's field mapping issue
+                  avatarUrl: profile?.avatarUrl ?? user.avatarUrl,
+                }}
+                onLogout={signOut}
+              />
+            ) : (
+              <Link to="/enter">
+                <Button>はじめる</Button>
+              </Link>
+            )}
+          </div>
         </div>
       </header>
       <main className="max-w-4xl mx-auto px-4 py-6">{children}</main>

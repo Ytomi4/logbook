@@ -1,22 +1,47 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout, ErrorBoundary, ToastProvider } from './components/common';
-import { HomePage } from './pages/HomePage';
+import { LandingPage } from './pages/LandingPage';
 import { BookDetailPage } from './pages/BookDetailPage';
 import { BookRegistrationPage } from './pages/BookRegistrationPage';
+import { EnterPage } from './pages/EnterPage';
+import { SetupPage } from './pages/SetupPage';
+import { SettingsPage } from './pages/SettingsPage';
+import { PublicTimelinePage } from './pages/PublicTimelinePage';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 
 function AppRoutes() {
   useKeyboardShortcuts();
 
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/books" element={<Navigate to="/" replace />} />
-        <Route path="/books/new" element={<BookRegistrationPage />} />
-        <Route path="/books/:id" element={<BookDetailPage />} />
-      </Routes>
-    </Layout>
+    <Routes>
+      {/* Public routes */}
+      <Route path="/enter" element={<EnterPage />} />
+      <Route path="/setup" element={<SetupPage />} />
+
+      {/* Main routes */}
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/books" element={<Navigate to="/" replace />} />
+      <Route
+        path="/books/new"
+        element={
+          <Layout>
+            <BookRegistrationPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/books/:id"
+        element={
+          <Layout>
+            <BookDetailPage />
+          </Layout>
+        }
+      />
+      <Route path="/settings" element={<SettingsPage />} />
+
+      {/* Public timeline - must be last to avoid catching other routes */}
+      <Route path="/:username" element={<PublicTimelinePage />} />
+    </Routes>
   );
 }
 

@@ -1,6 +1,7 @@
 // Book types
 export interface Book {
   id: string;
+  userId?: string;
   title: string;
   author: string | null;
   publisher: string | null;
@@ -38,15 +39,21 @@ export interface UpdateBookRequest {
 }
 
 // Log types
-export type LogType = 'memo' | 'quote';
+export type LogType = 'memo' | 'quote' | 'registration';
 
 export interface Log {
   id: string;
   bookId: string;
+  userId?: string;
   logType: LogType;
   content: string;
   createdAt: string;
   updatedAt: string;
+}
+
+// Type guard for registration log
+export function isRegistrationLog(log: Log): boolean {
+  return log.logType === 'registration';
 }
 
 export interface LogWithBook extends Log {
@@ -93,4 +100,31 @@ export interface NdlSearchResults {
 export interface ApiError {
   message: string;
   details?: Record<string, unknown>;
+}
+
+// User Profile types
+export interface UserProfile {
+  id: string;
+  username: string | null;
+  name: string;
+  email: string;
+  image: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+}
+
+export interface PublicUser {
+  id: string;
+  username: string;
+  avatarUrl: string | null;
+}
+
+export interface UpdateProfileRequest {
+  username: string;
+}
+
+export interface UsernameCheckResponse {
+  available: boolean;
+  reason?: 'taken' | 'reserved' | 'invalid';
+  message?: string;
 }
