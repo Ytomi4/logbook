@@ -16,4 +16,3 @@ export { LoginButton } from './LoginButton';
 export { UserMenu } from './UserMenu';
 export { UsernameInput } from './UsernameInput';
 export { AvatarUploader } from './AvatarUploader';
-export { RequireUsername } from './RequireUsername';

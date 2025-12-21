@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Layout, ErrorBoundary, ToastProvider, RequireUsername } from './components/common';
+import { Layout, ErrorBoundary, ToastProvider } from './components/common';
 import { HomePage } from './pages/HomePage';
 import { BookDetailPage } from './pages/BookDetailPage';
 import { BookRegistrationPage } from './pages/BookRegistrationPage';
@@ -18,14 +18,12 @@ function AppRoutes() {
       <Route path="/enter" element={<EnterPage />} />
       <Route path="/setup" element={<SetupPage />} />
 
-      {/* Protected routes (require username) */}
+      {/* Main routes */}
       <Route
         path="/"
         element={
           <Layout>
-            <RequireUsername>
-              <HomePage />
-            </RequireUsername>
+            <HomePage />
           </Layout>
         }
       />
@@ -34,9 +32,7 @@ function AppRoutes() {
         path="/books/new"
         element={
           <Layout>
-            <RequireUsername>
-              <BookRegistrationPage />
-            </RequireUsername>
+            <BookRegistrationPage />
           </Layout>
         }
       />
@@ -44,9 +40,7 @@ function AppRoutes() {
         path="/books/:id"
         element={
           <Layout>
-            <RequireUsername>
-              <BookDetailPage />
-            </RequireUsername>
+            <BookDetailPage />
           </Layout>
         }
       />
