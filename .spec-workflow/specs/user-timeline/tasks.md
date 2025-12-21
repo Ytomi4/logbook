@@ -166,3 +166,78 @@
   - _Leverage: Existing Storybook patterns, `src/stories/mocks/data.ts`_
   - _Requirements: REQ-3, REQ-5_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Create/update Storybook stories for TimelineItem and TimelineGroup showing new variants: owner vs visitor view, registration-only vs mixed logs. Use CSF 3.0 format. | Restrictions: Follow existing Storybook patterns, use shared mock data. | _Leverage: src/stories/, src/components/Timeline/*.stories.tsx | _Requirements: REQ-3, REQ-5 | Success: All new UI states documented in Storybook. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+## Phase 7: Specification Changes (v2)
+
+- [x] 16. Update timeline display logic to always hide registration logs
+  - File: `src/lib/timeline.ts`
+  - Replace `shouldShowRegistrationLog()` with `filterRegistrationLogs()` that always filters out registration logs
+  - Update `filterLogsForDisplay()` to always exclude registration logs (no conditional logic)
+  - Add `hasNonRegistrationLogs()` utility function
+  - Purpose: Simplify registration log handling - always hidden, no branching
+  - _Leverage: `src/lib/timeline.ts`, `src/types/index.ts`_
+  - _Requirements: REQ-5 (updated)_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Refactor src/lib/timeline.ts to always hide registration logs. Replace shouldShowRegistrationLog with filterRegistrationLogs that removes all registration logs. Update filterLogsForDisplay to use this unconditionally. | Restrictions: Registration logs must never appear in timeline UI, but books with only registration logs should still show book cover. | _Leverage: src/lib/timeline.ts, src/types/index.ts | _Requirements: REQ-5 | Success: Registration logs never shown in timeline, books still displayed. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [x] 17. Update TimelineGroup to always filter registration logs
+  - File: `src/components/Timeline/TimelineGroup.tsx`
+  - Use `filterRegistrationLogs()` before displaying logs
+  - Remove conditional logic that showed registration logs when other logs exist
+  - Keep `isRegistrationLogOnly()` check for showing book cover only
+  - Purpose: Ensure registration logs never appear in timeline
+  - _Leverage: `src/components/Timeline/TimelineGroup.tsx`, `src/lib/timeline.ts`_
+  - _Requirements: REQ-5 (updated)_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Modify TimelineGroup to always filter out registration logs using filterRegistrationLogs(). Remove any conditional display of registration logs. Books with only registration logs still show book cover only. | Restrictions: Registration logs must never be visible, maintain book cover display for registration-only books. | _Leverage: src/components/Timeline/TimelineGroup.tsx, src/lib/timeline.ts | _Requirements: REQ-5 | Success: No registration logs visible in timeline, books with other logs show those logs only. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [x] 18. Create Public Books API endpoint
+  - File: `functions/api/users/[username]/books.ts`
+  - Implement GET /api/users/:username/books endpoint
+  - Resolve username to user_id, return user's books
+  - Return 404 if user not found
+  - Purpose: Enable book list display on public user timeline
+  - _Leverage: `functions/api/users/[username]/timeline.ts`, `functions/api/books/index.ts`_
+  - _Requirements: REQ-1 (updated)_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Backend Developer | Task: Create GET /api/users/:username/books endpoint in functions/api/users/[username]/books.ts. Resolve username to user, query their books, return paginated list. Return 404 if user not found. | Restrictions: Follow existing API patterns, reuse user lookup logic from timeline.ts. | _Leverage: functions/api/users/[username]/timeline.ts, functions/api/books/index.ts | _Requirements: REQ-1 | Success: API returns user's books, 404 for unknown users. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [x] 19. Create usePublicUserData hook for unified data fetching
+  - File: `src/hooks/usePublicUserData.ts`
+  - Combine usePublicTimeline logic with books fetching
+  - Return user, logs, books, loading states
+  - Handle 404 for non-existent users
+  - Purpose: Single hook for public user page data
+  - _Leverage: `src/hooks/usePublicTimeline.ts`, `src/services/`_
+  - _Requirements: REQ-1 (updated)_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Create usePublicUserData hook that fetches both timeline and books for a public user. Combine patterns from usePublicTimeline. Return unified data structure with user, logs, books, and loading/error states. | Restrictions: Reuse existing service functions, handle 404 gracefully. | _Leverage: src/hooks/usePublicTimeline.ts, src/services/ | _Requirements: REQ-1 | Success: Hook returns user timeline and book data, handles errors. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [x] 20. Refactor PublicTimelinePage to match HomePage layout
+  - File: `src/pages/PublicTimelinePage.tsx`
+  - Use same layout structure as HomePage
+  - Add UserInfo (showing target user's info)
+  - Add HeaderActionButtons (hide "Add Log" for non-owners)
+  - Add TabNavigation (timeline/bookshelf tabs)
+  - Use TimelineView and BookListView based on active tab
+  - Purpose: Unified UX across home and public timeline
+  - _Leverage: `src/pages/HomePage.tsx`, `src/components/common/`, `src/hooks/usePublicUserData.ts`_
+  - _Requirements: REQ-1 (updated)_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Refactor PublicTimelinePage to use HomePage's layout structure. Include UserInfo (target user), TabNavigation, HeaderActionButtons (hide Add Log for visitors). Use TimelineView/BookListView based on tab. Use usePublicUserData hook. | Restrictions: Maintain 404 and error handling, hide action buttons for non-owners, preserve existing functionality. | _Leverage: src/pages/HomePage.tsx, src/components/common/, src/hooks/usePublicUserData.ts | _Requirements: REQ-1 | Success: PublicTimelinePage looks like HomePage with tabs, appropriate actions shown. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [x] 21. Update tests for new registration log behavior
+  - Files: `tests/lib/timeline.test.ts`, `tests/api/user-timeline.test.ts`
+  - Update unit tests to verify registration logs are always filtered
+  - Add tests for filterRegistrationLogs function
+  - Update integration tests for new API endpoint
+  - Purpose: Ensure new behavior is tested
+  - _Leverage: Existing test files, Vitest_
+  - _Requirements: REQ-1, REQ-5 (updated)_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Engineer | Task: Update timeline.test.ts to test filterRegistrationLogs always removes registration logs. Add tests for /api/users/:username/books endpoint. Verify registration logs never appear in any display scenario. | Restrictions: Keep existing passing tests, follow test patterns. | _Leverage: tests/lib/timeline.test.ts, tests/api/user-timeline.test.ts | _Requirements: REQ-1, REQ-5 | Success: All new behaviors tested, no registration logs in display. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [x] 22. Update Storybook stories for PublicTimelinePage layout
+  - Files: `src/pages/PublicTimelinePage.stories.tsx` (new)
+  - Add story for public timeline with owner viewing (shows action buttons)
+  - Add story for public timeline with visitor viewing (no action buttons)
+  - Add story for timeline tab view
+  - Add story for bookshelf tab view
+  - Purpose: Document new page layout variants
+  - _Leverage: Existing Storybook patterns, `src/stories/mocks/data.ts`_
+  - _Requirements: REQ-1 (updated)_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Create Storybook stories for PublicTimelinePage showing owner view vs visitor view, timeline tab vs bookshelf tab. Use CSF 3.0 format with autodocs. | Restrictions: Follow existing Storybook patterns, mock usePublicUserData appropriately. | _Leverage: src/stories/, src/pages/*.stories.tsx patterns | _Requirements: REQ-1 | Success: All PublicTimelinePage variants documented in Storybook. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._

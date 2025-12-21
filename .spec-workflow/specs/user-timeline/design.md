@@ -118,6 +118,17 @@ graph TD
   - LogWithBook 形式で返却
 - **Reuses**: 既存の API 構造、usePublicTimeline フック
 
+### 4.1. New Public Books API (`functions/api/users/[username]/books.ts`)
+
+- **Purpose**: 指定ユーザーの本棚（登録済み書籍一覧）を返却
+- **Endpoint**: `GET /api/users/:username/books`
+- **Response**: 該当ユーザーの書籍一覧（Book 形式）
+- **Behavior**:
+  - username からユーザーを検索
+  - 該当ユーザーの books を返却
+  - ユーザーが存在しない場合は 404
+- **Reuses**: 既存の books API 構造
+
 ### 5. Modified Logs API (`functions/api/logs/index.ts`, `[logId].ts`)
 
 - **Purpose**: 認証ユーザーのログのみ操作可能に
@@ -157,26 +168,43 @@ graph TD
 
 ### 8. Timeline Display Logic (`src/lib/timeline.ts`)
 
-- **Purpose**: 登録ログの表示ルール判定
+- **Purpose**: 登録ログのフィルタリング
 - **Interfaces**:
   ```typescript
-  function shouldShowRegistrationLog(logs: Log[]): boolean
-  // 登録ログ以外のログがあれば true（登録ログも表示）
-  // 登録ログのみなら false（本の表紙のみ表示）
+  function filterRegistrationLogs(logs: Log[]): Log[]
+  // 登録ログを除外したログ配列を返す（タイムライン表示用）
 
   function isRegistrationLogOnly(logs: Log[]): boolean
-  // 登録ログのみの場合 true
+  // 登録ログのみの場合 true（本の表紙のみ表示するケース）
+
+  function hasNonRegistrationLogs(logs: Log[]): boolean
+  // 登録ログ以外のログが存在するか判定
   ```
 - **Dependencies**: Log type
+- **Note**: 登録ログは常にタイムラインに表示しない（分岐なし）
 
 ### 9. TimelineGroup Enhancement (`src/components/Timeline/TimelineGroup.tsx`)
 
-- **Purpose**: 登録ログのみの本を適切に表示
+- **Purpose**: 登録ログを除外したタイムライン表示
 - **Changes**:
-  - `isRegistrationLogOnly()` で判定
-  - 登録ログのみの場合は本の表紙と基本情報のみ表示
-  - 他のログがある場合は登録ログも含めて全て表示
+  - `filterRegistrationLogs()` で登録ログを常に除外してから表示
+  - `isRegistrationLogOnly()` で判定し、登録ログのみの場合は本の表紙と基本情報のみ表示
+  - 他のログがある場合は登録ログを除外して表示（登録ログは表示しない）
 - **Reuses**: 既存の TimelineGroup、BookCover
+
+### 10. PublicTimelinePage Layout (`src/pages/PublicTimelinePage.tsx`)
+
+- **Purpose**: ユーザータイムラインを HomePage と同じレイアウトで表示
+- **Changes**:
+  - HomePage と同じ要素・レイアウトを使用
+    - UserInfo（対象ユーザーの情報を表示）
+    - HeaderActionButtons（自分のタイムラインの場合のみ「ログを追加」ボタン表示）
+    - TabNavigation（タイムライン/本棚の切り替え）
+    - TimelineView / BookListView（タブに応じてコンテンツを切り替え）
+  - 他人のタイムラインでは「ログを追加」ボタンを非表示
+  - 既存の usePublicTimeline を拡張して本棚データも取得
+- **Reuses**: HomePage のコンポーネント構成（UserInfo, HeaderActionButtons, TabNavigation, TimelineView, BookListView）
+- **New Hook**: `usePublicUserData` - 公開ユーザーのタイムラインと本棚データを統合取得
 
 ## Data Models
 
