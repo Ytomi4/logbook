@@ -22,7 +22,7 @@
   - 特徴内容:
     1. タイムライン形式 - 読書の軌跡を時系列で振り返る
     2. メモ・引用の記録 - 気づきや印象的なフレーズを残す
-    3. シンプルな操作 - 素早く記録、いつでも振り返り
+    3. 簡単な登録 - 本のタイトルや著者名を入力すると、国会図書館のデータベースを検索して書影つきで簡単に登録できます
   - Purpose: サービスの主要な特徴を一覧表示
   - _Leverage: FeatureCard, Tailwind CSS grid/flex_
   - _Requirements: REQ-1.2, REQ-1.3, REQ-4_
@@ -31,7 +31,10 @@
 - [ ] 3. Create HeroSection component
   - File: `src/components/Landing/HeroSection.tsx`
   - Props: isAuthenticated, username
-  - キャッチコピー: 「読書を、記録する。」「本との出会いを、タイムラインに。」
+  - キャッチコピー:
+    - 「何を読んだか」だけでなく、「どう読んだか」を残せるアプリです
+    - 印象に残った単語、後から振り返りたい一文
+    - 読んでいる途中のときでも「ログ」という形で、感想や引用を残せます
   - CTAボタン:
     - 未ログイン: 「はじめる」→ /enter
     - ログイン済: 「タイムラインを見る」→ /{username}
