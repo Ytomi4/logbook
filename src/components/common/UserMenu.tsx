@@ -53,7 +53,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
         aria-controls="user-menu-dropdown"
         aria-label="ユーザーメニュー"
       >
-        <UserInfo name={user.username ?? 'ゲスト'} avatarUrl={user.avatarUrl ?? undefined} />
+        <UserInfo name={user.username ?? 'ゲスト'} avatarUrl={user.avatarUrl ?? user.image ?? undefined} />
         <svg
           className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"

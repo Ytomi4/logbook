@@ -79,4 +79,52 @@ TypeScript 5.x: Follow standard conventions
    - `src/stories/mocks/data.ts` に共通モックデータを定義
    - Stories 間で一貫したテストデータを使用
 
+## 並行開発（Git Worktree）
+
+仕様検討と実装を並行して進める場合、git worktree を使って別ワークスペースを作成する。
+
+### ディレクトリ構成
+
+```text
+~/sandbox/
+├── booklog/           # メイン（実装用）
+└── booklog-spec/      # 仕様検討用 worktree
+```
+
+### セットアップ
+
+```bash
+# 仕様検討用 worktree を作成
+git worktree add ../booklog-spec -b spec/<feature-name>
+
+# worktree 一覧を確認
+git worktree list
+
+# 完了後の削除
+git worktree remove ../booklog-spec
+```
+
+### 運用ルール
+
+1. **役割の分離**
+   - 仕様検討用: `.spec-workflow/` 配下のみ編集
+   - 実装用: `src/` 配下を編集
+   - 同じファイルを両方で編集しない（コンフリクト防止）
+
+2. **セッション管理**
+   - 各 worktree で独立した Claude Code セッションを起動
+   - セッション名を付けると管理しやすい: `claude --resume <session-name>`
+
+3. **マージフロー**
+   ```
+   spec/<feature>  ──(仕様確定)──▶  feature/<feature> にマージ
+                                          │
+                                          ▼
+                                   tasks に沿って実装
+   ```
+
+4. **共有リソース**
+   - spec-workflow ダッシュボード（localhost:5000）は1つで共有
+   - `.git` ディレクトリを共有するため、コミットは両方から見える
+
 <!-- MANUAL ADDITIONS END -->
