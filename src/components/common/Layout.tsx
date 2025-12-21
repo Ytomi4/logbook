@@ -16,7 +16,7 @@ export function Layout({ children }: LayoutProps) {
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link
-            to="/"
+            to={isAuthenticated && user?.username ? `/${user.username}` : '/'}
             className="flex items-center gap-2 text-xl font-bold text-gray-900"
           >
             <svg

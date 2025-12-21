@@ -1,8 +1,5 @@
 import { createAuthClient } from 'better-auth/react';
-
-type AuthClient = ReturnType<typeof createAuthClient>;
-
-let _authClient: AuthClient | null = null;
+import { customSessionClient, inferAdditionalFields } from 'better-auth/client/plugins';
 
 function getBaseURL(): string {
   // Use type assertion for browser environment check
@@ -16,18 +13,41 @@ function getBaseURL(): string {
   return '/api/auth';
 }
 
-function getAuthClient(): AuthClient {
-  if (!_authClient) {
-    _authClient = createAuthClient({
-      baseURL: getBaseURL(),
-    });
-  }
-  return _authClient;
+// Lazily initialize the auth client to avoid accessing browser-specific globals
+// (e.g., location) at module import time. This helps with SSR and build-time imports.
+function createConfiguredAuthClient() {
+  return createAuthClient({
+    baseURL: getBaseURL(),
+    plugins: [
+      customSessionClient(),
+      inferAdditionalFields({
+        user: {
+          username: { type: 'string' },
+          avatarUrl: { type: 'string' },
+        },
+      }),
+    ],
+  });
 }
 
-// Proxy object that lazily initializes the auth client
-export const authClient: AuthClient = new Proxy({} as AuthClient, {
-  get(_target, prop: keyof AuthClient) {
-    return getAuthClient()[prop];
+type AuthClientInstance = ReturnType<typeof createConfiguredAuthClient>;
+
+let authClientInstance: AuthClientInstance | null = null;
+
+function getAuthClientInstance(): AuthClientInstance {
+  if (!authClientInstance) {
+    authClientInstance = createConfiguredAuthClient();
+  }
+  return authClientInstance;
+}
+
+export const authClient: AuthClientInstance = new Proxy({} as AuthClientInstance, {
+  get(_target, prop) {
+    const client = getAuthClientInstance();
+    const value = (client as Record<string, unknown>)[prop as string];
+    if (typeof value === 'function') {
+      return value.bind(client);
+    }
+    return value;
   },
 });
