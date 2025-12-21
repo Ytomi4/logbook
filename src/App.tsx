@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout, ErrorBoundary, ToastProvider } from './components/common';
-import { HomePage } from './pages/HomePage';
+import { LandingPage } from './pages/LandingPage';
 import { BookDetailPage } from './pages/BookDetailPage';
 import { BookRegistrationPage } from './pages/BookRegistrationPage';
 import { EnterPage } from './pages/EnterPage';
@@ -19,14 +19,7 @@ function AppRoutes() {
       <Route path="/setup" element={<SetupPage />} />
 
       {/* Main routes */}
-      <Route
-        path="/"
-        element={
-          <Layout>
-            <HomePage />
-          </Layout>
-        }
-      />
+      <Route path="/" element={<LandingPage />} />
       <Route path="/books" element={<Navigate to="/" replace />} />
       <Route
         path="/books/new"
