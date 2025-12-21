@@ -9,7 +9,7 @@
 ヘッダーは Logbook アプリケーションの一貫した UX を実現する基盤コンポーネントとして、以下の目標をサポートする：
 - シンプルで直感的なナビゲーション体験
 - 認証状態に応じた適切な UI 表示
-- 主要アクションへの素早いアクセス
+- ユーザー情報の明確な提示
 
 ## Requirements
 
@@ -60,32 +60,21 @@
 2. WHEN ドロップダウンが開く THEN システム SHALL フォーカス管理を適切に行う
 3. WHEN キーボードナビゲーションが使用される THEN システム SHALL Tab キーでの移動をサポートする
 
-### Requirement 5: ヘッダーアクションボタン（HomePage 専用）
+### Requirement 5: ユーザー情報表示
 
-**User Story:** ホームページにいるログインユーザーとして、読書ログや本を素早く追加したい
-
-#### Acceptance Criteria
-
-1. WHEN ログインユーザーがホームページを表示する THEN システム SHALL ヘッダー領域にアクションボタンを表示する
-2. WHEN ユーザーが「ログを追加」ボタンをクリックする THEN システム SHALL クイックログモーダルを開く
-3. WHEN ユーザーが「本を追加」ボタンをクリックする THEN システム SHALL 書籍登録ページ（`/books/new`）へ遷移する
-4. WHEN アクションボタンが表示される THEN 「ログを追加」ボタン SHALL プライマリスタイル（黒背景）で表示される
-5. WHEN アクションボタンが表示される THEN 「本を追加」ボタン SHALL セカンダリスタイル（白背景・枠線）で表示される
-
-### Requirement 6: ユーザー情報表示（HomePage 専用）
-
-**User Story:** ホームページにいるログインユーザーとして、自分のプロフィール情報を確認したい
+**User Story:** ユーザーとして、ヘッダーで自分の認証状態とプロフィール情報を確認したい
 
 #### Acceptance Criteria
 
-1. WHEN ログインユーザーがホームページを表示する THEN システム SHALL ユーザー情報（UserInfo）を表示する
-2. WHEN ユーザー情報が表示される THEN システム SHALL アバター画像とユーザー名を含める
+1. WHEN ヘッダーが表示される AND ユーザーが未ログイン THEN システム SHALL 「はじめる」ボタンを表示する
+2. WHEN ヘッダーが表示される AND ユーザーがログイン済み THEN システム SHALL ハンドルネームとアバター画像を表示する
+3. WHEN ユーザー情報が表示される THEN システム SHALL アバター画像をクリック可能なユーザーメニュートリガーとして機能させる
 
 ## Non-Functional Requirements
 
 ### Code Architecture and Modularity
-- **Single Responsibility Principle**: ヘッダーは Layout コンポーネント内で定義、アクションボタンとユーザーメニューは独立したコンポーネントとして分離
-- **Modular Design**: UserMenu、UserInfo、HeaderActionButtons は再利用可能な独立コンポーネント
+- **Single Responsibility Principle**: ヘッダーは Layout コンポーネント内で定義、ユーザーメニューは独立したコンポーネントとして分離
+- **Modular Design**: UserMenu、UserInfo は再利用可能な独立コンポーネント
 - **Dependency Management**: useAuth フックへの依存のみ
 - **Clear Interfaces**: 各コンポーネントは明確な Props インターフェースを持つ
 
