@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useProfile } from '../../hooks/useProfile';
 import { Button } from './Button';
 import { UserMenu } from './UserMenu';
 
@@ -10,6 +11,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const { user, isAuthenticated, isLoading, signOut } = useAuth();
+  const { profile } = useProfile();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -38,7 +40,15 @@ export function Layout({ children }: LayoutProps) {
             {isLoading ? (
               <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
             ) : isAuthenticated && user ? (
-              <UserMenu user={user} onLogout={signOut} />
+              <UserMenu
+                user={{
+                  ...user,
+                  // Use profile.avatarUrl (from /api/profile) as it's always up-to-date
+                  // Session's avatarUrl may be stale due to better-auth's field mapping issue
+                  avatarUrl: profile?.avatarUrl ?? user.avatarUrl,
+                }}
+                onLogout={signOut}
+              />
             ) : (
               <Link to="/enter">
                 <Button>はじめる</Button>

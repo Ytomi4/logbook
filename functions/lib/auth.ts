@@ -38,7 +38,11 @@ export function createAuth(env: AuthEnv) {
       expiresIn: 60 * 60 * 24 * 30, // 30 days
       updateAge: 60 * 60 * 24, // 1 day
     },
-    trustedOrigins: [env.BETTER_AUTH_URL],
+    trustedOrigins: [
+      env.BETTER_AUTH_URL,
+      'https://logbook-hmk.pages.dev',
+      'https://develop.logbook-hmk.pages.dev',
+    ],
     user: {
       additionalFields: {
         username: {
