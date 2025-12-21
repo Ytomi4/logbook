@@ -1,4 +1,5 @@
 import { createAuth, type AuthEnv } from '../../lib/auth';
+import { isAllowedHost } from '../../lib/allowed-origins';
 
 interface PagesContext {
   request: Request;
@@ -9,27 +10,18 @@ interface PagesContext {
   next: () => Promise<Response>;
 }
 
-// 許可されたホスト名のリスト
-const ALLOWED_HOSTS = [
-  'logbook-hmk.pages.dev',
-  'develop.logbook-hmk.pages.dev',
-  'localhost:8788',
-];
-
 export const onRequest = async (context: PagesContext) => {
-  // リクエストからホストを取得し、動的にBETTER_AUTH_URLを設定
   const url = new URL(context.request.url);
   const host = url.host;
 
-  // 許可されたホストか確認
-  const isAllowedHost = ALLOWED_HOSTS.some(
-    (allowed) => host === allowed || host.endsWith(`.${allowed}`)
-  );
+  // 許可されたホストか確認（完全一致のみ、セキュリティのため）
+  if (!isAllowedHost(host)) {
+    console.error(`Auth request from disallowed host: ${host}`);
+    return new Response('Forbidden: Host not allowed', { status: 403 });
+  }
 
-  // 動的にBETTER_AUTH_URLを決定（許可されたホストの場合のみ）
-  const dynamicBaseURL = isAllowedHost
-    ? `${url.protocol}//${host}`
-    : context.env.BETTER_AUTH_URL;
+  // 動的にBETTER_AUTH_URLを決定
+  const dynamicBaseURL = `${url.protocol}//${host}`;
 
   const envWithDynamicURL: AuthEnv = {
     ...context.env,

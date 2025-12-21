@@ -4,6 +4,7 @@ import { customSession } from 'better-auth/plugins';
 import { drizzle } from 'drizzle-orm/d1';
 import type { D1Database } from '@cloudflare/workers-types';
 import * as schema from '../../db/schema';
+import { ALLOWED_ORIGINS } from './allowed-origins';
 
 export interface AuthEnv {
   DB: D1Database;
@@ -38,11 +39,7 @@ export function createAuth(env: AuthEnv) {
       expiresIn: 60 * 60 * 24 * 30, // 30 days
       updateAge: 60 * 60 * 24, // 1 day
     },
-    trustedOrigins: [
-      env.BETTER_AUTH_URL,
-      'https://logbook-hmk.pages.dev',
-      'https://develop.logbook-hmk.pages.dev',
-    ],
+    trustedOrigins: [env.BETTER_AUTH_URL, ...ALLOWED_ORIGINS],
     user: {
       additionalFields: {
         username: {
