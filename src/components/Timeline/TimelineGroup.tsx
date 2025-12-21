@@ -23,9 +23,18 @@ export function TimelineGroup({
   onLogDelete,
   isDeletingLogId,
 }: TimelineGroupProps) {
-  // Check if this is a registration-only book
+  // Check if this is a registration-only book (show book cover only)
   const registrationOnly = isRegistrationLogOnly(logs);
+  // Always filter out registration logs - they are never displayed in timeline
   const displayLogs = filterLogsForDisplay(logs);
+
+  // Debug: verify filtering is working
+  console.log('TimelineGroup:', {
+    bookTitle: book.title,
+    originalLogs: logs.map(l => ({ id: l.id, logType: l.logType })),
+    displayLogs: displayLogs.map(l => ({ id: l.id, logType: l.logType })),
+    registrationOnly,
+  });
 
   return (
     <div className="relative mb-8">
