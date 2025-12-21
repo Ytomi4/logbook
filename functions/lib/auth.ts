@@ -38,6 +38,20 @@ export function createAuth(env: AuthEnv) {
       updateAge: 60 * 60 * 24, // 1 day
     },
     trustedOrigins: [env.BETTER_AUTH_URL],
+    user: {
+      additionalFields: {
+        username: {
+          type: 'string',
+          required: false,
+          fieldName: 'username',
+        },
+        avatarUrl: {
+          type: 'string',
+          required: false,
+          fieldName: 'avatar_url',
+        },
+      },
+    },
   });
 }
 

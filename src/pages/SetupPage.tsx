@@ -6,7 +6,7 @@ import { UsernameInput } from '../components/common/UsernameInput';
 import { Button } from '../components/common/Button';
 
 export function SetupPage() {
-  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading, refetchSession } = useAuth();
   const { updateUsername } = useProfile();
   const navigate = useNavigate();
 
@@ -42,6 +42,7 @@ export function SetupPage() {
     try {
       const success = await updateUsername(username);
       if (success) {
+        await refetchSession();
         navigate(`/${username}`, { replace: true });
       } else {
         setError('ハンドルネームの設定に失敗しました');

@@ -18,10 +18,11 @@ interface UseAuthResult {
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   clearError: () => void;
+  refetchSession: () => Promise<void>;
 }
 
 export function useAuth(): UseAuthResult {
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session, isPending, refetch } = authClient.useSession();
   const [error, setError] = useState<string | null>(null);
 
   const user: User | null = session?.user
@@ -68,6 +69,10 @@ export function useAuth(): UseAuthResult {
     setError(null);
   }, []);
 
+  const refetchSession = useCallback(async () => {
+    await refetch();
+  }, [refetch]);
+
   return {
     user,
     isAuthenticated,
@@ -76,5 +81,6 @@ export function useAuth(): UseAuthResult {
     signInWithGoogle,
     signOut,
     clearError,
+    refetchSession,
   };
 }

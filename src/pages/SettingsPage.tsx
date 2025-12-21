@@ -9,7 +9,7 @@ import { Button } from '../components/common/Button';
 import { Toast } from '../components/common/Toast';
 
 export function SettingsPage() {
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading, refetchSession } = useAuth();
   const { profile, isLoading: profileLoading, updateUsername, updateAvatar } = useProfile();
   const navigate = useNavigate();
 
@@ -39,6 +39,7 @@ export function SettingsPage() {
       try {
         const success = await updateAvatar(file);
         if (success) {
+          await refetchSession();
           setToast({ message: 'アバターを更新しました', type: 'success' });
         } else {
           setToast({ message: 'アバターの更新に失敗しました', type: 'error' });
@@ -47,7 +48,7 @@ export function SettingsPage() {
         setToast({ message: 'アバターの更新に失敗しました', type: 'error' });
       }
     },
-    [updateAvatar]
+    [updateAvatar, refetchSession]
   );
 
   const handleUsernameSubmit = async (e: React.FormEvent) => {
@@ -62,6 +63,7 @@ export function SettingsPage() {
     try {
       const success = await updateUsername(username);
       if (success) {
+        await refetchSession();
         setToast({ message: 'ハンドルネームを更新しました', type: 'success' });
       } else {
         setToast({ message: 'ハンドルネームの更新に失敗しました', type: 'error' });
