@@ -1,8 +1,10 @@
 import { Timeline } from '../components/Timeline';
 import { useTimeline } from '../hooks/useTimeline';
 import { LoadingPage, ShareButton } from '../components/common';
+import { useAuth } from '../hooks/useAuth';
 
 export function TimelinePage() {
+  const { user } = useAuth();
   const { logs, isLoading, error, hasMore, loadMore, sentinelRef } = useTimeline();
 
   // Show full page loading only on initial load
@@ -49,6 +51,7 @@ export function TimelinePage() {
         hasMore={hasMore}
         onLoadMore={loadMore}
         sentinelRef={sentinelRef}
+        currentUserId={user?.id}
       />
     </div>
   );

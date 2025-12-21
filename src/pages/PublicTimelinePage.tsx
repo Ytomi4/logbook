@@ -3,9 +3,11 @@ import { usePublicTimeline } from '../hooks/usePublicTimeline';
 import { Layout } from '../components/common/Layout';
 import { Timeline } from '../components/Timeline/Timeline';
 import { Loading, Button } from '../components/common';
+import { useAuth } from '../hooks/useAuth';
 
 export function PublicTimelinePage() {
   const { username } = useParams<{ username: string }>();
+  const { user: currentUser } = useAuth();
   const { user, logs, isLoading, error, isNotFound, loadMore, hasMore } =
     usePublicTimeline(username || '');
 
@@ -116,6 +118,7 @@ export function PublicTimelinePage() {
               isLoading={isLoading}
               hasMore={hasMore}
               onLoadMore={loadMore}
+              currentUserId={currentUser?.id}
             />
             {isLoading && (
               <div className="py-4">
