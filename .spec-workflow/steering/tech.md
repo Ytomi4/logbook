@@ -18,11 +18,13 @@ SPA（Single Page Application）形式の Web アプリケーション。フロ�
 - **React Router DOM 7**: クライアントサイドルーティング
 - **Tailwind CSS 4**: ユーティリティファースト CSS フレームワーク
 - **Vite 7**: 開発サーバー・ビルドツール
+- **Storybook 10**: コンポーネントカタログ・ドキュメント
 
 **Backend:**
 - **Hono 4**: 軽量 Web フレームワーク（Cloudflare Workers 最適化）
 - **Drizzle ORM 0.45**: TypeScript ファースト ORM
 - **Zod 4**: スキーマバリデーション
+- **better-auth 1.4**: 認証ライブラリ（OAuth2 サポート）
 
 ### Application Architecture
 
@@ -52,8 +54,9 @@ SPA（Single Page Application）形式の Web アプリケーション。フロ�
 
 ### External Integrations
 - **APIs**: 国立国会図書館検索 API（NDL Search API）- 書誌情報取得
-- **Protocols**: HTTP/REST
-- **Authentication**: なし（現時点では単一ユーザー想定）
+- **Protocols**: HTTP/REST, OAuth2
+- **Authentication**: better-auth（GitHub OAuth, Google OAuth 対応）
+- **Storage**: Cloudflare R2（アバター画像保存）
 
 ### Monitoring & Dashboard Technologies
 - **Dashboard Framework**: React 19
@@ -85,7 +88,8 @@ SPA（Single Page Application）形式の Web アプリケーション。フロ�
 - **Live Reload**: Vite HMR（Hot Module Replacement）
 - **Port Management**:
   - Vite: 5173
-  - Wrangler: 8787（プロキシ）
+  - Wrangler: 8788（プロキシ）
+  - Storybook: 6006
 - **Multi-Instance Support**: 開発環境は単一インスタンス
 
 ## Deployment & Distribution
@@ -153,9 +157,20 @@ npx wrangler d1 migrations apply logbook-db --remote  # DB マイグレーショ
    - ユーティリティファーストで迅速な UI 開発
    - カスタム CSS を最小限に
 
+6. **better-auth**:
+   - TypeScript ネイティブで型安全
+   - Cloudflare Workers + D1 対応
+   - OAuth2 プロバイダ（GitHub, Google）の簡易統合
+   - セッション管理が組み込み
+
+7. **Storybook 10**:
+   - コンポーネント単位での開発・テスト
+   - ドキュメント自動生成（autodocs）
+   - ビジュアルリグレッションテストの基盤
+
 ## Known Limitations
 
-- **認証機能なし**: 現在は単一ユーザー想定。複数ユーザー対応には認証実装が必要
 - **オフライン対応なし**: Service Worker 未実装
-- **画像アップロードなし**: 本の表紙画像は外部 URL のみ対応
+- **本の表紙画像**: 外部 URL のみ対応（アップロード未対応）
 - **検索機能が限定的**: 全文検索未実装
+- **認証プロバイダ**: 現在 GitHub と Google のみ対応
