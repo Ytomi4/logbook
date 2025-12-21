@@ -82,6 +82,18 @@
 
 **Note:** ホームページの詳細仕様は別の spec（`homepage-landing`）で定義する。本仕様では /{username} へのルーティングが `/` と競合しないことのみを保証する。
 
+### REQ-7: 空のタイムライン表示
+
+**User Story:** ユーザーとして、タイムラインに何も登録されていない場合でも、次のアクションが分かるようにしたい。自分のタイムラインでは本を登録する導線を、他人のタイムラインでは適切なメッセージを表示してほしい。
+
+#### Acceptance Criteria
+
+1. WHEN 自分のタイムラインを表示する AND ログが0件 THEN システムは TimelineEmpty コンポーネントを表示する SHALL
+2. WHEN TimelineEmpty を表示する AND 閲覧者が本人 THEN 「まだ読書ログがありません」のメッセージと「本を登録する」ボタンを表示する SHALL
+3. WHEN TimelineEmpty を表示する AND 閲覧者が他人 THEN 「@{username}さんはまだ読書ログを投稿していません」のメッセージのみを表示する SHALL（ボタンは非表示）
+4. WHEN 本の一覧タブを表示する AND 本が0件 AND 閲覧者が本人 THEN 「まだ本がありません」のメッセージと「本を登録する」ボタンを表示する SHALL
+5. WHEN 本の一覧タブを表示する AND 本が0件 AND 閲覧者が他人 THEN 「@{username}さんはまだ本を登録していません」のメッセージのみを表示する SHALL
+
 ## Non-Functional Requirements
 
 ### Code Architecture and Modularity

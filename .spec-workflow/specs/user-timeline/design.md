@@ -206,6 +206,31 @@ graph TD
 - **Reuses**: HomePage のコンポーネント構成（UserInfo, HeaderActionButtons, TabNavigation, TimelineView, BookListView）
 - **New Hook**: `usePublicUserData` - 公開ユーザーのタイムラインと本棚データを統合取得
 
+### 11. TimelineEmpty Enhancement (`src/components/Timeline/TimelineEmpty.tsx`)
+
+- **Purpose**: 空のタイムライン/本棚を閲覧者に応じて適切に表示
+- **Changes**:
+  - Props に `isOwner` と `username` を追加
+  - 所有者の場合: 「本を登録する」ボタンを表示
+  - 他人の場合: メッセージのみを表示（ボタンは非表示）
+  - `variant` Props で「timeline」または「books」を切り替え
+- **Interfaces**:
+  ```typescript
+  interface TimelineEmptyProps {
+    variant: 'timeline' | 'books';
+    isOwner: boolean;
+    username?: string;  // 他人のタイムラインの場合に使用
+  }
+  ```
+- **Display Logic**:
+  | variant | isOwner | 表示内容 |
+  |---------|---------|---------|
+  | timeline | true | 「まだ読書ログがありません」+ 「本を登録する」ボタン |
+  | timeline | false | 「@{username}さんはまだ読書ログを投稿していません」 |
+  | books | true | 「まだ本がありません」+ 「本を登録する」ボタン |
+  | books | false | 「@{username}さんはまだ本を登録していません」 |
+- **Reuses**: 既存の TimelineEmpty のスタイル、Link コンポーネント
+
 ## Data Models
 
 ### Log (Updated)
