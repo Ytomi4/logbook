@@ -241,3 +241,59 @@
   - _Leverage: Existing Storybook patterns, `src/stories/mocks/data.ts`_
   - _Requirements: REQ-1 (updated)_
   - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Create Storybook stories for PublicTimelinePage showing owner view vs visitor view, timeline tab vs bookshelf tab. Use CSF 3.0 format with autodocs. | Restrictions: Follow existing Storybook patterns, mock usePublicUserData appropriately. | _Leverage: src/stories/, src/pages/*.stories.tsx patterns | _Requirements: REQ-1 | Success: All PublicTimelinePage variants documented in Storybook. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+## Phase 8: Empty State Display (REQ-7)
+
+- [ ] 23. Enhance TimelineEmpty component with owner/visitor variants
+  - File: `src/components/Timeline/TimelineEmpty.tsx`
+  - Add `variant` prop: `'timeline' | 'books'`
+  - Add `isOwner` prop: boolean
+  - Add `username` prop: string (for visitor view)
+  - Owner view: show action button (「本を登録する」)
+  - Visitor view: show message only (「@{username}さんはまだ...」)
+  - Purpose: Display appropriate empty state based on viewer context
+  - _Leverage: Existing `TimelineEmpty.tsx`, `src/components/common/Button.tsx`_
+  - _Requirements: REQ-7.1, REQ-7.2, REQ-7.3_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Enhance TimelineEmpty with variant, isOwner, and username props. Show "本を登録する" button only for owners. Display "@{username}さんはまだ..." for visitors. Support both timeline and books variants. | Restrictions: Maintain existing styling, use Link component for navigation. | _Leverage: src/components/Timeline/TimelineEmpty.tsx, src/components/common/Button.tsx | _Requirements: REQ-7.1, REQ-7.2, REQ-7.3 | Success: TimelineEmpty displays correctly for all 4 combinations (timeline/books × owner/visitor). Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [ ] 24. Create BooksEmpty component for empty book list
+  - File: `src/components/BookList/BooksEmpty.tsx`
+  - Similar structure to TimelineEmpty but for books tab
+  - Add `isOwner` prop: boolean
+  - Add `username` prop: string (for visitor view)
+  - Owner view: 「まだ本がありません」+ 「本を登録する」ボタン
+  - Visitor view: 「@{username}さんはまだ本を登録していません」
+  - Purpose: Display appropriate empty state for books list
+  - _Leverage: `TimelineEmpty.tsx` pattern_
+  - _Requirements: REQ-7.4, REQ-7.5_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Create BooksEmpty component following TimelineEmpty pattern. Show "本を登録する" button only for owners. Display "@{username}さんはまだ本を登録していません" for visitors. | Restrictions: Follow TimelineEmpty styling and structure. | _Leverage: src/components/Timeline/TimelineEmpty.tsx | _Requirements: REQ-7.4, REQ-7.5 | Success: BooksEmpty displays correctly for owner/visitor views. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [ ] 25. Update PublicTimelinePage to use TimelineEmpty and BooksEmpty
+  - File: `src/pages/PublicTimelinePage.tsx`
+  - Replace inline empty state JSX with TimelineEmpty component
+  - Replace inline empty books JSX with BooksEmpty component
+  - Pass isOwner and username props appropriately
+  - Purpose: Use reusable empty state components
+  - _Leverage: `TimelineEmpty.tsx`, `BooksEmpty.tsx`, existing `PublicTimelinePage.tsx`_
+  - _Requirements: REQ-7.1, REQ-7.2, REQ-7.3, REQ-7.4, REQ-7.5_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Refactor PublicTimelinePage to use TimelineEmpty and BooksEmpty components instead of inline JSX. Pass isOwner and username props. Remove duplicate empty state code. | Restrictions: Maintain existing functionality, ensure proper prop passing. | _Leverage: src/pages/PublicTimelinePage.tsx, TimelineEmpty.tsx, BooksEmpty.tsx | _Requirements: REQ-7.1, REQ-7.2, REQ-7.3, REQ-7.4, REQ-7.5 | Success: Empty states render correctly using shared components. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [ ] 26. Update TimelineEmpty Storybook stories
+  - File: `src/components/Timeline/TimelineEmpty.stories.tsx`
+  - Add story for owner view (with button)
+  - Add story for visitor view (message only)
+  - Add story for books variant (owner)
+  - Add story for books variant (visitor)
+  - Purpose: Document all empty state variants
+  - _Leverage: Existing `TimelineEmpty.stories.tsx`, Storybook patterns_
+  - _Requirements: REQ-7_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Update TimelineEmpty.stories.tsx to show all 4 variants: OwnerTimeline, VisitorTimeline, OwnerBooks, VisitorBooks. Use CSF 3.0 format. | Restrictions: Follow existing Storybook patterns. | _Leverage: src/components/Timeline/TimelineEmpty.stories.tsx | _Requirements: REQ-7 | Success: All TimelineEmpty variants documented in Storybook. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
+
+- [ ] 27. Add BooksEmpty Storybook stories
+  - File: `src/components/BookList/BooksEmpty.stories.tsx`
+  - Add story for owner view (with button)
+  - Add story for visitor view (message only)
+  - Purpose: Document books empty state variants
+  - _Leverage: Storybook patterns, `TimelineEmpty.stories.tsx`_
+  - _Requirements: REQ-7.4, REQ-7.5_
+  - _Prompt: Implement the task for spec user-timeline, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Create BooksEmpty.stories.tsx with Owner and Visitor stories. Use CSF 3.0 format with autodocs. | Restrictions: Follow existing Storybook patterns. | _Leverage: TimelineEmpty.stories.tsx patterns | _Requirements: REQ-7.4, REQ-7.5 | Success: BooksEmpty variants documented in Storybook. Mark task as in-progress in tasks.md before starting, log implementation with log-implementation tool after completion, then mark as complete._
