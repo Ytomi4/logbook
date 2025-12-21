@@ -17,7 +17,22 @@
 3. **開発環境のポート変更**
    - `dev:api` のポートを 8787 → 8788 に変更
 
----
+### v1.1 設計変更（2025-12-21 フィードバック対応）
+
+4. **認証フローの簡素化**
+   - 認証コールバックで `/setup` に直接リダイレクト
+   - `RequireUsername` ガードを削除（過剰な設計だったため）
+   - ハンドルネームが必要な機能は個別にチェックする方針に変更
+
+5. **ユーザー表示の統一**
+   - サイト内すべての場所で Google名 を非表示にし、ハンドルネームのみを表示
+   - ヘッダー右上: ハンドルネーム + アバター画像
+   - 公開タイムライン: ハンドルネーム + アバター画像
+   - アバター未設定時はデフォルトアイコン（Googleアカウント画像は使用しない）
+
+6. **用語統一**
+   - UI上の表記を「ユーザー名」から「ハンドルネーム」に変更
+   - アカウント設定画面のラベル重複を解消
 
 ## Overview
 
@@ -47,9 +62,14 @@
 
 ### Existing Components to Leverage
 
-- **Layout.tsx**: ヘッダー構造を拡張し、未ログイン時の「はじめる」ボタンを追加
+- **Layout.tsx**: ヘッダー構造を拡張
+  - 未ログイン時: 「はじめる」ボタンを表示
+  - ログイン時: ハンドルネーム + アバター画像を表示（Google名は非表示）
+  - ロゴクリック: ホームページに遷移（/setupへのリダイレクトはしない）
 - **UserMenu.tsx**: アカウント設定へのリンクを追加
-- **Input.tsx**: ユーザー名入力フィールドに使用
+  - ハンドルネームを表示（Google名は非表示）
+  - アバター画像を表示（未設定時はデフォルトアイコン）
+- **Input.tsx**: ハンドルネーム入力フィールドに使用
 - **Button.tsx**: 各種ボタンに使用
 - **Toast.tsx**: 成功/エラー通知に使用
 - **Modal.tsx**: 確認ダイアログに使用
@@ -135,9 +155,10 @@ graph TD
 ### UI Components
 
 #### UsernameInput (`src/components/common/UsernameInput.tsx`)
-- **Purpose**: ユーザー名入力フィールド（リアルタイムバリデーション付き）
-- **Props**: `value`, `onChange`, `onValidationChange`, `disabled`
+- **Purpose**: ハンドルネーム入力フィールド（リアルタイムバリデーション付き）
+- **Props**: `value`, `onChange`, `onValidationChange`, `disabled`, `showLabel`
 - **Features**: デバウンス付き利用可否チェック、エラー表示
+- **Note**: `showLabel=false` でラベル非表示（アカウント設定画面での重複表記回避）
 
 #### AvatarUploader (`src/components/common/AvatarUploader.tsx`)
 - **Purpose**: アバター画像アップロードコンポーネント
@@ -147,7 +168,7 @@ graph TD
 ### Hooks
 
 #### useUsernameValidation (`src/hooks/useUsernameValidation.ts`)
-- **Purpose**: ユーザー名のクライアント/サーバーバリデーション
+- **Purpose**: ハンドルネームのクライアント/サーバーバリデーション
 - **Returns**: `{ isValid, isChecking, error, checkUsername }`
 - **Features**: デバウンス（300ms）、予約語チェック、一意性チェック
 
@@ -158,6 +179,7 @@ graph TD
 #### usePublicTimeline (`src/hooks/usePublicTimeline.ts`)
 - **Purpose**: 公開タイムライン取得
 - **Returns**: `{ user, logs, isLoading, error }`
+- **Note**: `user` には `username` と `avatarUrl` のみ含む（Google名は含まない）
 
 ### API Endpoints
 
@@ -193,7 +215,8 @@ graph TD
 #### GET /api/users/:username
 - **Purpose**: ユーザー情報取得（公開用）
 - **Auth**: Not required
-- **Response**: `{ id, username, name, avatarUrl }`
+- **Response**: `{ id, username, avatarUrl }`
+- **Note**: Google名（name）は含めない（プライバシー保護）
 
 #### GET /api/users/:username/timeline
 - **Purpose**: ユーザーの公開タイムライン取得
@@ -220,19 +243,25 @@ CREATE UNIQUE INDEX idx_users_username ON users(username);
 
 export interface UserProfile {
   id: string;
-  username: string | null;
-  name: string;
+  username: string | null;   // ハンドルネーム
+  name: string;              // Google名（内部用のみ、表示には使用しない）
   email: string;
-  image: string | null;      // Google アカウントの画像
+  image: string | null;      // Google アカウントの画像（使用しない）
   avatarUrl: string | null;  // サービス用カスタムアバター
   createdAt: string;
 }
 
 export interface PublicUser {
   id: string;
-  username: string;
-  name: string;
-  avatarUrl: string | null;
+  username: string;          // ハンドルネーム（表示用）
+  avatarUrl: string | null;  // アバター画像
+  // name は含めない（Google名は公開しない）
+}
+
+// ヘッダー表示用
+export interface DisplayUser {
+  username: string;          // ハンドルネーム
+  avatarUrl: string | null;  // アバター画像
 }
 
 export interface UpdateProfileRequest {
@@ -244,6 +273,11 @@ export interface UsernameCheckResponse {
   reason?: 'taken' | 'reserved' | 'invalid';
 }
 ```
+
+**v1.1 変更点**:
+- `PublicUser` から `name` フィールドを削除（Google名は公開しない）
+- `DisplayUser` 型を追加（ヘッダー等での表示用）
+- 各フィールドの用途をコメントで明確化
 
 ### Reserved Usernames (予約語)
 
@@ -364,31 +398,24 @@ sequenceDiagram
     SetupPage->>Browser: /{username} にリダイレクト
 ```
 
-### ユーザー名未設定ガード
+### 認証後のリダイレクト設定
 
 ```typescript
-// src/components/common/RequireUsername.tsx
+// src/lib/auth-client.ts
 
-export function RequireUsername({ children }: { children: ReactNode }) {
-  const { user, isLoading } = useAuth();
-  const location = useLocation();
-
-  if (isLoading) return <Loading />;
-
-  // 未ログインまたはユーザー名設定済み
-  if (!user || user.username) {
-    return <>{children}</>;
-  }
-
-  // ユーザー名未設定: /setup にリダイレクト（/enter, /setup は除外）
-  const allowedPaths = ['/enter', '/setup'];
-  if (allowedPaths.includes(location.pathname)) {
-    return <>{children}</>;
-  }
-
-  return <Navigate to="/setup" replace />;
-}
+// Better Auth の認証設定
+// 認証成功後のコールバックで /setup に直接リダイレクト
+export const authClient = createAuthClient({
+  // ...
+  callbackURL: '/setup',  // 認証成功後のリダイレクト先
+});
 ```
+
+**v1.1 設計変更**:
+- `RequireUsername` ガードを削除（過剰な設計）
+- 認証コールバックで `/setup` に直接リダイレクトするシンプルな設計に変更
+- ハンドルネーム設定完了後は `/{username}` に遷移し、以降は通常フロー
+- ハンドルネームが必要な機能（ログ投稿など）は個別にチェック
 
 ## Error Handling
 

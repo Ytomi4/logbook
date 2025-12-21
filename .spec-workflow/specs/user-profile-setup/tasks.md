@@ -320,10 +320,87 @@
   - _Requirements: Task 10_
   - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: DevOps Engineer | Task: Create R2 bucket named logbook-avatars using npx wrangler r2 bucket create logbook-avatars, configure CORS if needed for direct uploads | Restrictions: Ensure bucket name matches wrangler.jsonc config | Success: R2 bucket is created and accessible from Workers | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
 
-- [-] 34. End-to-end testing
+- [x] 34. End-to-end testing
   - Test full registration flow manually
   - Test avatar upload flow
   - Test public timeline access
   - Purpose: Verify complete feature works
   - _Requirements: All_
   - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Engineer | Task: Manually test complete user flows: 1) New user registration (enter → Google auth → setup → timeline), 2) Avatar upload (settings → upload image → verify), 3) Public timeline access (visit /{username} as logged out user), document any issues found | Restrictions: Test in development environment first, test both happy paths and error cases | Success: All user flows work correctly without errors | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
+
+## v1.1 修正タスク（2025-12-21 フィードバック対応）
+
+### 認証フロー簡素化
+
+- [x] 35. 認証コールバックのリダイレクト先を /setup に変更
+  - File: `src/lib/auth-client.ts`
+  - Better Auth のコールバック設定で `/setup` を指定
+  - Purpose: 認証後に直接 /setup に遷移させる
+  - _Leverage: Better Auth ドキュメント_
+  - _Requirements: REQ-4 (AC1)_
+  - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer with Better Auth expertise | Task: Update src/lib/auth-client.ts to set callbackURL to '/setup' so users are redirected directly to /setup after Google authentication | Restrictions: Ensure existing authentication flow still works, test with fresh login | Success: After Google login, users are redirected to /setup instead of / | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
+
+- [x] 36. RequireUsername ガードを削除
+  - Files: `src/components/common/RequireUsername.tsx`, `src/App.tsx`
+  - RequireUsername コンポーネントを削除
+  - App.tsx から RequireUsername ラッパーを削除
+  - Purpose: 過剰なガードを削除してシンプル化
+  - _Requirements: v1.1 設計変更_
+  - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Delete src/components/common/RequireUsername.tsx file and remove all usages from src/App.tsx, ensure routes work without the guard | Restrictions: Test that navigation still works correctly, ensure no broken imports | Success: RequireUsername is completely removed, app functions normally | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
+
+### ユーザー表示の修正
+
+- [x] 37. ヘッダー右上をハンドルネーム + アバター表示に変更
+  - File: `src/components/common/UserMenu.tsx`
+  - Google名（name）ではなくハンドルネーム（username）を表示
+  - アバター画像を表示（未設定時はデフォルトアイコン）
+  - Purpose: サイト内表示をハンドルネームに統一
+  - _Leverage: useAuth hook_
+  - _Requirements: REQ-8 (AC1, AC2)_
+  - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Update src/components/common/UserMenu.tsx to display username instead of Google name, show avatarUrl for avatar image (use default icon if null), never display Google account name or image | Restrictions: Handle null username gracefully, use consistent default avatar | Success: Header shows username and custom avatar, no Google info visible | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
+
+- [x] 38. 公開タイムラインでアバター画像を正しく表示
+  - File: `src/pages/PublicTimelinePage.tsx`
+  - ユーザーヘッダー部分でアバター画像を表示
+  - avatarUrl を正しく参照する
+  - Purpose: 公開タイムラインでアバターを表示
+  - _Leverage: usePublicTimeline hook_
+  - _Requirements: REQ-7 (AC4)_
+  - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Update src/pages/PublicTimelinePage.tsx to correctly display user's avatarUrl in the header section, use default avatar if null | Restrictions: Ensure image loads correctly, handle loading states | Success: Avatar image displays correctly on public timeline | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
+
+- [x] 39. 公開タイムラインで Google 名を非表示に
+  - Files: `functions/api/users/[username]/index.ts`, `src/pages/PublicTimelinePage.tsx`
+  - API から name フィールドを削除
+  - UI で Google 名を表示している箇所を削除
+  - ハンドルネーム（username）のみを表示
+  - Purpose: Google 名をサイト内で非表示にする
+  - _Requirements: REQ-7 (AC5), REQ-8 (AC3)_
+  - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Full-stack Developer | Task: Update functions/api/users/[username]/index.ts to remove 'name' field from response, update src/pages/PublicTimelinePage.tsx to display only username (not Google name), update PublicUser type if needed | Restrictions: Ensure backward compatibility, test that timeline still works | Success: Public timeline shows only username, no Google name visible | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
+
+### UI 改善
+
+- [x] 40. アカウント設定画面のラベル重複を解消
+  - File: `src/pages/SettingsPage.tsx`
+  - 「ハンドルネーム」セクションのラベル重複を解消
+  - タイトルのみ表示し、入力欄のラベルは省略
+  - Purpose: UI の重複表記を解消
+  - _Requirements: REQ-5 (AC6)_
+  - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Update src/pages/SettingsPage.tsx to remove duplicate label in username section - keep section title 'ハンドルネーム' but remove input field label, update UsernameInput to accept showLabel prop if needed | Restrictions: Maintain accessibility, ensure form still works | Success: Settings page shows 'ハンドルネーム' title once, no duplicate labels | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
+
+- [x] 41. 用語を「ハンドルネーム」に統一
+  - Files: 各コンポーネント、ページ
+  - UI 上の「ユーザー名」表記を「ハンドルネーム」に変更
+  - エラーメッセージも含めて統一
+  - Purpose: 用語の統一
+  - _Requirements: v1.1 用語定義_
+  - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Search and replace all UI text from 'ユーザー名' to 'ハンドルネーム' in components and pages (UsernameInput, SetupPage, SettingsPage, validation messages), ensure consistency | Restrictions: Only change user-facing text, keep variable/function names as 'username' | Success: All UI shows 'ハンドルネーム' consistently | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
+
+### テスト
+
+- [x] 42. v1.1 修正の E2E テスト
+  - Test: 認証後 /setup への直接遷移
+  - Test: ヘッダーロゴクリックでホームに遷移（/setup にリダイレクトされない）
+  - Test: 公開タイムラインでアバターとハンドルネーム表示
+  - Purpose: v1.1 修正の動作確認
+  - _Requirements: All v1.1 requirements_
+  - _Prompt: Implement the task for spec user-profile-setup, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Engineer | Task: Manually test v1.1 fixes: 1) Fresh login redirects to /setup directly, 2) After setting username, header logo click goes to home (not /setup), 3) Public timeline shows avatar and username (no Google name), 4) Settings page shows 'ハンドルネーム' without duplicate labels | Restrictions: Test with fresh account if possible, document any issues | Success: All v1.1 requirements are met | After completing the task, mark it as in-progress in tasks.md using `- [-]`, log the implementation using log-implementation tool, then mark as complete using `- [x]`_
