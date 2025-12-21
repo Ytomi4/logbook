@@ -187,11 +187,10 @@ fix(auth): resolve token expiration issue
 | ルール | main | develop |
 |--------|:----:|:-------:|
 | プルリクエスト必須（直接プッシュ不可） | ✅ | ✅ |
-| ステータスチェック通過必須（`deploy`） | ✅ | ✅ |
 | Force push 禁止 | ✅ | ✅ |
 | 削除禁止 | ✅ | ✅ |
 
-> **Note**: ステータスチェック `deploy` は Cloudflare Pages のビルドです。ビルドが成功しないとマージできません。
+> **Note**: Cloudflare Pages のビルド（`deploy`）は `develop` へのマージ時に実行されます。`main` へのマージ前には検証済みの状態になります。
 
 ## 質問・サポート
 
