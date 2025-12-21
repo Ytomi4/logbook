@@ -56,9 +56,8 @@ describe('UserInfo', () => {
   describe('edge cases', () => {
     it('handles empty string name with default initial', () => {
       render(<UserInfo name="" />);
-      // Empty string results in empty initial (charAt(0) of empty string)
-      const container = document.querySelector('.flex.items-center.gap-2');
-      expect(container).toBeInTheDocument();
+      // Empty string falls back to the guest initial via (name.charAt(0) || 'ゲ')
+      expect(screen.getByText('ゲ')).toBeInTheDocument();
     });
 
     it('handles single character name (appears in both initial and name)', () => {
