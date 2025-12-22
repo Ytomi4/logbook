@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { BookWithLogCount } from '../../types';
+import type { Book, BookWithLogCount } from '../../types';
 import { Card, CardContent, Button, BookCover } from '../common';
 
 interface BookGridProps {
-  books: BookWithLogCount[];
+  books: (Book | BookWithLogCount)[];
   onDelete?: (bookId: string) => Promise<void>;
+}
+
+function hasLogCount(book: Book | BookWithLogCount): book is BookWithLogCount {
+  return 'logCount' in book && typeof book.logCount === 'number';
 }
 
 export function BookGrid({ books, onDelete }: BookGridProps) {
@@ -54,9 +58,11 @@ export function BookGrid({ books, onDelete }: BookGridProps) {
                     {book.publisher}
                   </p>
                 )}
-                <div className="mt-2 text-xs text-gray-500">
-                  ログ: {book.logCount}件
-                </div>
+                {hasLogCount(book) && (
+                  <div className="mt-2 text-xs text-gray-500">
+                    ログ: {book.logCount}件
+                  </div>
+                )}
               </div>
             </Link>
 

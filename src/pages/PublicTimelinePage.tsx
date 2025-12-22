@@ -6,7 +6,7 @@ import { Layout } from '../components/common/Layout';
 import { TabNavigation, Loading, Button, UserInfo, HeaderActionButtons } from '../components/common';
 import { Timeline } from '../components/Timeline/Timeline';
 import { TimelineEmpty } from '../components/Timeline/TimelineEmpty';
-import { PublicBookGrid } from '../components/BookList/PublicBookGrid';
+import { BookGrid } from '../components/BookList';
 import { BooksEmpty } from '../components/BookList/BooksEmpty';
 import { QuickLogModal } from '../components/LogForm';
 import { useAuth } from '../hooks/useAuth';
@@ -158,7 +158,7 @@ export function PublicTimelinePage() {
             )
           ) : books.length > 0 ? (
             <div>
-              <PublicBookGrid books={books} />
+              <BookGrid books={books} />
               {isLoadingMore && (
                 <div className="py-4">
                   <Loading size="sm" />
