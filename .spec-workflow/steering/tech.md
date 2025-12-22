@@ -76,7 +76,7 @@ SPA（Single Page Application）形式の Web アプリケーション。フロ�
 ### Code Quality Tools
 - **Static Analysis**: ESLint 9 + TypeScript ESLint
 - **Formatting**: Prettier 3
-- **Testing Framework**: Vitest 3 + Testing Library
+- **Testing Framework**: Vitest 3 + Testing Library（詳細は [testing.md](./testing.md) を参照）
 - **Documentation**: なし（コード内コメント）
 
 ### Version Control & Collaboration
