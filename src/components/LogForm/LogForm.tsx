@@ -50,7 +50,7 @@ export function LogForm({
       <RichTextEditor
         value={content}
         onChange={setContent}
-        placeholder="読書メモを入力... (引用は⌘⇧Qでマーク)"
+        placeholder="読書メモを入力……"
         disabled={isLoading}
         onSubmit={handleSubmit}
       />

@@ -42,7 +42,7 @@ function ControlledRichTextEditor(props: React.ComponentProps<typeof RichTextEdi
 export const Empty: Story = {
   args: {
     value: '',
-    placeholder: '読書メモを入力...',
+    placeholder: '読書メモを入力……',
   },
 };
 

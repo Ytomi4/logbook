@@ -13,7 +13,7 @@ interface RichTextEditorProps {
 export function RichTextEditor({
   value,
   onChange,
-  placeholder = '読書メモを入力...',
+  placeholder = '読書メモを入力……',
   disabled = false,
   onSubmit,
 }: RichTextEditorProps) {
@@ -23,12 +23,13 @@ export function RichTextEditor({
       onChange,
     });
 
-  // Sync external value changes to editor
+  // Sync external value changes to editor (e.g., form reset after submit)
   useEffect(() => {
     if (editorRef.current && value !== content) {
-      // Only sync if value changed externally (not from our own edits)
-      const currentHtml = editorRef.current.innerHTML;
-      if (currentHtml === '' && value === '') return;
+      // Clear the editor if value is empty (form reset)
+      if (value === '') {
+        editorRef.current.innerHTML = '';
+      }
     }
   }, [value, content, editorRef]);
 
