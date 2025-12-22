@@ -1,21 +1,22 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePublicUserData } from '../hooks/usePublicUserData';
 import { useTabNavigation } from '../hooks/useTabNavigation';
 import { Layout } from '../components/common/Layout';
-import { TabNavigation, Loading, Button, UserInfo, HeaderActionButtons } from '../components/common';
+import { TabNavigation, Loading, Button } from '../components/common';
 import { Timeline } from '../components/Timeline/Timeline';
 import { TimelineEmpty } from '../components/Timeline/TimelineEmpty';
+import { UserProfileHeader } from '../components/Timeline/UserProfileHeader';
 import { BookGrid } from '../components/BookList';
 import { BooksEmpty } from '../components/BookList/BooksEmpty';
-import { QuickLogModal } from '../components/LogForm';
+import { InlineLogForm } from '../components/LogForm';
 import { useAuth } from '../hooks/useAuth';
+import type { Book } from '../types';
 
 export function TimelinePage() {
   const { username } = useParams<{ username: string }>();
   const { user: currentUser } = useAuth();
   const { activeTab, setActiveTab } = useTabNavigation();
-  const [isQuickLogOpen, setIsQuickLogOpen] = useState(false);
 
   const {
     user,
@@ -38,6 +39,21 @@ export function TimelinePage() {
   const handleLogAdded = useCallback(() => {
     refreshTimeline();
   }, [refreshTimeline]);
+
+  // Calculate default book for InlineLogForm
+  const defaultBook = useMemo((): Book | null => {
+    // Use the book from the most recent log
+    const firstLog = logs[0];
+    if (firstLog?.book) {
+      return firstLog.book;
+    }
+    // Fall back to first book in the list
+    const firstBook = books[0];
+    if (firstBook) {
+      return firstBook;
+    }
+    return null;
+  }, [logs, books]);
 
   if (isLoading && !user) {
     return (
@@ -110,19 +126,24 @@ export function TimelinePage() {
   return (
     <Layout>
       <div className="space-y-6">
-        {/* Header with UserInfo and Action Buttons */}
-        <div className="flex items-center justify-between">
-          <UserInfo
-            name={user ? `@${user.username}` : 'ゲスト'}
+        {/* Centered User Profile Header */}
+        <div className="flex flex-col items-center gap-4">
+          <UserProfileHeader
+            username={user?.username || 'guest'}
             avatarUrl={user?.avatarUrl ?? undefined}
           />
-          {isOwner && (
-            <HeaderActionButtons onAddLog={() => setIsQuickLogOpen(true)} />
-          )}
+          {/* Centered Tab Navigation */}
+          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
 
-        {/* Tab Navigation */}
-        <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+        {/* Inline Log Form - only for owner on timeline tab */}
+        {isOwner && activeTab === 'timeline' && (
+          <InlineLogForm
+            books={books}
+            defaultBook={defaultBook}
+            onSuccess={handleLogAdded}
+          />
+        )}
 
         {/* Content */}
         <div>
@@ -176,15 +197,6 @@ export function TimelinePage() {
             <BooksEmpty isOwner={isOwner} username={user?.username} />
           )}
         </div>
-
-        {/* Quick Log Modal - only for owner */}
-        {isOwner && (
-          <QuickLogModal
-            isOpen={isQuickLogOpen}
-            onClose={() => setIsQuickLogOpen(false)}
-            onSuccess={handleLogAdded}
-          />
-        )}
       </div>
     </Layout>
   );
