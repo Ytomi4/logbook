@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import type { NdlBook } from '../types';
 import { searchNdl } from '../services/ndl';
 import { ApiClientError } from '../services/api';
@@ -37,10 +37,12 @@ export function useBookSearch(debounceMs: number = 500): UseBookSearchResult {
   const fetchedCount = allResults.length;
   const hasMore = fetchedCount < totalResults && fetchedCount < MAX_RESULTS;
 
-  // Sort results by relevance
-  const results = searchQueryRef.current
-    ? sortByRelevance(allResults, searchQueryRef.current)
-    : allResults;
+  // Sort results by relevance (memoized to avoid recalculation on every render)
+  const results = useMemo(() => {
+    return searchQueryRef.current
+      ? sortByRelevance(allResults, searchQueryRef.current)
+      : allResults;
+  }, [allResults]);
 
   const search = useCallback(async (searchQuery?: string) => {
     const q = searchQuery ?? query;

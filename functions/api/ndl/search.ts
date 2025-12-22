@@ -78,7 +78,7 @@ app.get('/', async (c) => {
 
 function extractTotalResults(xml: string): number {
   // Extract openSearch:totalResults from XML
-  const regex = /<openSearch:totalResults>(\d+)<\/openSearch:totalResults>/i;
+  const regex = /<openSearch:totalResults>(\d+)<\/openSearch:totalResults>/;
   const match = xml.match(regex);
   return match?.[1] ? parseInt(match[1], 10) : 0;
 }

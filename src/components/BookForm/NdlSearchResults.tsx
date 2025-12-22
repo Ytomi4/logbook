@@ -84,6 +84,7 @@ export function NdlSearchResults({
             loading={isLoadingMore}
             disabled={isLoadingMore}
             className="w-full"
+            aria-label="検索結果をさらに読み込む"
           >
             もっと見る
           </Button>
