@@ -1,6 +1,6 @@
 {
   "filePath": ".spec-workflow/steering/product.md",
-  "currentVersion": 3,
+  "currentVersion": 4,
   "snapshots": [
     {
       "version": 1,
@@ -25,6 +25,14 @@
       "trigger": "approved",
       "approvalId": "approval_1765975132884_w4sn5ay5l",
       "approvalTitle": "Product Overview - Logbook読書記録アプリ（修正版）"
+    },
+    {
+      "version": 4,
+      "filename": "snapshot-004.json",
+      "timestamp": "2025-12-22T11:31:10.258Z",
+      "trigger": "approved",
+      "approvalId": "approval_1766402988832_7y397ug0v",
+      "approvalTitle": "product.md のコンセプト整理・更新"
     }
   ]
 }

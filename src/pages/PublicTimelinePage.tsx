@@ -8,7 +8,7 @@ import { Timeline } from '../components/Timeline/Timeline';
 import { TimelineEmpty } from '../components/Timeline/TimelineEmpty';
 import { PublicBookGrid } from '../components/BookList/PublicBookGrid';
 import { BooksEmpty } from '../components/BookList/BooksEmpty';
-import { QuickAddLogModal } from '../components/LogForm/QuickAddLogModal';
+import { QuickLogModal } from '../components/LogForm';
 import { useAuth } from '../hooks/useAuth';
 
 export function PublicTimelinePage() {
@@ -177,9 +177,9 @@ export function PublicTimelinePage() {
           )}
         </div>
 
-        {/* Quick Add Log Modal - only for owner */}
+        {/* Quick Log Modal - only for owner */}
         {isOwner && (
-          <QuickAddLogModal
+          <QuickLogModal
             isOpen={isQuickLogOpen}
             onClose={() => setIsQuickLogOpen(false)}
             onSuccess={handleLogAdded}
