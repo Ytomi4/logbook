@@ -173,3 +173,56 @@
     _Requirements: All
     Success: All test cases pass. UI matches design document.
     After implementation: Set task to in-progress in tasks.md, log implementation with log-implementation tool, then mark as complete._
+
+## Phase 4: REQ-6 Implementation (Book Selector UI Improvement)
+
+- [x] 11. Update InlineLogForm book selector UI
+  - File: `src/components/LogForm/InlineLogForm.tsx`
+  - Remove dropdown arrow icon from book selector button
+  - Make book selector button compact with max-width and truncate
+  - Add "本を追加" link next to book selector button
+  - Purpose: Simplify book selector UI and add book registration shortcut
+  - _Leverage: existing InlineLogForm component_
+  - _Requirements: REQ-6_
+  - _Prompt: Implement the task for spec timeline-page-redesign, first run spec-workflow-guide to get the workflow guide then implement the task:
+    Role: React Frontend Developer specializing in UI components
+    Task: Update InlineLogForm in `src/components/LogForm/InlineLogForm.tsx`:
+    1. Remove the dropdown arrow (chevron-down) SVG icon from the book selector button
+    2. Make the book selector button compact: add max-width (e.g., max-w-xs or similar) and ensure title truncates
+    3. Add a "本を追加" link (using Link from react-router-dom) to the right of the book selector button, linking to /books/new
+    4. Arrange book selector and add book link in a flex row
+    Restrictions: Keep existing functionality. Do not change BookSelectorModal. Only modify InlineLogForm.
+    _Leverage: existing InlineLogForm component, Link from react-router-dom
+    _Requirements: REQ-6
+    Success: Book selector has no dropdown arrow. Book selector is compact with truncated title. "本を追加" link appears to the right. Link navigates to /books/new.
+    After implementation: Set task to in-progress in tasks.md, log implementation with log-implementation tool, then mark as complete._
+
+- [x] 12. Update InlineLogForm Stories for new UI
+  - File: `src/components/LogForm/InlineLogForm.stories.tsx`
+  - Verify stories reflect new UI layout
+  - Purpose: Ensure Storybook shows updated UI
+  - _Requirements: REQ-6_
+  - _Prompt: Implement the task for spec timeline-page-redesign, first run spec-workflow-guide to get the workflow guide then implement the task:
+    Role: Storybook Developer
+    Task: Review and update InlineLogForm stories to ensure they correctly display the new UI with compact book selector and "本を追加" link.
+    Restrictions: Only update if necessary. Stories may already work correctly.
+    _Requirements: REQ-6
+    Success: Storybook shows InlineLogForm with new compact layout.
+    After implementation: Set task to in-progress in tasks.md, log implementation with log-implementation tool, then mark as complete._
+
+- [x] 13. Test and verify REQ-6 changes
+  - Run build and verify no errors
+  - Manual testing of new UI
+  - Purpose: Ensure REQ-6 is fully implemented
+  - _Requirements: REQ-6_
+  - _Prompt: Implement the task for spec timeline-page-redesign, first run spec-workflow-guide to get the workflow guide then implement the task:
+    Role: QA Engineer
+    Task: Test REQ-6 implementation:
+    1. Run `npm run build` to verify no errors
+    2. Verify book selector has no dropdown arrow
+    3. Verify book selector is compact and title truncates for long titles
+    4. Verify "本を追加" link appears and navigates to /books/new
+    Restrictions: Report any issues found.
+    _Requirements: REQ-6
+    Success: Build passes. All REQ-6 acceptance criteria verified.
+    After implementation: Set task to in-progress in tasks.md, log implementation with log-implementation tool, then mark as complete._

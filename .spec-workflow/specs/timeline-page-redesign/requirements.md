@@ -66,6 +66,17 @@
 3. IF タイムラインにログがない THEN ユーザーの本一覧から最初の本がデフォルトで選択される SHALL。
 4. IF ユーザーに本が登録されていない THEN ログ入力フォームは「本を登録してください」というメッセージとともに本登録へのリンクを表示する SHALL。
 
+### REQ-6: 本選択UIの改善
+
+**User Story:** ユーザーとして、本の選択ボタンがシンプルで分かりやすく、新しい本の登録への導線もすぐに見つけられるようにしてほしい。
+
+#### Acceptance Criteria
+
+1. WHEN 本の選択ボタンが表示される THEN ドロップダウンを示す下矢印アイコンは表示されない SHALL。
+2. WHEN 本の選択ボタンが表示される THEN ボタンの横幅はコンパクトにし、本のタイトルが長い場合は省略表示（truncate）する SHALL。
+3. WHEN ログ入力フォームが表示される THEN 本の選択ボタンの右側に「本を追加」リンクが表示される SHALL。
+4. WHEN ユーザーが「本を追加」リンクをクリックする THEN 本登録ページ（`/books/new`）に遷移する SHALL。
+
 ## Non-Functional Requirements
 
 ### Code Architecture and Modularity
