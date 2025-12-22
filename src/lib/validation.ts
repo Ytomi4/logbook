@@ -25,7 +25,7 @@ export const updateBookSchema = z.object({
 });
 
 // Log validation schemas
-export const logTypeSchema = z.enum(['memo', 'quote']);
+export const logTypeSchema = z.enum(['note', 'registration']);
 
 export const createLogSchema = z.object({
   logType: logTypeSchema,

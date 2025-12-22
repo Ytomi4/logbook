@@ -39,7 +39,45 @@ export interface UpdateBookRequest {
 }
 
 // Log types
-export type LogType = 'memo' | 'quote' | 'registration';
+export type LogType = 'note' | 'registration';
+
+// Log content paragraph type
+export interface LogParagraph {
+  type: 'text' | 'quote';
+  content: string;
+}
+
+// Parse log content into paragraphs (quotes and text)
+export function parseLogContent(content: string): LogParagraph[] {
+  if (!content || content.trim() === '') {
+    return [];
+  }
+
+  const lines = content.split('\n');
+  const paragraphs: LogParagraph[] = [];
+  let currentParagraph: LogParagraph | null = null;
+
+  for (const line of lines) {
+    const isQuote = line.startsWith('> ');
+    const lineContent = isQuote ? line.slice(2) : line;
+    const lineType: 'text' | 'quote' = isQuote ? 'quote' : 'text';
+
+    if (currentParagraph === null) {
+      currentParagraph = { type: lineType, content: lineContent };
+    } else if (currentParagraph.type === lineType) {
+      currentParagraph.content += '\n' + lineContent;
+    } else {
+      paragraphs.push(currentParagraph);
+      currentParagraph = { type: lineType, content: lineContent };
+    }
+  }
+
+  if (currentParagraph !== null) {
+    paragraphs.push(currentParagraph);
+  }
+
+  return paragraphs;
+}
 
 export interface Log {
   id: string;

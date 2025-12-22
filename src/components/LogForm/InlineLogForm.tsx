@@ -65,7 +65,7 @@ export function InlineLogForm({
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-4">
+    <div className="space-y-4">
       {/* Book Selector Row */}
       <div className="flex items-center gap-3">
         {/* Book Selector Button - Compact */}
