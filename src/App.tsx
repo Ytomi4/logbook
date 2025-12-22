@@ -6,7 +6,7 @@ import { BookRegistrationPage } from './pages/BookRegistrationPage';
 import { EnterPage } from './pages/EnterPage';
 import { SetupPage } from './pages/SetupPage';
 import { SettingsPage } from './pages/SettingsPage';
-import { PublicTimelinePage } from './pages/PublicTimelinePage';
+import { TimelinePage } from './pages/TimelinePage';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 
 function AppRoutes() {
@@ -39,8 +39,8 @@ function AppRoutes() {
       />
       <Route path="/settings" element={<SettingsPage />} />
 
-      {/* Public timeline - must be last to avoid catching other routes */}
-      <Route path="/:username" element={<PublicTimelinePage />} />
+      {/* User timeline - must be last to avoid catching other routes */}
+      <Route path="/:username" element={<TimelinePage />} />
     </Routes>
   );
 }

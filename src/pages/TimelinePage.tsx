@@ -11,7 +11,7 @@ import { BooksEmpty } from '../components/BookList/BooksEmpty';
 import { QuickLogModal } from '../components/LogForm';
 import { useAuth } from '../hooks/useAuth';
 
-export function PublicTimelinePage() {
+export function TimelinePage() {
   const { username } = useParams<{ username: string }>();
   const { user: currentUser } = useAuth();
   const { activeTab, setActiveTab } = useTabNavigation();
