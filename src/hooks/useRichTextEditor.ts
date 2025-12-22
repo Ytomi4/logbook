@@ -317,11 +317,12 @@ export function useRichTextEditor(
     [toggleQuote]
   );
 
-  // Sync initial value to DOM
+  // Sync initial value to DOM (only on mount, not on initialValue changes)
   useEffect(() => {
     if (editorRef.current && initialValue) {
       editorRef.current.innerHTML = markdownToHtml(initialValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

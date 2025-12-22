@@ -120,7 +120,9 @@ describe('useBookList', () => {
       });
 
       // Verify that deleteBook throws the error
-      await expect(result.current.deleteBook('1')).rejects.toThrow('Delete failed');
+      await act(async () => {
+        await expect(result.current.deleteBook('1')).rejects.toThrow('Delete failed');
+      });
     });
   });
 
