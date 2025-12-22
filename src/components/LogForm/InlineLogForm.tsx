@@ -58,55 +58,53 @@ export function InlineLogForm({
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-4">
-      {/* Book Selector */}
-      <button
-        type="button"
-        onClick={() => setIsModalOpen(true)}
-        className="w-full flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-left"
-      >
-        <svg
-          className="w-5 h-5 text-gray-400 flex-shrink-0"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      {/* Book Selector Row */}
+      <div className="flex items-center gap-3">
+        {/* Book Selector Button - Compact */}
+        <button
+          type="button"
+          onClick={() => setIsModalOpen(true)}
+          className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-left max-w-xs"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-          />
-        </svg>
-        <div className="flex-1 min-w-0">
-          {selectedBook ? (
-            <>
-              <p className="font-medium text-gray-900 truncate">
-                {selectedBook.title}
-              </p>
-              {selectedBook.author && (
-                <p className="text-sm text-gray-500 truncate">
-                  {selectedBook.author}
-                </p>
-              )}
-            </>
-          ) : (
-            <p className="text-gray-500">本を選択してください</p>
-          )}
-        </div>
-        <svg
-          className="w-4 h-4 text-gray-400 flex-shrink-0"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+          <svg
+            className="w-4 h-4 text-gray-400 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            />
+          </svg>
+          <span className="text-sm font-medium text-gray-900 truncate">
+            {selectedBook ? selectedBook.title : '本を選択'}
+          </span>
+        </button>
+
+        {/* Add Book Link */}
+        <Link
+          to="/books/new"
+          className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          <span>本を追加</span>
+        </Link>
+      </div>
 
       {/* Log Form */}
       {selectedBook && (
