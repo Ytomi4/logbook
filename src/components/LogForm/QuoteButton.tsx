@@ -8,12 +8,12 @@ interface QuoteButtonProps {
 
 // Detect if device has coarse pointer (touch device)
 function useIsTouchDevice(): boolean {
-  const [isTouch, setIsTouch] = useState(false);
+  const [isTouch, setIsTouch] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+  );
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(pointer: coarse)');
-    setIsTouch(mediaQuery.matches);
-
     const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);

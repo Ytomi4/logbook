@@ -33,9 +33,6 @@ export function InlineLogForm({
       try {
         await createLog(selectedBook.id, data);
         onSuccess();
-      } catch (error) {
-        // Re-throw so LogForm can handle and display the error
-        throw error;
       } finally {
         setIsSubmitting(false);
       }
