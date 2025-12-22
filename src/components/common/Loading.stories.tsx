@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Loading, LoadingPage } from './Loading';
+import { Loading } from './Loading';
 
 const meta = {
   title: 'Common/Loading',
@@ -61,15 +61,6 @@ export const AllSizes: Story = {
         <Loading size="lg" />
         <p className="mt-2 text-sm text-gray-500">Large</p>
       </div>
-    </div>
-  ),
-};
-
-// LoadingPage story
-export const FullPage: Story = {
-  render: () => (
-    <div className="h-64 relative border border-gray-200 rounded">
-      <LoadingPage text="Loading page content..." />
     </div>
   ),
 };
