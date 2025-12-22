@@ -96,6 +96,32 @@ function getCurrentParagraph(editor: HTMLDivElement): HTMLDivElement | null {
 
 // Normalize editor: wrap text nodes in <div> elements
 function normalizeEditor(editor: HTMLDivElement): void {
+  const selection = window.getSelection();
+  const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
+
+  // Track selection info if it's within a text node we'll replace
+  let selectionInfo: {
+    textNode: Text;
+    startOffset: number;
+    endOffset: number;
+    isCollapsed: boolean;
+  } | null = null;
+
+  if (range) {
+    const startContainer = range.startContainer;
+    if (
+      startContainer.nodeType === Node.TEXT_NODE &&
+      startContainer.parentNode === editor
+    ) {
+      selectionInfo = {
+        textNode: startContainer as Text,
+        startOffset: range.startOffset,
+        endOffset: range.endOffset,
+        isCollapsed: range.collapsed,
+      };
+    }
+  }
+
   const nodesToReplace: { textNode: Text; content: string }[] = [];
 
   // Collect text nodes that need to be wrapped (avoid modifying while iterating)
@@ -113,6 +139,31 @@ function normalizeEditor(editor: HTMLDivElement): void {
     const div = document.createElement('div');
     div.textContent = content;
     editor.replaceChild(div, textNode);
+
+    // Restore selection in the new div if this was the selected text node
+    if (selectionInfo && selectionInfo.textNode === textNode && selection) {
+      const textNodeInDiv = div.firstChild;
+      if (textNodeInDiv) {
+        const newRange = document.createRange();
+        const maxOffset = textNodeInDiv.textContent?.length || 0;
+
+        newRange.setStart(
+          textNodeInDiv,
+          Math.min(selectionInfo.startOffset, maxOffset)
+        );
+        if (selectionInfo.isCollapsed) {
+          newRange.collapse(true);
+        } else {
+          newRange.setEnd(
+            textNodeInDiv,
+            Math.min(selectionInfo.endOffset, maxOffset)
+          );
+        }
+
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+      }
+    }
   }
 }
 
