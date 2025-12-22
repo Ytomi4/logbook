@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Log } from '../../types';
-import { QuoteDisplay } from './QuoteDisplay';
+import { LogDisplay } from './LogDisplay';
+import { RichTextEditor } from '../LogForm/RichTextEditor';
 import { Button } from '../common';
 import { useLogEdit } from '../../hooks/useLogEdit';
 
@@ -28,13 +29,11 @@ export function TimelineItem({
   const {
     isEditing,
     editedContent,
-    editedLogType,
     isSaving,
     error: editError,
     startEdit,
     cancelEdit,
     setEditedContent,
-    setEditedLogType,
     saveEdit,
   } = useLogEdit(log.id, onUpdate);
 
@@ -53,7 +52,6 @@ export function TimelineItem({
     }
   };
 
-  const isQuote = log.logType === 'quote';
   const isRegistration = log.logType === 'registration';
 
   // Registration logs cannot be edited
@@ -72,9 +70,7 @@ export function TimelineItem({
         className={`absolute left-0 top-0 w-4 h-4 rounded-full ${
           isRegistration
             ? 'bg-blue-400'
-            : isQuote
-              ? 'border-2 border-gray-500 bg-transparent'
-              : 'bg-gray-500'
+            : 'bg-gray-500'
         }`}
       />
 
@@ -84,40 +80,15 @@ export function TimelineItem({
           {isEditing ? (
             /* Edit mode */
             <div className="space-y-3">
-              {/* Log type selector */}
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setEditedLogType('memo')}
-                  className={`px-3 py-1 rounded-full text-sm ${
-                    editedLogType === 'memo'
-                      ? 'bg-gray-900 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  メモ
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setEditedLogType('quote')}
-                  className={`px-3 py-1 rounded-full text-sm ${
-                    editedLogType === 'quote'
-                      ? 'bg-gray-900 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  引用
-                </button>
+              {/* Rich text editor */}
+              <div className="border border-gray-200 rounded-md overflow-hidden">
+                <RichTextEditor
+                  value={editedContent}
+                  onChange={setEditedContent}
+                  placeholder="内容を入力..."
+                  disabled={isSaving}
+                />
               </div>
-
-              {/* Content textarea */}
-              <textarea
-                value={editedContent}
-                onChange={(e) => setEditedContent(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                rows={4}
-                placeholder="内容を入力..."
-              />
 
               {/* Error message */}
               {editError && (
@@ -151,12 +122,8 @@ export function TimelineItem({
                 <p className="text-gray-500 text-sm">
                   {log.content} 読み始めました
                 </p>
-              ) : isQuote ? (
-                <QuoteDisplay content={log.content} />
               ) : (
-                <p className="text-gray-900 whitespace-pre-wrap leading-relaxed">
-                  {log.content}
-                </p>
+                <LogDisplay content={log.content} />
               )}
 
               {/* Timestamp */}

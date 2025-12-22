@@ -2,7 +2,7 @@
 
 ## Phase 1: Data Layer
 
-- [ ] 1. Update type definitions
+- [x] 1. Update type definitions
   - File: `src/types/index.ts`
   - Change `LogType` from `'memo' | 'quote' | 'registration'` to `'note' | 'registration'`
   - Add helper function `parseLogContent` for Markdown parsing
@@ -11,7 +11,7 @@
   - _Requirements: 1.1, 1.3_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: TypeScript Developer | Task: Update LogType definition to remove 'memo'/'quote' and add 'note', add parseLogContent helper for Markdown quote parsing | Restrictions: Do not break existing imports, maintain type safety | _Leverage: src/types/index.ts | _Requirements: 1.1, 1.3 | Success: LogType is updated, parseLogContent correctly parses `> ` prefixed lines as quotes | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 2. Create DB migration for logType change
+- [x] 2. Create DB migration for logType change
   - File: `db/migrations/XXXX_unified_log.sql`
   - Add `note` to logType enum
   - Migrate existing `memo` logs to `note`
@@ -22,7 +22,7 @@
   - _Requirements: 1.1, 1.2_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Database Developer | Task: Create SQL migration to add 'note' type, migrate memo→note, quote→note (with `> ` prefix on each line of content), then remove memo/quote | Restrictions: Must be reversible if possible, handle empty content gracefully | _Leverage: db/migrations/, db/schema.ts | _Requirements: 1.1, 1.2 | Success: Migration runs without errors, all existing logs are converted correctly, logType enum only contains 'note' and 'registration' | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 3. Update DB schema definition
+- [x] 3. Update DB schema definition
   - File: `db/schema.ts`
   - Update `logType` enum to `['note', 'registration']`
   - Purpose: Keep schema definition in sync with migration
@@ -32,7 +32,7 @@
 
 ## Phase 2: Core Components
 
-- [ ] 4. Create useRichTextEditor hook
+- [x] 4. Create useRichTextEditor hook
   - File: `src/hooks/useRichTextEditor.ts`
   - Implement contentEditable state management
   - Add toggleQuote function for quote/unquote operations
@@ -43,7 +43,7 @@
   - _Requirements: 3.1, 3.2, 3.3, 4.3, 4.4, 4.5, 4.6_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Create useRichTextEditor hook with contentEditable management, toggleQuote for paragraph-level quote toggling, keyboard shortcut support (Cmd/Ctrl+Shift+Q), and Markdown↔DOM sync | Restrictions: No external rich text libraries, keep lightweight, handle edge cases (empty, cursor position, selection) | _Leverage: src/hooks/ | _Requirements: 3.1, 3.2, 3.3, 4.3, 4.4, 4.5, 4.6 | Success: Hook manages editor state correctly, toggleQuote works for all scenarios (empty, cursor in paragraph, selection, no cursor), keyboard shortcut triggers toggleQuote | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 5. Create QuoteButton component
+- [x] 5. Create QuoteButton component
   - File: `src/components/LogForm/QuoteButton.tsx`
   - Create icon button for quote toggle
   - Show keyboard shortcut hint on desktop only
@@ -53,7 +53,7 @@
   - _Requirements: 4.1, 4.7, 4.8_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Create QuoteButton component with quote icon, onClick handler, showShortcut prop for desktop-only shortcut display, use pointer:coarse media query for mobile detection | Restrictions: Follow existing Button patterns, accessible touch target (44x44px minimum) | _Leverage: src/components/common/Button.tsx | _Requirements: 4.1, 4.7, 4.8 | Success: Button renders quote icon, shows "⌘⇧Q" hint on desktop only, has proper touch target size | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 6. Create RichTextEditor component
+- [x] 6. Create RichTextEditor component
   - File: `src/components/LogForm/RichTextEditor.tsx`
   - Create contentEditable div with quote styling
   - Integrate useRichTextEditor hook
@@ -64,7 +64,7 @@
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 4.1, 5.1, 5.2_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Create RichTextEditor with contentEditable div, integrate useRichTextEditor hook, render quoted paragraphs with left border style (from QuoteDisplay), add QuoteButton in footer, implement borderless design | Restrictions: No form borders, quote paragraphs must have visual distinction (border-l-4, italic, gray text), placeholder when empty | _Leverage: src/components/LogForm/, src/components/Timeline/QuoteDisplay.tsx | _Requirements: 3.1, 3.2, 3.3, 3.4, 4.1, 5.1, 5.2 | Success: Editor displays with no borders, quoted text shows with left border style, QuoteButton visible in footer, content syncs with Markdown format | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 7. Create LogDisplay component
+- [x] 7. Create LogDisplay component
   - File: `src/components/Timeline/LogDisplay.tsx`
   - Parse Markdown content and render with quote styling
   - Reuse quote styles from QuoteDisplay
@@ -75,7 +75,7 @@
 
 ## Phase 3: Integration
 
-- [ ] 8. Update LogForm to use RichTextEditor
+- [x] 8. Update LogForm to use RichTextEditor
   - File: `src/components/LogForm/LogForm.tsx`
   - Replace Textarea with RichTextEditor
   - Remove LogTypeSelector usage
@@ -85,7 +85,7 @@
   - _Requirements: 6.1, 6.2_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: React Developer | Task: Update LogForm to use RichTextEditor instead of Textarea, remove LogTypeSelector import and usage, hardcode logType as 'note' in submission | Restrictions: Maintain existing onSubmit/onCancel props interface, keep validation logic | _Leverage: src/components/LogForm/LogForm.tsx, src/components/LogForm/RichTextEditor.tsx | _Requirements: 6.1, 6.2 | Success: Form uses new RichTextEditor, no LogTypeSelector visible, submission creates 'note' type logs | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 9. Update InlineLogForm styling
+- [x] 9. Update InlineLogForm styling
   - File: `src/components/LogForm/InlineLogForm.tsx`
   - Remove outer border styling for borderless design
   - Ensure RichTextEditor integration works correctly
@@ -94,7 +94,7 @@
   - _Requirements: 5.1, 5.2_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Update InlineLogForm to remove border and background styling for borderless design, ensure LogForm with RichTextEditor displays correctly | Restrictions: Keep book selector and layout intact, maintain spacing | _Leverage: src/components/LogForm/InlineLogForm.tsx | _Requirements: 5.1, 5.2 | Success: Form blends into page without visible borders, content area is seamless | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 10. Update TimelineItem to use LogDisplay
+- [x] 10. Update TimelineItem to use LogDisplay
   - File: `src/components/Timeline/TimelineItem.tsx`
   - Replace QuoteDisplay/plain text logic with LogDisplay
   - Handle 'note' type logs
@@ -104,7 +104,7 @@
   - _Requirements: 2.1, 2.2, 2.3_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Update TimelineItem to use LogDisplay for 'note' type logs instead of separate quote/memo rendering, keep registration log handling unchanged | Restrictions: Do not break registration log display, maintain edit/delete functionality | _Leverage: src/components/Timeline/TimelineItem.tsx, src/components/Timeline/LogDisplay.tsx | _Requirements: 2.1, 2.2, 2.3 | Success: Note logs render with LogDisplay showing mixed quote/text, registration logs unchanged, edit mode still works | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 11. Update TimelineItem edit mode
+- [x] 11. Update TimelineItem edit mode
   - File: `src/components/Timeline/TimelineItem.tsx`
   - Replace edit textarea with RichTextEditor
   - Remove log type toggle in edit mode
@@ -115,7 +115,7 @@
 
 ## Phase 4: Cleanup
 
-- [ ] 12. Remove LogTypeSelector component
+- [x] 12. Remove LogTypeSelector component
   - File: `src/components/LogForm/LogTypeSelector.tsx`
   - Delete the file
   - Remove from barrel export in `src/components/LogForm/index.ts`
@@ -124,7 +124,7 @@
   - _Requirements: 6.1_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Developer | Task: Delete LogTypeSelector.tsx and LogTypeSelector.stories.tsx, remove export from index.ts | Restrictions: Ensure no remaining imports reference this component | _Leverage: src/components/LogForm/ | _Requirements: 6.1 | Success: Files deleted, no import errors in project, build succeeds | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 13. Update useLogEdit hook
+- [x] 13. Update useLogEdit hook
   - File: `src/hooks/useLogEdit.ts`
   - Remove logType editing functionality
   - Simplify to content-only editing
@@ -135,7 +135,7 @@
 
 ## Phase 5: Testing & Documentation
 
-- [ ] 14. Create Storybook stories for new components
+- [x] 14. Create Storybook stories for new components
   - Files: `src/components/LogForm/RichTextEditor.stories.tsx`, `src/components/LogForm/QuoteButton.stories.tsx`, `src/components/Timeline/LogDisplay.stories.tsx`
   - Add stories with various states (empty, with content, with quotes, mixed)
   - Purpose: Document and test components visually
@@ -143,7 +143,7 @@
   - _Requirements: All_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: Frontend Developer | Task: Create Storybook stories for RichTextEditor, QuoteButton, LogDisplay with CSF 3.0 format, add autodocs tag, create stories for empty/content/quotes/mixed states | Restrictions: Follow existing story patterns, use mock data from src/stories/mocks/data.ts | _Leverage: existing stories, src/stories/mocks/data.ts | _Requirements: All | Success: Stories render correctly in Storybook, cover all component states, autodocs generate properly | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 15. Add unit tests for parseLogContent
+- [x] 15. Add unit tests for parseLogContent
   - File: `tests/lib/parseLogContent.test.ts`
   - Test Markdown quote parsing
   - Test edge cases (empty, all quotes, no quotes, mixed)
@@ -152,7 +152,7 @@
   - _Requirements: 2.1, 2.2, 2.3_
   - _Prompt: Implement the task for spec unified-log, first run spec-workflow-guide to get the workflow guide then implement the task: Role: QA Engineer | Task: Create unit tests for parseLogContent function covering all edge cases: empty content, all quote lines, no quote lines, mixed content, multiline quotes | Restrictions: Use Vitest, follow existing test patterns | _Leverage: tests/ | _Requirements: 2.1, 2.2, 2.3 | Success: All tests pass, good coverage of edge cases | After completing implementation, mark this task as in-progress in tasks.md, then log the implementation using log-implementation tool, then mark task as complete.
 
-- [ ] 16. Run full test suite and fix issues
+- [x] 16. Run full test suite and fix issues
   - Files: Various
   - Run `npm test` and fix any failing tests
   - Update test mocks if needed

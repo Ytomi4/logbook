@@ -46,27 +46,31 @@ export const mockBooksWithLogCount: BookWithLogCount[] = mockBooks.map((book, in
   logCount: index * 3 + 1,
 }));
 
-// Single log (memo type)
-export const mockMemoLog: Log = {
+// Single log (note type - plain text)
+export const mockNoteLog: Log = {
   id: 'log-1',
   bookId: 'book-1',
   userId: 'user-1',
-  logType: 'memo',
+  logType: 'note',
   content: 'This is a sample memo about the book. It contains my thoughts and notes.',
   createdAt: '2024-01-15T10:30:00Z',
   updatedAt: '2024-01-15T10:30:00Z',
 };
 
-// Single log (quote type)
-export const mockQuoteLog: Log = {
+// Single log (note type with quote)
+export const mockNoteWithQuoteLog: Log = {
   id: 'log-2',
   bookId: 'book-1',
   userId: 'user-1',
-  logType: 'quote',
-  content: 'The only way to do great work is to love what you do.',
+  logType: 'note',
+  content: '> The only way to do great work is to love what you do.\nThis quote really resonates with me.',
   createdAt: '2024-01-16T14:20:00Z',
   updatedAt: '2024-01-16T14:20:00Z',
 };
+
+// Aliases for backward compatibility
+export const mockMemoLog = mockNoteLog;
+export const mockQuoteLog = mockNoteWithQuoteLog;
 
 // Single log (registration type)
 export const mockRegistrationLog: Log = {
@@ -81,12 +85,12 @@ export const mockRegistrationLog: Log = {
 
 // Multiple logs
 export const mockLogs: Log[] = [
-  mockMemoLog,
-  mockQuoteLog,
+  mockNoteLog,
+  mockNoteWithQuoteLog,
   {
     id: 'log-3',
     bookId: 'book-1',
-    logType: 'memo',
+    logType: 'note',
     content: 'Another memo entry with different content.',
     createdAt: '2024-01-17T09:00:00Z',
     updatedAt: '2024-01-17T09:00:00Z',
@@ -118,7 +122,7 @@ export const mockLogsWithBooks: LogWithBook[] = [
   {
     id: 'log-3',
     bookId: 'book-2',
-    logType: 'memo',
+    logType: 'note',
     content: 'A memo for a different book.',
     createdAt: '2024-01-18T11:00:00Z',
     updatedAt: '2024-01-18T11:00:00Z',
