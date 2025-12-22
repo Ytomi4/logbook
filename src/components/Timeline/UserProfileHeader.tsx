@@ -14,7 +14,7 @@ export function UserProfileHeader({
       {avatarUrl ? (
         <img
           src={avatarUrl}
-          alt={username}
+          alt={`${username}のプロフィール画像`}
           className="w-20 h-20 rounded-full object-cover"
         />
       ) : (

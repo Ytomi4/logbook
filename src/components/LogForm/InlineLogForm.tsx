@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { Book, CreateLogRequest } from '../../types';
 import { LogForm } from './LogForm';
@@ -20,6 +20,11 @@ export function InlineLogForm({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Sync selectedBook with defaultBook when it changes (e.g., after adding a new log)
+  useEffect(() => {
+    setSelectedBook(defaultBook);
+  }, [defaultBook]);
+
   const handleSubmit = useCallback(
     async (data: CreateLogRequest) => {
       if (!selectedBook) return;
@@ -28,6 +33,9 @@ export function InlineLogForm({
       try {
         await createLog(selectedBook.id, data);
         onSuccess();
+      } catch (error) {
+        // Re-throw so LogForm can handle and display the error
+        throw error;
       } finally {
         setIsSubmitting(false);
       }
@@ -65,12 +73,14 @@ export function InlineLogForm({
           type="button"
           onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-left max-w-xs"
+          aria-label="本を選択"
         >
           <svg
             className="w-4 h-4 text-gray-400 flex-shrink-0"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -94,6 +104,7 @@ export function InlineLogForm({
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
