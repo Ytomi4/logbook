@@ -5,7 +5,7 @@
 
 ---
 
-- [ ] 1. バリデーションスキーマの拡張
+- [x] 1. バリデーションスキーマの拡張
   - File: `src/lib/validation.ts`
   - `ndlSearchSchema` に `idx` パラメータを追加
   - `cnt` のデフォルト値を 30 に変更
@@ -21,7 +21,7 @@
     Success: Schema compiles without errors, idx parameter is properly validated, cnt defaults to 30
     After completing the task, use log-implementation to record what was done, then mark this task as complete in tasks.md_
 
-- [ ] 2. バックエンド API の拡張
+- [x] 2. バックエンド API の拡張
   - File: `functions/api/ndl/search.ts`
   - `idx` パラメータを NDL OpenSearch URL に追加
   - NDL API レスポンスから totalResults を正しく抽出
@@ -37,7 +37,7 @@
     Success: API accepts idx parameter, totalResults is correctly returned, existing functionality unchanged
     After completing the task, use log-implementation to record what was done, then mark this task as complete in tasks.md_
 
-- [ ] 3. フロントエンド NDL サービスの拡張
+- [x] 3. フロントエンド NDL サービスの拡張
   - File: `src/services/ndl.ts`
   - `NdlSearchParams` インターフェースに `idx` を追加
   - `searchNdl` 関数で `idx` パラメータを送信
@@ -53,7 +53,7 @@
     Success: searchNdl accepts idx parameter and correctly passes it to API
     After completing the task, use log-implementation to record what was done, then mark this task as complete in tasks.md_
 
-- [ ] 4. 検索結果ソートユーティリティの作成
+- [x] 4. 検索結果ソートユーティリティの作成
   - File: `src/lib/search-relevance.ts` (新規)
   - `calculateRelevanceScore` 関数を実装（完全一致 100、前方一致 80、部分一致 60、その他 40）
   - `sortByRelevance` 関数を実装（スコア降順でソート）
@@ -69,7 +69,7 @@
     Success: Functions are pure, correctly calculate scores, sort works as expected
     After completing the task, use log-implementation to record what was done, then mark this task as complete in tasks.md_
 
-- [ ] 5. ソートユーティリティのユニットテスト
+- [x] 5. ソートユーティリティのユニットテスト
   - File: `tests/lib/search-relevance.test.ts` (新規)
   - 完全一致、前方一致、部分一致、著者名一致のテストケース
   - ソート結果の順序テスト
@@ -85,7 +85,7 @@
     Success: All test cases pass, good coverage of scoring logic
     After completing the task, use log-implementation to record what was done, then mark this task as complete in tasks.md_
 
-- [ ] 6. useBookSearch フックの拡張
+- [x] 6. useBookSearch フックの拡張
   - File: `src/hooks/useBookSearch.ts`
   - 状態追加: `hasMore`, `isLoadingMore`, `currentIdx`, `allResults`
   - `loadMore` 関数を実装（idx を増加させて追加取得、既存結果にマージ）
@@ -103,7 +103,7 @@
     Success: Hook returns hasMore, isLoadingMore, loadMore; pagination works correctly; results are sorted by relevance
     After completing the task, use log-implementation to record what was done, then mark this task as complete in tasks.md_
 
-- [ ] 7. NdlSearchResults コンポーネントの拡張
+- [x] 7. NdlSearchResults コンポーネントの拡張
   - File: `src/components/BookForm/NdlSearchResults.tsx`
   - Props 追加: `hasMore`, `isLoadingMore`, `onLoadMore`
   - 「もっと見る」ボタンを検索結果の下部に追加
@@ -120,7 +120,7 @@
     Success: Button appears when hasMore=true, shows loading state, calls onLoadMore on click
     After completing the task, use log-implementation to record what was done, then mark this task as complete in tasks.md_
 
-- [ ] 8. BookRegistrationPage での統合
+- [x] 8. BookRegistrationPage での統合
   - File: `src/pages/BookRegistrationPage.tsx`
   - `useBookSearch` から新しいプロパティを取得して `NdlSearchResults` に渡す
   - Purpose: ページネーション機能をページに統合
@@ -135,7 +135,7 @@
     Success: Page passes pagination props to NdlSearchResults, feature works end-to-end
     After completing the task, use log-implementation to record what was done, then mark this task as complete in tasks.md_
 
-- [ ] 9. Storybook ストーリーの更新
+- [x] 9. Storybook ストーリーの更新
   - File: `src/components/BookForm/NdlSearchResults.stories.tsx`
   - ページネーション状態を含むストーリーを追加
   - Purpose: コンポーネントの動作を視覚的に確認可能にする
@@ -150,7 +150,7 @@
     Success: Stories render correctly, demonstrate all pagination states
     After completing the task, use log-implementation to record what was done, then mark this task as complete in tasks.md_
 
-- [ ] 10. 統合テストと動作確認
+- [x] 10. 統合テストと動作確認
   - 開発サーバーで実際の NDL API を使用してテスト
   - ページネーション動作確認
   - ソート結果の妥当性確認

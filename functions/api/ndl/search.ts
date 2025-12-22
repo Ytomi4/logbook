@@ -29,7 +29,7 @@ app.get('/', async (c) => {
     );
   }
 
-  const { title, author, isbn, cnt } = parseResult.data;
+  const { title, author, isbn, cnt, idx } = parseResult.data;
 
   // Build NDL OpenSearch query
   const params = new URLSearchParams();
@@ -44,6 +44,7 @@ app.get('/', async (c) => {
     params.append('isbn', isbn);
   }
   params.append('cnt', String(cnt));
+  params.append('idx', String(idx));
 
   const ndlUrl = `https://ndlsearch.ndl.go.jp/api/opensearch?${params.toString()}`;
 
@@ -63,9 +64,10 @@ app.get('/', async (c) => {
 
     const xmlText = await response.text();
     const items = parseNdlXml(xmlText);
+    const totalResults = extractTotalResults(xmlText);
 
     return c.json({
-      totalResults: items.length,
+      totalResults,
       items,
     });
   } catch (error) {
@@ -73,6 +75,13 @@ app.get('/', async (c) => {
     return c.json({ message: 'Failed to fetch from NDL API' }, 502);
   }
 });
+
+function extractTotalResults(xml: string): number {
+  // Extract openSearch:totalResults from XML
+  const regex = /<openSearch:totalResults>(\d+)<\/openSearch:totalResults>/i;
+  const match = xml.match(regex);
+  return match?.[1] ? parseInt(match[1], 10) : 0;
+}
 
 function parseNdlXml(xml: string): NdlBook[] {
   const items: NdlBook[] = [];

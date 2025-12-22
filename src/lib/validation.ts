@@ -61,7 +61,8 @@ export const ndlSearchSchema = z.object({
   title: z.string().optional(),
   author: z.string().optional(),
   isbn: z.string().optional(),
-  cnt: z.coerce.number().int().min(1).max(50).default(10),
+  cnt: z.coerce.number().int().min(1).max(50).default(30),
+  idx: z.coerce.number().int().min(1).default(1),
 });
 
 // UUID validation
