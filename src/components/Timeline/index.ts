@@ -4,3 +4,4 @@ export { TimelineGroup } from './TimelineGroup';
 export { TimelineEmpty } from './TimelineEmpty';
 export { QuoteDisplay } from './QuoteDisplay';
 export { TimelineView } from './TimelineView';
+export { UserProfileHeader } from './UserProfileHeader';
