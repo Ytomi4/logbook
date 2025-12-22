@@ -94,6 +94,28 @@ function getCurrentParagraph(editor: HTMLDivElement): HTMLDivElement | null {
   return null;
 }
 
+// Normalize editor: wrap text nodes in <div> elements
+function normalizeEditor(editor: HTMLDivElement): void {
+  const nodesToReplace: { textNode: Text; content: string }[] = [];
+
+  // Collect text nodes that need to be wrapped (avoid modifying while iterating)
+  editor.childNodes.forEach((node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const content = node.textContent || '';
+      if (content.trim() || content.includes('\n')) {
+        nodesToReplace.push({ textNode: node as Text, content });
+      }
+    }
+  });
+
+  // Replace text nodes with div elements
+  for (const { textNode, content } of nodesToReplace) {
+    const div = document.createElement('div');
+    div.textContent = content;
+    editor.replaceChild(div, textNode);
+  }
+}
+
 // Get all paragraphs in selection range
 function getSelectedParagraphs(editor: HTMLDivElement): HTMLDivElement[] {
   const selection = window.getSelection();
@@ -188,6 +210,10 @@ export function useRichTextEditor(
     if (!editorRef.current) return;
 
     const editor = editorRef.current;
+
+    // Normalize: wrap any text nodes in <div> elements before processing
+    normalizeEditor(editor);
+
     const paragraphs = getSelectedParagraphs(editor);
 
     // If no paragraphs (empty editor), create a quote paragraph
