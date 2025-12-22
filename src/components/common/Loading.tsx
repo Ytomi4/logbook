@@ -41,15 +41,3 @@ export function Loading({ size = 'md', className = '', text }: LoadingProps) {
     </div>
   );
 }
-
-interface LoadingPageProps {
-  text?: string;
-}
-
-export function LoadingPage({ text = 'Loading...' }: LoadingPageProps) {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Loading size="lg" text={text} />
-    </div>
-  );
-}

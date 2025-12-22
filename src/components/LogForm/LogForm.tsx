@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import type { LogType, CreateLogRequest } from '../../types';
-import { LogTypeSelector } from './LogTypeSelector';
-import { Button, Textarea } from '../common';
+import type { CreateLogRequest } from '../../types';
+import { RichTextEditor } from './RichTextEditor';
+import { Button } from '../common';
 
 interface LogFormProps {
-  initialLogType?: LogType;
   initialContent?: string;
   onSubmit: (data: CreateLogRequest) => Promise<void> | Promise<unknown>;
   onCancel?: () => void;
@@ -13,19 +12,17 @@ interface LogFormProps {
 }
 
 export function LogForm({
-  initialLogType = 'memo',
   initialContent = '',
   onSubmit,
   onCancel,
   isEditing = false,
   isLoading = false,
 }: LogFormProps) {
-  const [logType, setLogType] = useState<LogType>(initialLogType);
   const [content, setContent] = useState(initialContent);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setError(null);
 
     if (!content.trim()) {
@@ -39,7 +36,7 @@ export function LogForm({
     }
 
     try {
-      await onSubmit({ logType, content: content.trim() });
+      await onSubmit({ logType: 'note', content: content.trim() });
       if (!isEditing) {
         setContent('');
       }
@@ -50,24 +47,17 @@ export function LogForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <LogTypeSelector
-        value={logType}
-        onChange={setLogType}
+      <RichTextEditor
+        value={content}
+        onChange={setContent}
+        placeholder="読書メモを入力……"
         disabled={isLoading}
+        onSubmit={handleSubmit}
       />
 
-      <Textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder={
-          logType === 'quote'
-            ? '本からの引用を入力...'
-            : '読書中に気づいたこと、感想など...'
-        }
-        rows={4}
-        disabled={isLoading}
-        error={error ?? undefined}
-      />
+      {error && (
+        <p className="text-sm text-red-600">{error}</p>
+      )}
 
       <div className="flex justify-end gap-2">
         {onCancel && (

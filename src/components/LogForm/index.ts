@@ -1,4 +1,6 @@
 export { LogForm } from './LogForm';
-export { LogTypeSelector } from './LogTypeSelector';
 export { QuickLogModal } from './QuickLogModal';
-export { QuickAddLogModal } from './QuickAddLogModal';
+export { BookSelectorModal } from './BookSelectorModal';
+export { InlineLogForm } from './InlineLogForm';
+export { RichTextEditor } from './RichTextEditor';
+export { QuoteButton } from './QuoteButton';

@@ -6,6 +6,7 @@ interface NdlSearchParams {
   author?: string;
   isbn?: string;
   cnt?: number;
+  idx?: number;
 }
 
 export async function searchNdl(params: NdlSearchParams): Promise<NdlSearchResults> {
@@ -22,6 +23,9 @@ export async function searchNdl(params: NdlSearchParams): Promise<NdlSearchResul
   }
   if (params.cnt) {
     searchParams.append('cnt', String(params.cnt));
+  }
+  if (params.idx) {
+    searchParams.append('idx', String(params.idx));
   }
 
   const query = searchParams.toString();

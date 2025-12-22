@@ -37,7 +37,7 @@ export const logs = sqliteTable(
       .references(() => books.id),
     userId: text('user_id').references(() => users.id),
     logType: text('log_type', {
-      enum: ['memo', 'quote', 'registration'],
+      enum: ['note', 'registration'],
     }).notNull(),
     content: text('content').notNull(),
     createdAt: text('created_at').notNull(),

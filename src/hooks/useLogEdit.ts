@@ -3,19 +3,14 @@ import type { Log } from '../types';
 import { updateLog } from '../services/logs';
 import { ApiClientError } from '../services/api';
 
-// Editable log types (registration logs cannot be edited)
-type EditableLogType = 'memo' | 'quote';
-
 interface UseLogEditResult {
   isEditing: boolean;
   editedContent: string;
-  editedLogType: EditableLogType;
   isSaving: boolean;
   error: string | null;
   startEdit: (log: Log) => void;
   cancelEdit: () => void;
   setEditedContent: (content: string) => void;
-  setEditedLogType: (logType: EditableLogType) => void;
   saveEdit: () => Promise<Log | null>;
 }
 
@@ -25,7 +20,6 @@ export function useLogEdit(
 ): UseLogEditResult {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState('');
-  const [editedLogType, setEditedLogType] = useState<EditableLogType>('memo');
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +29,6 @@ export function useLogEdit(
       return;
     }
     setEditedContent(log.content);
-    setEditedLogType(log.logType);
     setIsEditing(true);
     setError(null);
   }, []);
@@ -43,7 +36,6 @@ export function useLogEdit(
   const cancelEdit = useCallback(() => {
     setIsEditing(false);
     setEditedContent('');
-    setEditedLogType('memo');
     setError(null);
   }, []);
 
@@ -59,12 +51,10 @@ export function useLogEdit(
     try {
       const updatedLog = await updateLog(logId, {
         content: editedContent,
-        logType: editedLogType,
       });
 
       setIsEditing(false);
       setEditedContent('');
-      setEditedLogType('memo');
 
       if (onSaveSuccess) {
         onSaveSuccess(updatedLog);
@@ -85,18 +75,16 @@ export function useLogEdit(
     } finally {
       setIsSaving(false);
     }
-  }, [logId, editedContent, editedLogType, onSaveSuccess]);
+  }, [logId, editedContent, onSaveSuccess]);
 
   return {
     isEditing,
     editedContent,
-    editedLogType,
     isSaving,
     error,
     startEdit,
     cancelEdit,
     setEditedContent,
-    setEditedLogType,
     saveEdit,
   };
 }

@@ -112,7 +112,7 @@ describe('authClient', () => {
       const { authClient } = await import('../../src/lib/auth-client');
 
       // Access a property - this should trigger initialization
-      const _signOut = authClient.signOut;
+      void authClient.signOut;
 
       // Now createAuthClient should have been called
       expect(createAuthClient).toHaveBeenCalled();
