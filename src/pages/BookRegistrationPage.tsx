@@ -8,7 +8,16 @@ import { Card, CardHeader, CardTitle, CardContent } from '../components/common';
 
 export function BookRegistrationPage() {
   const navigate = useNavigate();
-  const { query, setQuery, results, isLoading: isSearching, error: searchError } = useBookSearch();
+  const {
+    query,
+    setQuery,
+    results,
+    isLoading: isSearching,
+    error: searchError,
+    hasMore,
+    isLoadingMore,
+    loadMore,
+  } = useBookSearch();
   const [selectedBook, setSelectedBook] = useState<NdlBook | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showManualForm, setShowManualForm] = useState(false);
@@ -72,6 +81,9 @@ export function BookRegistrationPage() {
                 results={results}
                 onSelect={handleSelectNdlBook}
                 isLoading={isSearching}
+                hasMore={hasMore}
+                isLoadingMore={isLoadingMore}
+                onLoadMore={loadMore}
               />
 
               {!isSearching && query.length === 0 && (
